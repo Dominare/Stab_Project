@@ -1,0 +1,4592 @@
+ARM GAS  /tmp/ccqaOqW9.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"cmsis_os2.c"
+  12              		.text
+  13              		.section	.text.TimerCallback,"ax",%progbits
+  14              		.align	1
+  15              		.p2align 2,,3
+  16              		.arch armv6s-m
+  17              		.syntax unified
+  18              		.code	16
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	TimerCallback:
+  23              		@ args = 0, pretend = 0, frame = 0
+  24              		@ frame_needed = 0, uses_anonymous_args = 0
+  25 0000 10B5     		push	{r4, lr}
+  26 0002 FFF7FEFF 		bl	pvTimerGetTimerID
+  27 0006 031E     		subs	r3, r0, #0
+  28 0008 02D0     		beq	.L1
+  29 000a 4068     		ldr	r0, [r0, #4]
+  30 000c 1B68     		ldr	r3, [r3]
+  31 000e 9847     		blx	r3
+  32              	.L1:
+  33              		@ sp needed
+  34 0010 10BD     		pop	{r4, pc}
+  36 0012 C046     		.section	.text.osKernelInitialize,"ax",%progbits
+  37              		.align	1
+  38              		.p2align 2,,3
+  39              		.global	osKernelInitialize
+  40              		.syntax unified
+  41              		.code	16
+  42              		.thumb_func
+  43              		.fpu softvfp
+  45              	osKernelInitialize:
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48              		@ link register save eliminated.
+  49              		.syntax divided
+  50              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+  51 0000 EFF30583 		MRS r3, ipsr
+  52              	@ 0 "" 2
+  53              		.thumb
+  54              		.syntax unified
+  55 0004 002B     		cmp	r3, #0
+  56 0006 0ED1     		bne	.L12
+  57              		.syntax divided
+  58              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+  59 0008 EFF31083 		MRS r3, primask
+  60              	@ 0 "" 2
+ARM GAS  /tmp/ccqaOqW9.s 			page 2
+
+
+  61              		.thumb
+  62              		.syntax unified
+  63 000c 002B     		cmp	r3, #0
+  64 000e 06D1     		bne	.L10
+  65 0010 084B     		ldr	r3, .L17
+  66 0012 1868     		ldr	r0, [r3]
+  67              	.L11:
+  68 0014 0028     		cmp	r0, #0
+  69 0016 09D1     		bne	.L13
+  70 0018 0122     		movs	r2, #1
+  71 001a 1A60     		str	r2, [r3]
+  72              	.L7:
+  73              		@ sp needed
+  74 001c 7047     		bx	lr
+  75              	.L10:
+  76 001e 054B     		ldr	r3, .L17
+  77 0020 1868     		ldr	r0, [r3]
+  78 0022 0228     		cmp	r0, #2
+  79 0024 F6D1     		bne	.L11
+  80              	.L12:
+  81 0026 0620     		movs	r0, #6
+  82 0028 4042     		rsbs	r0, r0, #0
+  83 002a F7E7     		b	.L7
+  84              	.L13:
+  85 002c 0120     		movs	r0, #1
+  86 002e 4042     		rsbs	r0, r0, #0
+  87 0030 F4E7     		b	.L7
+  88              	.L18:
+  89 0032 C046     		.align	2
+  90              	.L17:
+  91 0034 00000000 		.word	.LANCHOR0
+  93              		.section	.rodata.osKernelGetInfo.str1.4,"aMS",%progbits,1
+  94              		.align	2
+  95              	.LC1:
+  96 0000 46726565 		.ascii	"FreeRTOS V10.0.1\000"
+  96      52544F53 
+  96      20563130 
+  96      2E302E31 
+  96      00
+  97              		.section	.text.osKernelGetInfo,"ax",%progbits
+  98              		.align	1
+  99              		.p2align 2,,3
+ 100              		.global	osKernelGetInfo
+ 101              		.syntax unified
+ 102              		.code	16
+ 103              		.thumb_func
+ 104              		.fpu softvfp
+ 106              	osKernelGetInfo:
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109 0000 0300     		movs	r3, r0
+ 110 0002 10B5     		push	{r4, lr}
+ 111 0004 0800     		movs	r0, r1
+ 112 0006 002B     		cmp	r3, #0
+ 113 0008 02D0     		beq	.L20
+ 114 000a 0A49     		ldr	r1, .L34
+ 115 000c 1960     		str	r1, [r3]
+ARM GAS  /tmp/ccqaOqW9.s 			page 3
+
+
+ 116 000e 5960     		str	r1, [r3, #4]
+ 117              	.L20:
+ 118 0010 0028     		cmp	r0, #0
+ 119 0012 01D0     		beq	.L21
+ 120 0014 002A     		cmp	r2, #0
+ 121 0016 01D1     		bne	.L32
+ 122              	.L21:
+ 123 0018 0020     		movs	r0, #0
+ 124              		@ sp needed
+ 125 001a 10BD     		pop	{r4, pc}
+ 126              	.L32:
+ 127 001c 112A     		cmp	r2, #17
+ 128 001e 03D8     		bhi	.L33
+ 129 0020 0549     		ldr	r1, .L34+4
+ 130 0022 FFF7FEFF 		bl	memcpy
+ 131 0026 F7E7     		b	.L21
+ 132              	.L33:
+ 133 0028 1122     		movs	r2, #17
+ 134 002a 0349     		ldr	r1, .L34+4
+ 135 002c FFF7FEFF 		bl	memcpy
+ 136 0030 F2E7     		b	.L21
+ 137              	.L35:
+ 138 0032 C046     		.align	2
+ 139              	.L34:
+ 140 0034 01E1F505 		.word	100000001
+ 141 0038 00000000 		.word	.LC1
+ 143              		.section	.text.osKernelGetState,"ax",%progbits
+ 144              		.align	1
+ 145              		.p2align 2,,3
+ 146              		.global	osKernelGetState
+ 147              		.syntax unified
+ 148              		.code	16
+ 149              		.thumb_func
+ 150              		.fpu softvfp
+ 152              	osKernelGetState:
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155 0000 10B5     		push	{r4, lr}
+ 156 0002 FFF7FEFF 		bl	xTaskGetSchedulerState
+ 157 0006 0028     		cmp	r0, #0
+ 158 0008 07D0     		beq	.L38
+ 159 000a 0228     		cmp	r0, #2
+ 160 000c 04D0     		beq	.L36
+ 161 000e 044B     		ldr	r3, .L42
+ 162 0010 1868     		ldr	r0, [r3]
+ 163 0012 0138     		subs	r0, r0, #1
+ 164 0014 4342     		rsbs	r3, r0, #0
+ 165 0016 5841     		adcs	r0, r0, r3
+ 166              	.L36:
+ 167              		@ sp needed
+ 168 0018 10BD     		pop	{r4, pc}
+ 169              	.L38:
+ 170 001a 0320     		movs	r0, #3
+ 171 001c FCE7     		b	.L36
+ 172              	.L43:
+ 173 001e C046     		.align	2
+ 174              	.L42:
+ARM GAS  /tmp/ccqaOqW9.s 			page 4
+
+
+ 175 0020 00000000 		.word	.LANCHOR0
+ 177              		.section	.text.osKernelStart,"ax",%progbits
+ 178              		.align	1
+ 179              		.p2align 2,,3
+ 180              		.global	osKernelStart
+ 181              		.syntax unified
+ 182              		.code	16
+ 183              		.thumb_func
+ 184              		.fpu softvfp
+ 186              	osKernelStart:
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189 0000 10B5     		push	{r4, lr}
+ 190              		.syntax divided
+ 191              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 192 0002 EFF30583 		MRS r3, ipsr
+ 193              	@ 0 "" 2
+ 194              		.thumb
+ 195              		.syntax unified
+ 196 0006 002B     		cmp	r3, #0
+ 197 0008 11D1     		bne	.L49
+ 198              		.syntax divided
+ 199              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 200 000a EFF31083 		MRS r3, primask
+ 201              	@ 0 "" 2
+ 202              		.thumb
+ 203              		.syntax unified
+ 204 000e 002B     		cmp	r3, #0
+ 205 0010 09D1     		bne	.L47
+ 206 0012 0A4B     		ldr	r3, .L54
+ 207 0014 1A68     		ldr	r2, [r3]
+ 208              	.L48:
+ 209 0016 012A     		cmp	r2, #1
+ 210 0018 0CD1     		bne	.L50
+ 211 001a 0132     		adds	r2, r2, #1
+ 212 001c 1A60     		str	r2, [r3]
+ 213 001e FFF7FEFF 		bl	vTaskStartScheduler
+ 214 0022 0020     		movs	r0, #0
+ 215              	.L44:
+ 216              		@ sp needed
+ 217 0024 10BD     		pop	{r4, pc}
+ 218              	.L47:
+ 219 0026 054B     		ldr	r3, .L54
+ 220 0028 1A68     		ldr	r2, [r3]
+ 221 002a 022A     		cmp	r2, #2
+ 222 002c F3D1     		bne	.L48
+ 223              	.L49:
+ 224 002e 0620     		movs	r0, #6
+ 225 0030 4042     		rsbs	r0, r0, #0
+ 226 0032 F7E7     		b	.L44
+ 227              	.L50:
+ 228 0034 0120     		movs	r0, #1
+ 229 0036 4042     		rsbs	r0, r0, #0
+ 230 0038 F4E7     		b	.L44
+ 231              	.L55:
+ 232 003a C046     		.align	2
+ 233              	.L54:
+ARM GAS  /tmp/ccqaOqW9.s 			page 5
+
+
+ 234 003c 00000000 		.word	.LANCHOR0
+ 236              		.section	.text.osKernelLock,"ax",%progbits
+ 237              		.align	1
+ 238              		.p2align 2,,3
+ 239              		.global	osKernelLock
+ 240              		.syntax unified
+ 241              		.code	16
+ 242              		.thumb_func
+ 243              		.fpu softvfp
+ 245              	osKernelLock:
+ 246              		@ args = 0, pretend = 0, frame = 0
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 248 0000 10B5     		push	{r4, lr}
+ 249              		.syntax divided
+ 250              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 251 0002 EFF30583 		MRS r3, ipsr
+ 252              	@ 0 "" 2
+ 253              		.thumb
+ 254              		.syntax unified
+ 255 0006 002B     		cmp	r3, #0
+ 256 0008 16D1     		bne	.L60
+ 257              		.syntax divided
+ 258              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 259 000a EFF31083 		MRS r3, primask
+ 260              	@ 0 "" 2
+ 261              		.thumb
+ 262              		.syntax unified
+ 263 000e 002B     		cmp	r3, #0
+ 264 0010 03D0     		beq	.L59
+ 265 0012 0B4B     		ldr	r3, .L70
+ 266 0014 1B68     		ldr	r3, [r3]
+ 267 0016 022B     		cmp	r3, #2
+ 268 0018 0ED0     		beq	.L60
+ 269              	.L59:
+ 270 001a FFF7FEFF 		bl	xTaskGetSchedulerState
+ 271 001e 0028     		cmp	r0, #0
+ 272 0020 08D0     		beq	.L61
+ 273 0022 0228     		cmp	r0, #2
+ 274 0024 02D0     		beq	.L69
+ 275 0026 0120     		movs	r0, #1
+ 276 0028 4042     		rsbs	r0, r0, #0
+ 277              	.L56:
+ 278              		@ sp needed
+ 279 002a 10BD     		pop	{r4, pc}
+ 280              	.L69:
+ 281 002c FFF7FEFF 		bl	vTaskSuspendAll
+ 282 0030 0020     		movs	r0, #0
+ 283 0032 FAE7     		b	.L56
+ 284              	.L61:
+ 285 0034 0120     		movs	r0, #1
+ 286 0036 F8E7     		b	.L56
+ 287              	.L60:
+ 288 0038 0620     		movs	r0, #6
+ 289 003a 4042     		rsbs	r0, r0, #0
+ 290 003c F5E7     		b	.L56
+ 291              	.L71:
+ 292 003e C046     		.align	2
+ARM GAS  /tmp/ccqaOqW9.s 			page 6
+
+
+ 293              	.L70:
+ 294 0040 00000000 		.word	.LANCHOR0
+ 296              		.section	.text.osKernelUnlock,"ax",%progbits
+ 297              		.align	1
+ 298              		.p2align 2,,3
+ 299              		.global	osKernelUnlock
+ 300              		.syntax unified
+ 301              		.code	16
+ 302              		.thumb_func
+ 303              		.fpu softvfp
+ 305              	osKernelUnlock:
+ 306              		@ args = 0, pretend = 0, frame = 0
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308 0000 10B5     		push	{r4, lr}
+ 309              		.syntax divided
+ 310              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 311 0002 EFF30583 		MRS r3, ipsr
+ 312              	@ 0 "" 2
+ 313              		.thumb
+ 314              		.syntax unified
+ 315 0006 002B     		cmp	r3, #0
+ 316 0008 1CD1     		bne	.L76
+ 317              		.syntax divided
+ 318              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 319 000a EFF31083 		MRS r3, primask
+ 320              	@ 0 "" 2
+ 321              		.thumb
+ 322              		.syntax unified
+ 323 000e 002B     		cmp	r3, #0
+ 324 0010 03D0     		beq	.L75
+ 325 0012 0E4B     		ldr	r3, .L86
+ 326 0014 1B68     		ldr	r3, [r3]
+ 327 0016 022B     		cmp	r3, #2
+ 328 0018 14D0     		beq	.L76
+ 329              	.L75:
+ 330 001a FFF7FEFF 		bl	xTaskGetSchedulerState
+ 331 001e 0028     		cmp	r0, #0
+ 332 0020 04D0     		beq	.L77
+ 333 0022 0238     		subs	r0, r0, #2
+ 334 0024 431E     		subs	r3, r0, #1
+ 335 0026 9841     		sbcs	r0, r0, r3
+ 336 0028 4042     		rsbs	r0, r0, #0
+ 337              	.L72:
+ 338              		@ sp needed
+ 339 002a 10BD     		pop	{r4, pc}
+ 340              	.L77:
+ 341 002c FFF7FEFF 		bl	xTaskResumeAll
+ 342 0030 0128     		cmp	r0, #1
+ 343 0032 01D1     		bne	.L78
+ 344              	.L79:
+ 345 0034 0120     		movs	r0, #1
+ 346 0036 F8E7     		b	.L72
+ 347              	.L78:
+ 348 0038 FFF7FEFF 		bl	xTaskGetSchedulerState
+ 349 003c 0028     		cmp	r0, #0
+ 350 003e F9D1     		bne	.L79
+ 351 0040 0138     		subs	r0, r0, #1
+ARM GAS  /tmp/ccqaOqW9.s 			page 7
+
+
+ 352 0042 F2E7     		b	.L72
+ 353              	.L76:
+ 354 0044 0620     		movs	r0, #6
+ 355 0046 4042     		rsbs	r0, r0, #0
+ 356 0048 EFE7     		b	.L72
+ 357              	.L87:
+ 358 004a C046     		.align	2
+ 359              	.L86:
+ 360 004c 00000000 		.word	.LANCHOR0
+ 362              		.section	.text.osKernelRestoreLock,"ax",%progbits
+ 363              		.align	1
+ 364              		.p2align 2,,3
+ 365              		.global	osKernelRestoreLock
+ 366              		.syntax unified
+ 367              		.code	16
+ 368              		.thumb_func
+ 369              		.fpu softvfp
+ 371              	osKernelRestoreLock:
+ 372              		@ args = 0, pretend = 0, frame = 0
+ 373              		@ frame_needed = 0, uses_anonymous_args = 0
+ 374 0000 10B5     		push	{r4, lr}
+ 375 0002 0400     		movs	r4, r0
+ 376              		.syntax divided
+ 377              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 378 0004 EFF30583 		MRS r3, ipsr
+ 379              	@ 0 "" 2
+ 380              		.thumb
+ 381              		.syntax unified
+ 382 0008 002B     		cmp	r3, #0
+ 383 000a 24D1     		bne	.L92
+ 384              		.syntax divided
+ 385              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 386 000c EFF31083 		MRS r3, primask
+ 387              	@ 0 "" 2
+ 388              		.thumb
+ 389              		.syntax unified
+ 390 0010 002B     		cmp	r3, #0
+ 391 0012 03D0     		beq	.L91
+ 392 0014 114B     		ldr	r3, .L106
+ 393 0016 1B68     		ldr	r3, [r3]
+ 394 0018 022B     		cmp	r3, #2
+ 395 001a 1CD0     		beq	.L92
+ 396              	.L91:
+ 397 001c FFF7FEFF 		bl	xTaskGetSchedulerState
+ 398 0020 0223     		movs	r3, #2
+ 399 0022 9843     		bics	r0, r3
+ 400 0024 02D0     		beq	.L104
+ 401              	.L95:
+ 402 0026 0120     		movs	r0, #1
+ 403 0028 4042     		rsbs	r0, r0, #0
+ 404              	.L88:
+ 405              		@ sp needed
+ 406 002a 10BD     		pop	{r4, pc}
+ 407              	.L104:
+ 408 002c 012C     		cmp	r4, #1
+ 409 002e 0ED0     		beq	.L105
+ 410 0030 002C     		cmp	r4, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 8
+
+
+ 411 0032 F8D1     		bne	.L95
+ 412 0034 FFF7FEFF 		bl	xTaskResumeAll
+ 413 0038 0300     		movs	r3, r0
+ 414 003a 0020     		movs	r0, #0
+ 415 003c 012B     		cmp	r3, #1
+ 416 003e F4D0     		beq	.L88
+ 417 0040 FFF7FEFF 		bl	xTaskGetSchedulerState
+ 418 0044 0238     		subs	r0, r0, #2
+ 419 0046 431E     		subs	r3, r0, #1
+ 420 0048 9841     		sbcs	r0, r0, r3
+ 421 004a 4042     		rsbs	r0, r0, #0
+ 422 004c EDE7     		b	.L88
+ 423              	.L105:
+ 424 004e FFF7FEFF 		bl	vTaskSuspendAll
+ 425 0052 0120     		movs	r0, #1
+ 426 0054 E9E7     		b	.L88
+ 427              	.L92:
+ 428 0056 0620     		movs	r0, #6
+ 429 0058 4042     		rsbs	r0, r0, #0
+ 430 005a E6E7     		b	.L88
+ 431              	.L107:
+ 432              		.align	2
+ 433              	.L106:
+ 434 005c 00000000 		.word	.LANCHOR0
+ 436              		.section	.text.osKernelGetTickCount,"ax",%progbits
+ 437              		.align	1
+ 438              		.p2align 2,,3
+ 439              		.global	osKernelGetTickCount
+ 440              		.syntax unified
+ 441              		.code	16
+ 442              		.thumb_func
+ 443              		.fpu softvfp
+ 445              	osKernelGetTickCount:
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 448 0000 10B5     		push	{r4, lr}
+ 449              		.syntax divided
+ 450              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 451 0002 EFF30583 		MRS r3, ipsr
+ 452              	@ 0 "" 2
+ 453              		.thumb
+ 454              		.syntax unified
+ 455 0006 002B     		cmp	r3, #0
+ 456 0008 0AD1     		bne	.L112
+ 457              		.syntax divided
+ 458              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 459 000a EFF31083 		MRS r3, primask
+ 460              	@ 0 "" 2
+ 461              		.thumb
+ 462              		.syntax unified
+ 463 000e 002B     		cmp	r3, #0
+ 464 0010 03D0     		beq	.L111
+ 465 0012 054B     		ldr	r3, .L119
+ 466 0014 1B68     		ldr	r3, [r3]
+ 467 0016 022B     		cmp	r3, #2
+ 468 0018 02D0     		beq	.L112
+ 469              	.L111:
+ARM GAS  /tmp/ccqaOqW9.s 			page 9
+
+
+ 470 001a FFF7FEFF 		bl	xTaskGetTickCount
+ 471              	.L108:
+ 472              		@ sp needed
+ 473 001e 10BD     		pop	{r4, pc}
+ 474              	.L112:
+ 475 0020 FFF7FEFF 		bl	xTaskGetTickCountFromISR
+ 476 0024 FBE7     		b	.L108
+ 477              	.L120:
+ 478 0026 C046     		.align	2
+ 479              	.L119:
+ 480 0028 00000000 		.word	.LANCHOR0
+ 482              		.section	.text.osKernelGetTickFreq,"ax",%progbits
+ 483              		.align	1
+ 484              		.p2align 2,,3
+ 485              		.global	osKernelGetTickFreq
+ 486              		.syntax unified
+ 487              		.code	16
+ 488              		.thumb_func
+ 489              		.fpu softvfp
+ 491              	osKernelGetTickFreq:
+ 492              		@ args = 0, pretend = 0, frame = 0
+ 493              		@ frame_needed = 0, uses_anonymous_args = 0
+ 494              		@ link register save eliminated.
+ 495 0000 FA20     		movs	r0, #250
+ 496              		@ sp needed
+ 497 0002 8000     		lsls	r0, r0, #2
+ 498 0004 7047     		bx	lr
+ 500              		.global	__aeabi_uidiv
+ 501 0006 C046     		.section	.text.osKernelGetSysTimerCount,"ax",%progbits
+ 502              		.align	1
+ 503              		.p2align 2,,3
+ 504              		.global	osKernelGetSysTimerCount
+ 505              		.syntax unified
+ 506              		.code	16
+ 507              		.thumb_func
+ 508              		.fpu softvfp
+ 510              	osKernelGetSysTimerCount:
+ 511              		@ args = 0, pretend = 0, frame = 0
+ 512              		@ frame_needed = 0, uses_anonymous_args = 0
+ 513 0000 10B5     		push	{r4, lr}
+ 514              		.syntax divided
+ 515              	@ 332 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c" 1
+ 516 0002 72B6     		 cpsid i 
+ 517              	@ 0 "" 2
+ 518              		.thumb
+ 519              		.syntax unified
+ 520 0004 FFF7FEFF 		bl	xTaskGetTickCount
+ 521 0008 FA21     		movs	r1, #250
+ 522 000a 044B     		ldr	r3, .L123
+ 523 000c 0400     		movs	r4, r0
+ 524 000e 8900     		lsls	r1, r1, #2
+ 525 0010 1868     		ldr	r0, [r3]
+ 526 0012 FFF7FEFF 		bl	__aeabi_uidiv
+ 527 0016 6043     		muls	r0, r4
+ 528              		.syntax divided
+ 529              	@ 337 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c" 1
+ 530 0018 62B6     		 cpsie i 
+ARM GAS  /tmp/ccqaOqW9.s 			page 10
+
+
+ 531              	@ 0 "" 2
+ 532              		.thumb
+ 533              		.syntax unified
+ 534              		@ sp needed
+ 535 001a 10BD     		pop	{r4, pc}
+ 536              	.L124:
+ 537              		.align	2
+ 538              	.L123:
+ 539 001c 00000000 		.word	SystemCoreClock
+ 541              		.section	.text.osKernelGetSysTimerFreq,"ax",%progbits
+ 542              		.align	1
+ 543              		.p2align 2,,3
+ 544              		.global	osKernelGetSysTimerFreq
+ 545              		.syntax unified
+ 546              		.code	16
+ 547              		.thumb_func
+ 548              		.fpu softvfp
+ 550              	osKernelGetSysTimerFreq:
+ 551              		@ args = 0, pretend = 0, frame = 0
+ 552              		@ frame_needed = 0, uses_anonymous_args = 0
+ 553              		@ link register save eliminated.
+ 554 0000 014B     		ldr	r3, .L126
+ 555              		@ sp needed
+ 556 0002 1868     		ldr	r0, [r3]
+ 557 0004 7047     		bx	lr
+ 558              	.L127:
+ 559 0006 C046     		.align	2
+ 560              	.L126:
+ 561 0008 00000000 		.word	SystemCoreClock
+ 563              		.section	.text.osThreadNew,"ax",%progbits
+ 564              		.align	1
+ 565              		.p2align 2,,3
+ 566              		.global	osThreadNew
+ 567              		.syntax unified
+ 568              		.code	16
+ 569              		.thumb_func
+ 570              		.fpu softvfp
+ 572              	osThreadNew:
+ 573              		@ args = 0, pretend = 0, frame = 8
+ 574              		@ frame_needed = 0, uses_anonymous_args = 0
+ 575 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 576 0002 0024     		movs	r4, #0
+ 577 0004 87B0     		sub	sp, sp, #28
+ 578 0006 0500     		movs	r5, r0
+ 579 0008 0594     		str	r4, [sp, #20]
+ 580              		.syntax divided
+ 581              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 582 000a EFF30584 		MRS r4, ipsr
+ 583              	@ 0 "" 2
+ 584              		.thumb
+ 585              		.syntax unified
+ 586 000e 0020     		movs	r0, #0
+ 587 0010 002C     		cmp	r4, #0
+ 588 0012 30D1     		bne	.L128
+ 589              		.syntax divided
+ 590              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 591 0014 EFF31083 		MRS r3, primask
+ARM GAS  /tmp/ccqaOqW9.s 			page 11
+
+
+ 592              	@ 0 "" 2
+ 593              		.thumb
+ 594              		.syntax unified
+ 595 0018 002B     		cmp	r3, #0
+ 596 001a 2ED1     		bne	.L162
+ 597              	.L130:
+ 598 001c 002D     		cmp	r5, #0
+ 599 001e 30D0     		beq	.L161
+ 600 0020 1323     		movs	r3, #19
+ 601 0022 0020     		movs	r0, #0
+ 602 0024 6B44     		add	r3, r3, sp
+ 603 0026 1870     		strb	r0, [r3]
+ 604 0028 002A     		cmp	r2, #0
+ 605 002a 33D0     		beq	.L141
+ 606 002c 1468     		ldr	r4, [r2]
+ 607 002e 002C     		cmp	r4, #0
+ 608 0030 2ED0     		beq	.L163
+ 609              	.L133:
+ 610 0032 9069     		ldr	r0, [r2, #24]
+ 611 0034 0028     		cmp	r0, #0
+ 612 0036 26D1     		bne	.L164
+ 613 0038 1820     		movs	r0, #24
+ 614              	.L134:
+ 615 003a 5368     		ldr	r3, [r2, #4]
+ 616 003c DB07     		lsls	r3, r3, #31
+ 617 003e 25D4     		bmi	.L145
+ 618 0040 6026     		movs	r6, #96
+ 619 0042 5369     		ldr	r3, [r2, #20]
+ 620 0044 B446     		mov	ip, r6
+ 621 0046 002B     		cmp	r3, #0
+ 622 0048 01D0     		beq	.L136
+ 623 004a 9E08     		lsrs	r6, r3, #2
+ 624 004c B446     		mov	ip, r6
+ 625              	.L136:
+ 626 004e 9768     		ldr	r7, [r2, #8]
+ 627 0050 002F     		cmp	r7, #0
+ 628 0052 2FD0     		beq	.L137
+ 629 0054 D668     		ldr	r6, [r2, #12]
+ 630 0056 5B2E     		cmp	r6, #91
+ 631 0058 13D9     		bls	.L161
+ 632 005a 1269     		ldr	r2, [r2, #16]
+ 633 005c 002A     		cmp	r2, #0
+ 634 005e 10D0     		beq	.L161
+ 635 0060 002B     		cmp	r3, #0
+ 636 0062 0ED0     		beq	.L161
+ 637 0064 0B00     		movs	r3, r1
+ 638 0066 0192     		str	r2, [sp, #4]
+ 639 0068 0090     		str	r0, [sp]
+ 640 006a 6246     		mov	r2, ip
+ 641 006c 2100     		movs	r1, r4
+ 642 006e 2800     		movs	r0, r5
+ 643 0070 0297     		str	r7, [sp, #8]
+ 644 0072 FFF7FEFF 		bl	xTaskCreateStatic
+ 645              	.L128:
+ 646 0076 07B0     		add	sp, sp, #28
+ 647              		@ sp needed
+ 648 0078 F0BD     		pop	{r4, r5, r6, r7, pc}
+ARM GAS  /tmp/ccqaOqW9.s 			page 12
+
+
+ 649              	.L162:
+ 650 007a 134B     		ldr	r3, .L165
+ 651 007c 1B68     		ldr	r3, [r3]
+ 652 007e 022B     		cmp	r3, #2
+ 653 0080 CCD1     		bne	.L130
+ 654              	.L161:
+ 655 0082 0598     		ldr	r0, [sp, #20]
+ 656 0084 F7E7     		b	.L128
+ 657              	.L164:
+ 658 0086 431E     		subs	r3, r0, #1
+ 659 0088 372B     		cmp	r3, #55
+ 660 008a D6D9     		bls	.L134
+ 661              	.L145:
+ 662 008c 0020     		movs	r0, #0
+ 663 008e F2E7     		b	.L128
+ 664              	.L163:
+ 665 0090 1C00     		movs	r4, r3
+ 666 0092 CEE7     		b	.L133
+ 667              	.L141:
+ 668 0094 6022     		movs	r2, #96
+ 669 0096 1820     		movs	r0, #24
+ 670 0098 1C00     		movs	r4, r3
+ 671              	.L132:
+ 672 009a 05AB     		add	r3, sp, #20
+ 673 009c 0193     		str	r3, [sp, #4]
+ 674 009e 0090     		str	r0, [sp]
+ 675 00a0 0B00     		movs	r3, r1
+ 676 00a2 2800     		movs	r0, r5
+ 677 00a4 2100     		movs	r1, r4
+ 678 00a6 FFF7FEFF 		bl	xTaskCreate
+ 679 00aa 0300     		movs	r3, r0
+ 680 00ac 0020     		movs	r0, #0
+ 681 00ae 012B     		cmp	r3, #1
+ 682 00b0 E1D1     		bne	.L128
+ 683 00b2 E6E7     		b	.L161
+ 684              	.L137:
+ 685 00b4 D368     		ldr	r3, [r2, #12]
+ 686 00b6 002B     		cmp	r3, #0
+ 687 00b8 E3D1     		bne	.L161
+ 688 00ba 1369     		ldr	r3, [r2, #16]
+ 689 00bc 002B     		cmp	r3, #0
+ 690 00be E0D1     		bne	.L161
+ 691 00c0 6346     		mov	r3, ip
+ 692 00c2 9AB2     		uxth	r2, r3
+ 693 00c4 E9E7     		b	.L132
+ 694              	.L166:
+ 695 00c6 C046     		.align	2
+ 696              	.L165:
+ 697 00c8 00000000 		.word	.LANCHOR0
+ 699              		.section	.text.osThreadGetName,"ax",%progbits
+ 700              		.align	1
+ 701              		.p2align 2,,3
+ 702              		.global	osThreadGetName
+ 703              		.syntax unified
+ 704              		.code	16
+ 705              		.thumb_func
+ 706              		.fpu softvfp
+ARM GAS  /tmp/ccqaOqW9.s 			page 13
+
+
+ 708              	osThreadGetName:
+ 709              		@ args = 0, pretend = 0, frame = 0
+ 710              		@ frame_needed = 0, uses_anonymous_args = 0
+ 711 0000 10B5     		push	{r4, lr}
+ 712              		.syntax divided
+ 713              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 714 0002 EFF30583 		MRS r3, ipsr
+ 715              	@ 0 "" 2
+ 716              		.thumb
+ 717              		.syntax unified
+ 718 0006 002B     		cmp	r3, #0
+ 719 0008 0CD1     		bne	.L171
+ 720              		.syntax divided
+ 721              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 722 000a EFF31083 		MRS r3, primask
+ 723              	@ 0 "" 2
+ 724              		.thumb
+ 725              		.syntax unified
+ 726 000e 002B     		cmp	r3, #0
+ 727 0010 03D0     		beq	.L170
+ 728 0012 054B     		ldr	r3, .L181
+ 729 0014 1B68     		ldr	r3, [r3]
+ 730 0016 022B     		cmp	r3, #2
+ 731 0018 04D0     		beq	.L171
+ 732              	.L170:
+ 733 001a 0028     		cmp	r0, #0
+ 734 001c 02D0     		beq	.L171
+ 735 001e FFF7FEFF 		bl	pcTaskGetName
+ 736 0022 00E0     		b	.L167
+ 737              	.L171:
+ 738 0024 0020     		movs	r0, #0
+ 739              	.L167:
+ 740              		@ sp needed
+ 741 0026 10BD     		pop	{r4, pc}
+ 742              	.L182:
+ 743              		.align	2
+ 744              	.L181:
+ 745 0028 00000000 		.word	.LANCHOR0
+ 747              		.section	.text.osThreadGetId,"ax",%progbits
+ 748              		.align	1
+ 749              		.p2align 2,,3
+ 750              		.global	osThreadGetId
+ 751              		.syntax unified
+ 752              		.code	16
+ 753              		.thumb_func
+ 754              		.fpu softvfp
+ 756              	osThreadGetId:
+ 757              		@ args = 0, pretend = 0, frame = 0
+ 758              		@ frame_needed = 0, uses_anonymous_args = 0
+ 759 0000 10B5     		push	{r4, lr}
+ 760              		.syntax divided
+ 761              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 762 0002 EFF30583 		MRS r3, ipsr
+ 763              	@ 0 "" 2
+ 764              		.thumb
+ 765              		.syntax unified
+ 766 0006 002B     		cmp	r3, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 14
+
+
+ 767 0008 0AD1     		bne	.L187
+ 768              		.syntax divided
+ 769              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 770 000a EFF31083 		MRS r3, primask
+ 771              	@ 0 "" 2
+ 772              		.thumb
+ 773              		.syntax unified
+ 774 000e 002B     		cmp	r3, #0
+ 775 0010 03D0     		beq	.L186
+ 776 0012 044B     		ldr	r3, .L194
+ 777 0014 1B68     		ldr	r3, [r3]
+ 778 0016 022B     		cmp	r3, #2
+ 779 0018 02D0     		beq	.L187
+ 780              	.L186:
+ 781 001a FFF7FEFF 		bl	xTaskGetCurrentTaskHandle
+ 782              	.L183:
+ 783              		@ sp needed
+ 784 001e 10BD     		pop	{r4, pc}
+ 785              	.L187:
+ 786 0020 0020     		movs	r0, #0
+ 787 0022 FCE7     		b	.L183
+ 788              	.L195:
+ 789              		.align	2
+ 790              	.L194:
+ 791 0024 00000000 		.word	.LANCHOR0
+ 793              		.section	.text.osThreadGetState,"ax",%progbits
+ 794              		.align	1
+ 795              		.p2align 2,,3
+ 796              		.global	osThreadGetState
+ 797              		.syntax unified
+ 798              		.code	16
+ 799              		.thumb_func
+ 800              		.fpu softvfp
+ 802              	osThreadGetState:
+ 803              		@ args = 0, pretend = 0, frame = 0
+ 804              		@ frame_needed = 0, uses_anonymous_args = 0
+ 805 0000 10B5     		push	{r4, lr}
+ 806              		.syntax divided
+ 807              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 808 0002 EFF30583 		MRS r3, ipsr
+ 809              	@ 0 "" 2
+ 810              		.thumb
+ 811              		.syntax unified
+ 812 0006 002B     		cmp	r3, #0
+ 813 0008 09D1     		bne	.L200
+ 814              		.syntax divided
+ 815              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 816 000a EFF31083 		MRS r3, primask
+ 817              	@ 0 "" 2
+ 818              		.thumb
+ 819              		.syntax unified
+ 820 000e 002B     		cmp	r3, #0
+ 821 0010 08D1     		bne	.L210
+ 822              	.L199:
+ 823 0012 0028     		cmp	r0, #0
+ 824 0014 03D0     		beq	.L200
+ 825 0016 FFF7FEFF 		bl	eTaskGetState
+ARM GAS  /tmp/ccqaOqW9.s 			page 15
+
+
+ 826 001a 0428     		cmp	r0, #4
+ 827 001c 07D9     		bls	.L211
+ 828              	.L200:
+ 829 001e 0120     		movs	r0, #1
+ 830 0020 4042     		rsbs	r0, r0, #0
+ 831              	.L196:
+ 832              		@ sp needed
+ 833 0022 10BD     		pop	{r4, pc}
+ 834              	.L210:
+ 835 0024 044B     		ldr	r3, .L212
+ 836 0026 1B68     		ldr	r3, [r3]
+ 837 0028 022B     		cmp	r3, #2
+ 838 002a F2D1     		bne	.L199
+ 839 002c F7E7     		b	.L200
+ 840              	.L211:
+ 841 002e 034B     		ldr	r3, .L212+4
+ 842 0030 8000     		lsls	r0, r0, #2
+ 843 0032 C058     		ldr	r0, [r0, r3]
+ 844 0034 F5E7     		b	.L196
+ 845              	.L213:
+ 846 0036 C046     		.align	2
+ 847              	.L212:
+ 848 0038 00000000 		.word	.LANCHOR0
+ 849 003c 00000000 		.word	.LANCHOR1
+ 851              		.section	.text.osThreadGetStackSpace,"ax",%progbits
+ 852              		.align	1
+ 853              		.p2align 2,,3
+ 854              		.global	osThreadGetStackSpace
+ 855              		.syntax unified
+ 856              		.code	16
+ 857              		.thumb_func
+ 858              		.fpu softvfp
+ 860              	osThreadGetStackSpace:
+ 861              		@ args = 0, pretend = 0, frame = 0
+ 862              		@ frame_needed = 0, uses_anonymous_args = 0
+ 863 0000 10B5     		push	{r4, lr}
+ 864              		.syntax divided
+ 865              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 866 0002 EFF30583 		MRS r3, ipsr
+ 867              	@ 0 "" 2
+ 868              		.thumb
+ 869              		.syntax unified
+ 870 0006 002B     		cmp	r3, #0
+ 871 0008 0CD1     		bne	.L218
+ 872              		.syntax divided
+ 873              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 874 000a EFF31083 		MRS r3, primask
+ 875              	@ 0 "" 2
+ 876              		.thumb
+ 877              		.syntax unified
+ 878 000e 002B     		cmp	r3, #0
+ 879 0010 04D1     		bne	.L228
+ 880              	.L217:
+ 881 0012 0028     		cmp	r0, #0
+ 882 0014 06D0     		beq	.L218
+ 883 0016 FFF7FEFF 		bl	uxTaskGetStackHighWaterMark
+ 884 001a 04E0     		b	.L214
+ARM GAS  /tmp/ccqaOqW9.s 			page 16
+
+
+ 885              	.L228:
+ 886 001c 024B     		ldr	r3, .L229
+ 887 001e 1B68     		ldr	r3, [r3]
+ 888 0020 022B     		cmp	r3, #2
+ 889 0022 F6D1     		bne	.L217
+ 890              	.L218:
+ 891 0024 0020     		movs	r0, #0
+ 892              	.L214:
+ 893              		@ sp needed
+ 894 0026 10BD     		pop	{r4, pc}
+ 895              	.L230:
+ 896              		.align	2
+ 897              	.L229:
+ 898 0028 00000000 		.word	.LANCHOR0
+ 900              		.section	.text.osThreadGetStackSize,"ax",%progbits
+ 901              		.align	1
+ 902              		.p2align 2,,3
+ 903              		.global	osThreadGetStackSize
+ 904              		.syntax unified
+ 905              		.code	16
+ 906              		.thumb_func
+ 907              		.fpu softvfp
+ 909              	osThreadGetStackSize:
+ 910              		@ args = 0, pretend = 0, frame = 0
+ 911              		@ frame_needed = 0, uses_anonymous_args = 0
+ 912              		@ link register save eliminated.
+ 913 0000 0020     		movs	r0, #0
+ 914              		@ sp needed
+ 915 0002 7047     		bx	lr
+ 917              		.section	.text.osThreadSetPriority,"ax",%progbits
+ 918              		.align	1
+ 919              		.p2align 2,,3
+ 920              		.global	osThreadSetPriority
+ 921              		.syntax unified
+ 922              		.code	16
+ 923              		.thumb_func
+ 924              		.fpu softvfp
+ 926              	osThreadSetPriority:
+ 927              		@ args = 0, pretend = 0, frame = 0
+ 928              		@ frame_needed = 0, uses_anonymous_args = 0
+ 929 0000 10B5     		push	{r4, lr}
+ 930              		.syntax divided
+ 931              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 932 0002 EFF30583 		MRS r3, ipsr
+ 933              	@ 0 "" 2
+ 934              		.thumb
+ 935              		.syntax unified
+ 936 0006 002B     		cmp	r3, #0
+ 937 0008 10D1     		bne	.L236
+ 938              		.syntax divided
+ 939              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 940 000a EFF31083 		MRS r3, primask
+ 941              	@ 0 "" 2
+ 942              		.thumb
+ 943              		.syntax unified
+ 944 000e 002B     		cmp	r3, #0
+ 945 0010 08D1     		bne	.L245
+ARM GAS  /tmp/ccqaOqW9.s 			page 17
+
+
+ 946              	.L235:
+ 947 0012 0028     		cmp	r0, #0
+ 948 0014 0DD0     		beq	.L238
+ 949 0016 4B1E     		subs	r3, r1, #1
+ 950 0018 372B     		cmp	r3, #55
+ 951 001a 0AD8     		bhi	.L238
+ 952 001c FFF7FEFF 		bl	vTaskPrioritySet
+ 953 0020 0020     		movs	r0, #0
+ 954              	.L232:
+ 955              		@ sp needed
+ 956 0022 10BD     		pop	{r4, pc}
+ 957              	.L245:
+ 958 0024 044B     		ldr	r3, .L246
+ 959 0026 1B68     		ldr	r3, [r3]
+ 960 0028 022B     		cmp	r3, #2
+ 961 002a F2D1     		bne	.L235
+ 962              	.L236:
+ 963 002c 0620     		movs	r0, #6
+ 964 002e 4042     		rsbs	r0, r0, #0
+ 965 0030 F7E7     		b	.L232
+ 966              	.L238:
+ 967 0032 0420     		movs	r0, #4
+ 968 0034 4042     		rsbs	r0, r0, #0
+ 969 0036 F4E7     		b	.L232
+ 970              	.L247:
+ 971              		.align	2
+ 972              	.L246:
+ 973 0038 00000000 		.word	.LANCHOR0
+ 975              		.section	.text.osThreadGetPriority,"ax",%progbits
+ 976              		.align	1
+ 977              		.p2align 2,,3
+ 978              		.global	osThreadGetPriority
+ 979              		.syntax unified
+ 980              		.code	16
+ 981              		.thumb_func
+ 982              		.fpu softvfp
+ 984              	osThreadGetPriority:
+ 985              		@ args = 0, pretend = 0, frame = 0
+ 986              		@ frame_needed = 0, uses_anonymous_args = 0
+ 987 0000 10B5     		push	{r4, lr}
+ 988              		.syntax divided
+ 989              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 990 0002 EFF30583 		MRS r3, ipsr
+ 991              	@ 0 "" 2
+ 992              		.thumb
+ 993              		.syntax unified
+ 994 0006 002B     		cmp	r3, #0
+ 995 0008 0CD1     		bne	.L252
+ 996              		.syntax divided
+ 997              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 998 000a EFF31083 		MRS r3, primask
+ 999              	@ 0 "" 2
+ 1000              		.thumb
+ 1001              		.syntax unified
+ 1002 000e 002B     		cmp	r3, #0
+ 1003 0010 04D1     		bne	.L262
+ 1004              	.L251:
+ARM GAS  /tmp/ccqaOqW9.s 			page 18
+
+
+ 1005 0012 0028     		cmp	r0, #0
+ 1006 0014 06D0     		beq	.L252
+ 1007 0016 FFF7FEFF 		bl	uxTaskPriorityGet
+ 1008              	.L248:
+ 1009              		@ sp needed
+ 1010 001a 10BD     		pop	{r4, pc}
+ 1011              	.L262:
+ 1012 001c 034B     		ldr	r3, .L263
+ 1013 001e 1B68     		ldr	r3, [r3]
+ 1014 0020 022B     		cmp	r3, #2
+ 1015 0022 F6D1     		bne	.L251
+ 1016              	.L252:
+ 1017 0024 0120     		movs	r0, #1
+ 1018 0026 4042     		rsbs	r0, r0, #0
+ 1019 0028 F7E7     		b	.L248
+ 1020              	.L264:
+ 1021 002a C046     		.align	2
+ 1022              	.L263:
+ 1023 002c 00000000 		.word	.LANCHOR0
+ 1025              		.section	.text.osThreadYield,"ax",%progbits
+ 1026              		.align	1
+ 1027              		.p2align 2,,3
+ 1028              		.global	osThreadYield
+ 1029              		.syntax unified
+ 1030              		.code	16
+ 1031              		.thumb_func
+ 1032              		.fpu softvfp
+ 1034              	osThreadYield:
+ 1035              		@ args = 0, pretend = 0, frame = 0
+ 1036              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1037 0000 10B5     		push	{r4, lr}
+ 1038              		.syntax divided
+ 1039              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1040 0002 EFF30583 		MRS r3, ipsr
+ 1041              	@ 0 "" 2
+ 1042              		.thumb
+ 1043              		.syntax unified
+ 1044 0006 002B     		cmp	r3, #0
+ 1045 0008 0BD1     		bne	.L269
+ 1046              		.syntax divided
+ 1047              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1048 000a EFF31083 		MRS r3, primask
+ 1049              	@ 0 "" 2
+ 1050              		.thumb
+ 1051              		.syntax unified
+ 1052 000e 002B     		cmp	r3, #0
+ 1053 0010 03D0     		beq	.L268
+ 1054 0012 054B     		ldr	r3, .L276
+ 1055 0014 1B68     		ldr	r3, [r3]
+ 1056 0016 022B     		cmp	r3, #2
+ 1057 0018 03D0     		beq	.L269
+ 1058              	.L268:
+ 1059 001a FFF7FEFF 		bl	vPortYield
+ 1060 001e 0020     		movs	r0, #0
+ 1061              	.L265:
+ 1062              		@ sp needed
+ 1063 0020 10BD     		pop	{r4, pc}
+ARM GAS  /tmp/ccqaOqW9.s 			page 19
+
+
+ 1064              	.L269:
+ 1065 0022 0620     		movs	r0, #6
+ 1066 0024 4042     		rsbs	r0, r0, #0
+ 1067 0026 FBE7     		b	.L265
+ 1068              	.L277:
+ 1069              		.align	2
+ 1070              	.L276:
+ 1071 0028 00000000 		.word	.LANCHOR0
+ 1073              		.section	.text.osThreadSuspend,"ax",%progbits
+ 1074              		.align	1
+ 1075              		.p2align 2,,3
+ 1076              		.global	osThreadSuspend
+ 1077              		.syntax unified
+ 1078              		.code	16
+ 1079              		.thumb_func
+ 1080              		.fpu softvfp
+ 1082              	osThreadSuspend:
+ 1083              		@ args = 0, pretend = 0, frame = 0
+ 1084              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1085 0000 10B5     		push	{r4, lr}
+ 1086              		.syntax divided
+ 1087              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1088 0002 EFF30583 		MRS r3, ipsr
+ 1089              	@ 0 "" 2
+ 1090              		.thumb
+ 1091              		.syntax unified
+ 1092 0006 002B     		cmp	r3, #0
+ 1093 0008 0DD1     		bne	.L282
+ 1094              		.syntax divided
+ 1095              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1096 000a EFF31083 		MRS r3, primask
+ 1097              	@ 0 "" 2
+ 1098              		.thumb
+ 1099              		.syntax unified
+ 1100 000e 002B     		cmp	r3, #0
+ 1101 0010 05D1     		bne	.L290
+ 1102              	.L281:
+ 1103 0012 0028     		cmp	r0, #0
+ 1104 0014 0AD0     		beq	.L283
+ 1105 0016 FFF7FEFF 		bl	vTaskSuspend
+ 1106 001a 0020     		movs	r0, #0
+ 1107              	.L278:
+ 1108              		@ sp needed
+ 1109 001c 10BD     		pop	{r4, pc}
+ 1110              	.L290:
+ 1111 001e 054B     		ldr	r3, .L291
+ 1112 0020 1B68     		ldr	r3, [r3]
+ 1113 0022 022B     		cmp	r3, #2
+ 1114 0024 F5D1     		bne	.L281
+ 1115              	.L282:
+ 1116 0026 0620     		movs	r0, #6
+ 1117 0028 4042     		rsbs	r0, r0, #0
+ 1118 002a F7E7     		b	.L278
+ 1119              	.L283:
+ 1120 002c 0420     		movs	r0, #4
+ 1121 002e 4042     		rsbs	r0, r0, #0
+ 1122 0030 F4E7     		b	.L278
+ARM GAS  /tmp/ccqaOqW9.s 			page 20
+
+
+ 1123              	.L292:
+ 1124 0032 C046     		.align	2
+ 1125              	.L291:
+ 1126 0034 00000000 		.word	.LANCHOR0
+ 1128              		.section	.text.osThreadResume,"ax",%progbits
+ 1129              		.align	1
+ 1130              		.p2align 2,,3
+ 1131              		.global	osThreadResume
+ 1132              		.syntax unified
+ 1133              		.code	16
+ 1134              		.thumb_func
+ 1135              		.fpu softvfp
+ 1137              	osThreadResume:
+ 1138              		@ args = 0, pretend = 0, frame = 0
+ 1139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1140 0000 10B5     		push	{r4, lr}
+ 1141              		.syntax divided
+ 1142              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1143 0002 EFF30583 		MRS r3, ipsr
+ 1144              	@ 0 "" 2
+ 1145              		.thumb
+ 1146              		.syntax unified
+ 1147 0006 002B     		cmp	r3, #0
+ 1148 0008 0DD1     		bne	.L297
+ 1149              		.syntax divided
+ 1150              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1151 000a EFF31083 		MRS r3, primask
+ 1152              	@ 0 "" 2
+ 1153              		.thumb
+ 1154              		.syntax unified
+ 1155 000e 002B     		cmp	r3, #0
+ 1156 0010 05D1     		bne	.L305
+ 1157              	.L296:
+ 1158 0012 0028     		cmp	r0, #0
+ 1159 0014 0AD0     		beq	.L298
+ 1160 0016 FFF7FEFF 		bl	vTaskResume
+ 1161 001a 0020     		movs	r0, #0
+ 1162              	.L293:
+ 1163              		@ sp needed
+ 1164 001c 10BD     		pop	{r4, pc}
+ 1165              	.L305:
+ 1166 001e 054B     		ldr	r3, .L306
+ 1167 0020 1B68     		ldr	r3, [r3]
+ 1168 0022 022B     		cmp	r3, #2
+ 1169 0024 F5D1     		bne	.L296
+ 1170              	.L297:
+ 1171 0026 0620     		movs	r0, #6
+ 1172 0028 4042     		rsbs	r0, r0, #0
+ 1173 002a F7E7     		b	.L293
+ 1174              	.L298:
+ 1175 002c 0420     		movs	r0, #4
+ 1176 002e 4042     		rsbs	r0, r0, #0
+ 1177 0030 F4E7     		b	.L293
+ 1178              	.L307:
+ 1179 0032 C046     		.align	2
+ 1180              	.L306:
+ 1181 0034 00000000 		.word	.LANCHOR0
+ARM GAS  /tmp/ccqaOqW9.s 			page 21
+
+
+ 1183              		.section	.text.osThreadExit,"ax",%progbits
+ 1184              		.align	1
+ 1185              		.p2align 2,,3
+ 1186              		.global	osThreadExit
+ 1187              		.syntax unified
+ 1188              		.code	16
+ 1189              		.thumb_func
+ 1190              		.fpu softvfp
+ 1192              	osThreadExit:
+ 1193              		@ Volatile: function does not return.
+ 1194              		@ args = 0, pretend = 0, frame = 0
+ 1195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1196 0000 0020     		movs	r0, #0
+ 1197 0002 10B5     		push	{r4, lr}
+ 1198 0004 FFF7FEFF 		bl	vTaskDelete
+ 1199              	.L309:
+ 1200 0008 FEE7     		b	.L309
+ 1202 000a C046     		.section	.text.osThreadTerminate,"ax",%progbits
+ 1203              		.align	1
+ 1204              		.p2align 2,,3
+ 1205              		.global	osThreadTerminate
+ 1206              		.syntax unified
+ 1207              		.code	16
+ 1208              		.thumb_func
+ 1209              		.fpu softvfp
+ 1211              	osThreadTerminate:
+ 1212              		@ args = 0, pretend = 0, frame = 0
+ 1213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1214 0000 10B5     		push	{r4, lr}
+ 1215 0002 0400     		movs	r4, r0
+ 1216              		.syntax divided
+ 1217              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1218 0004 EFF30583 		MRS r3, ipsr
+ 1219              	@ 0 "" 2
+ 1220              		.thumb
+ 1221              		.syntax unified
+ 1222 0008 002B     		cmp	r3, #0
+ 1223 000a 13D1     		bne	.L314
+ 1224              		.syntax divided
+ 1225              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1226 000c EFF31083 		MRS r3, primask
+ 1227              	@ 0 "" 2
+ 1228              		.thumb
+ 1229              		.syntax unified
+ 1230 0010 002B     		cmp	r3, #0
+ 1231 0012 0BD1     		bne	.L323
+ 1232              	.L313:
+ 1233 0014 002C     		cmp	r4, #0
+ 1234 0016 13D0     		beq	.L315
+ 1235 0018 2000     		movs	r0, r4
+ 1236 001a FFF7FEFF 		bl	eTaskGetState
+ 1237 001e 0428     		cmp	r0, #4
+ 1238 0020 0BD0     		beq	.L316
+ 1239 0022 2000     		movs	r0, r4
+ 1240 0024 FFF7FEFF 		bl	vTaskDelete
+ 1241 0028 0020     		movs	r0, #0
+ 1242              	.L310:
+ARM GAS  /tmp/ccqaOqW9.s 			page 22
+
+
+ 1243              		@ sp needed
+ 1244 002a 10BD     		pop	{r4, pc}
+ 1245              	.L323:
+ 1246 002c 064B     		ldr	r3, .L324
+ 1247 002e 1B68     		ldr	r3, [r3]
+ 1248 0030 022B     		cmp	r3, #2
+ 1249 0032 EFD1     		bne	.L313
+ 1250              	.L314:
+ 1251 0034 0620     		movs	r0, #6
+ 1252 0036 4042     		rsbs	r0, r0, #0
+ 1253 0038 F7E7     		b	.L310
+ 1254              	.L316:
+ 1255 003a 0320     		movs	r0, #3
+ 1256 003c 4042     		rsbs	r0, r0, #0
+ 1257 003e F4E7     		b	.L310
+ 1258              	.L315:
+ 1259 0040 0420     		movs	r0, #4
+ 1260 0042 4042     		rsbs	r0, r0, #0
+ 1261 0044 F1E7     		b	.L310
+ 1262              	.L325:
+ 1263 0046 C046     		.align	2
+ 1264              	.L324:
+ 1265 0048 00000000 		.word	.LANCHOR0
+ 1267              		.section	.text.osThreadGetCount,"ax",%progbits
+ 1268              		.align	1
+ 1269              		.p2align 2,,3
+ 1270              		.global	osThreadGetCount
+ 1271              		.syntax unified
+ 1272              		.code	16
+ 1273              		.thumb_func
+ 1274              		.fpu softvfp
+ 1276              	osThreadGetCount:
+ 1277              		@ args = 0, pretend = 0, frame = 0
+ 1278              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1279 0000 10B5     		push	{r4, lr}
+ 1280              		.syntax divided
+ 1281              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1282 0002 EFF30583 		MRS r3, ipsr
+ 1283              	@ 0 "" 2
+ 1284              		.thumb
+ 1285              		.syntax unified
+ 1286 0006 002B     		cmp	r3, #0
+ 1287 0008 0AD1     		bne	.L330
+ 1288              		.syntax divided
+ 1289              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1290 000a EFF31083 		MRS r3, primask
+ 1291              	@ 0 "" 2
+ 1292              		.thumb
+ 1293              		.syntax unified
+ 1294 000e 002B     		cmp	r3, #0
+ 1295 0010 03D0     		beq	.L329
+ 1296 0012 044B     		ldr	r3, .L337
+ 1297 0014 1B68     		ldr	r3, [r3]
+ 1298 0016 022B     		cmp	r3, #2
+ 1299 0018 02D0     		beq	.L330
+ 1300              	.L329:
+ 1301 001a FFF7FEFF 		bl	uxTaskGetNumberOfTasks
+ARM GAS  /tmp/ccqaOqW9.s 			page 23
+
+
+ 1302 001e 00E0     		b	.L326
+ 1303              	.L330:
+ 1304 0020 0020     		movs	r0, #0
+ 1305              	.L326:
+ 1306              		@ sp needed
+ 1307 0022 10BD     		pop	{r4, pc}
+ 1308              	.L338:
+ 1309              		.align	2
+ 1310              	.L337:
+ 1311 0024 00000000 		.word	.LANCHOR0
+ 1313              		.section	.text.osThreadEnumerate,"ax",%progbits
+ 1314              		.align	1
+ 1315              		.p2align 2,,3
+ 1316              		.global	osThreadEnumerate
+ 1317              		.syntax unified
+ 1318              		.code	16
+ 1319              		.thumb_func
+ 1320              		.fpu softvfp
+ 1322              	osThreadEnumerate:
+ 1323              		@ args = 0, pretend = 0, frame = 0
+ 1324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1325 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1326 0002 0600     		movs	r6, r0
+ 1327 0004 0D00     		movs	r5, r1
+ 1328              		.syntax divided
+ 1329              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1330 0006 EFF30583 		MRS r3, ipsr
+ 1331              	@ 0 "" 2
+ 1332              		.thumb
+ 1333              		.syntax unified
+ 1334 000a 002B     		cmp	r3, #0
+ 1335 000c 07D1     		bne	.L343
+ 1336              		.syntax divided
+ 1337              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1338 000e EFF31083 		MRS r3, primask
+ 1339              	@ 0 "" 2
+ 1340              		.thumb
+ 1341              		.syntax unified
+ 1342 0012 002B     		cmp	r3, #0
+ 1343 0014 06D1     		bne	.L363
+ 1344              	.L342:
+ 1345 0016 002E     		cmp	r6, #0
+ 1346 0018 01D0     		beq	.L343
+ 1347 001a 002D     		cmp	r5, #0
+ 1348 001c 07D1     		bne	.L364
+ 1349              	.L343:
+ 1350 001e 0024     		movs	r4, #0
+ 1351              	.L339:
+ 1352 0020 2000     		movs	r0, r4
+ 1353              		@ sp needed
+ 1354 0022 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1355              	.L363:
+ 1356 0024 154B     		ldr	r3, .L366
+ 1357 0026 1B68     		ldr	r3, [r3]
+ 1358 0028 022B     		cmp	r3, #2
+ 1359 002a F4D1     		bne	.L342
+ 1360 002c F7E7     		b	.L343
+ARM GAS  /tmp/ccqaOqW9.s 			page 24
+
+
+ 1361              	.L364:
+ 1362 002e FFF7FEFF 		bl	vTaskSuspendAll
+ 1363 0032 FFF7FEFF 		bl	uxTaskGetNumberOfTasks
+ 1364 0036 0400     		movs	r4, r0
+ 1365 0038 C000     		lsls	r0, r0, #3
+ 1366 003a 0019     		adds	r0, r0, r4
+ 1367 003c 8000     		lsls	r0, r0, #2
+ 1368 003e FFF7FEFF 		bl	pvPortMalloc
+ 1369 0042 071E     		subs	r7, r0, #0
+ 1370 0044 11D0     		beq	.L344
+ 1371 0046 0022     		movs	r2, #0
+ 1372 0048 2100     		movs	r1, r4
+ 1373 004a FFF7FEFF 		bl	uxTaskGetSystemState
+ 1374 004e 0028     		cmp	r0, #0
+ 1375 0050 11D0     		beq	.L346
+ 1376 0052 3B00     		movs	r3, r7
+ 1377 0054 0024     		movs	r4, #0
+ 1378 0056 02E0     		b	.L345
+ 1379              	.L365:
+ 1380 0058 2433     		adds	r3, r3, #36
+ 1381 005a A542     		cmp	r5, r4
+ 1382 005c 05D0     		beq	.L344
+ 1383              	.L345:
+ 1384 005e 1968     		ldr	r1, [r3]
+ 1385 0060 A200     		lsls	r2, r4, #2
+ 1386 0062 0134     		adds	r4, r4, #1
+ 1387 0064 B150     		str	r1, [r6, r2]
+ 1388 0066 A042     		cmp	r0, r4
+ 1389 0068 F6D1     		bne	.L365
+ 1390              	.L344:
+ 1391 006a FFF7FEFF 		bl	xTaskResumeAll
+ 1392 006e 3800     		movs	r0, r7
+ 1393 0070 FFF7FEFF 		bl	vPortFree
+ 1394 0074 D4E7     		b	.L339
+ 1395              	.L346:
+ 1396 0076 0024     		movs	r4, #0
+ 1397 0078 F7E7     		b	.L344
+ 1398              	.L367:
+ 1399 007a C046     		.align	2
+ 1400              	.L366:
+ 1401 007c 00000000 		.word	.LANCHOR0
+ 1403              		.section	.text.osThreadFlagsSet,"ax",%progbits
+ 1404              		.align	1
+ 1405              		.p2align 2,,3
+ 1406              		.global	osThreadFlagsSet
+ 1407              		.syntax unified
+ 1408              		.code	16
+ 1409              		.thumb_func
+ 1410              		.fpu softvfp
+ 1412              	osThreadFlagsSet:
+ 1413              		@ args = 0, pretend = 0, frame = 8
+ 1414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1415 0000 30B5     		push	{r4, r5, lr}
+ 1416 0002 0400     		movs	r4, r0
+ 1417 0004 85B0     		sub	sp, sp, #20
+ 1418 0006 0028     		cmp	r0, #0
+ 1419 0008 29D0     		beq	.L376
+ARM GAS  /tmp/ccqaOqW9.s 			page 25
+
+
+ 1420 000a 0029     		cmp	r1, #0
+ 1421 000c 27DB     		blt	.L376
+ 1422 000e 0123     		movs	r3, #1
+ 1423 0010 5B42     		rsbs	r3, r3, #0
+ 1424 0012 0293     		str	r3, [sp, #8]
+ 1425              		.syntax divided
+ 1426              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1427 0014 EFF30583 		MRS r3, ipsr
+ 1428              	@ 0 "" 2
+ 1429              		.thumb
+ 1430              		.syntax unified
+ 1431 0018 002B     		cmp	r3, #0
+ 1432 001a 07D1     		bne	.L374
+ 1433              		.syntax divided
+ 1434              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1435 001c EFF31083 		MRS r3, primask
+ 1436              	@ 0 "" 2
+ 1437              		.thumb
+ 1438              		.syntax unified
+ 1439 0020 002B     		cmp	r3, #0
+ 1440 0022 20D0     		beq	.L373
+ 1441 0024 164B     		ldr	r3, .L385
+ 1442 0026 1B68     		ldr	r3, [r3]
+ 1443 0028 022B     		cmp	r3, #2
+ 1444 002a 1CD1     		bne	.L373
+ 1445              	.L374:
+ 1446 002c 0025     		movs	r5, #0
+ 1447 002e 03AB     		add	r3, sp, #12
+ 1448 0030 0122     		movs	r2, #1
+ 1449 0032 0093     		str	r3, [sp]
+ 1450 0034 2000     		movs	r0, r4
+ 1451 0036 0023     		movs	r3, #0
+ 1452 0038 0395     		str	r5, [sp, #12]
+ 1453 003a FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1454 003e 02AB     		add	r3, sp, #8
+ 1455 0040 0022     		movs	r2, #0
+ 1456 0042 0021     		movs	r1, #0
+ 1457 0044 2000     		movs	r0, r4
+ 1458 0046 0095     		str	r5, [sp]
+ 1459 0048 FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1460 004c 039B     		ldr	r3, [sp, #12]
+ 1461 004e 002B     		cmp	r3, #0
+ 1462 0050 14D0     		beq	.L384
+ 1463 0052 8022     		movs	r2, #128
+ 1464 0054 0B4B     		ldr	r3, .L385+4
+ 1465 0056 5205     		lsls	r2, r2, #21
+ 1466 0058 1A60     		str	r2, [r3]
+ 1467 005a 0298     		ldr	r0, [sp, #8]
+ 1468 005c 01E0     		b	.L368
+ 1469              	.L376:
+ 1470 005e 0420     		movs	r0, #4
+ 1471 0060 4042     		rsbs	r0, r0, #0
+ 1472              	.L368:
+ 1473 0062 05B0     		add	sp, sp, #20
+ 1474              		@ sp needed
+ 1475 0064 30BD     		pop	{r4, r5, pc}
+ 1476              	.L373:
+ARM GAS  /tmp/ccqaOqW9.s 			page 26
+
+
+ 1477 0066 0023     		movs	r3, #0
+ 1478 0068 0122     		movs	r2, #1
+ 1479 006a 2000     		movs	r0, r4
+ 1480 006c FFF7FEFF 		bl	xTaskGenericNotify
+ 1481 0070 0022     		movs	r2, #0
+ 1482 0072 0021     		movs	r1, #0
+ 1483 0074 2000     		movs	r0, r4
+ 1484 0076 02AB     		add	r3, sp, #8
+ 1485 0078 FFF7FEFF 		bl	xTaskGenericNotify
+ 1486              	.L384:
+ 1487 007c 0298     		ldr	r0, [sp, #8]
+ 1488 007e F0E7     		b	.L368
+ 1489              	.L386:
+ 1490              		.align	2
+ 1491              	.L385:
+ 1492 0080 00000000 		.word	.LANCHOR0
+ 1493 0084 04ED00E0 		.word	-536810236
+ 1495              		.section	.text.osThreadFlagsClear,"ax",%progbits
+ 1496              		.align	1
+ 1497              		.p2align 2,,3
+ 1498              		.global	osThreadFlagsClear
+ 1499              		.syntax unified
+ 1500              		.code	16
+ 1501              		.thumb_func
+ 1502              		.fpu softvfp
+ 1504              	osThreadFlagsClear:
+ 1505              		@ args = 0, pretend = 0, frame = 8
+ 1506              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1507 0000 70B5     		push	{r4, r5, r6, lr}
+ 1508 0002 0500     		movs	r5, r0
+ 1509 0004 82B0     		sub	sp, sp, #8
+ 1510              		.syntax divided
+ 1511              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1512 0006 EFF30583 		MRS r3, ipsr
+ 1513              	@ 0 "" 2
+ 1514              		.thumb
+ 1515              		.syntax unified
+ 1516 000a 002B     		cmp	r3, #0
+ 1517 000c 1BD1     		bne	.L391
+ 1518              		.syntax divided
+ 1519              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1520 000e EFF31083 		MRS r3, primask
+ 1521              	@ 0 "" 2
+ 1522              		.thumb
+ 1523              		.syntax unified
+ 1524 0012 002B     		cmp	r3, #0
+ 1525 0014 03D0     		beq	.L390
+ 1526 0016 134B     		ldr	r3, .L404
+ 1527 0018 1B68     		ldr	r3, [r3]
+ 1528 001a 022B     		cmp	r3, #2
+ 1529 001c 13D0     		beq	.L391
+ 1530              	.L390:
+ 1531 001e 002D     		cmp	r5, #0
+ 1532 0020 0EDB     		blt	.L393
+ 1533 0022 FFF7FEFF 		bl	xTaskGetCurrentTaskHandle
+ 1534 0026 0022     		movs	r2, #0
+ 1535 0028 0021     		movs	r1, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 27
+
+
+ 1536 002a 01AB     		add	r3, sp, #4
+ 1537 002c 0600     		movs	r6, r0
+ 1538 002e FFF7FEFF 		bl	xTaskGenericNotify
+ 1539 0032 0128     		cmp	r0, #1
+ 1540 0034 0AD0     		beq	.L403
+ 1541              	.L392:
+ 1542 0036 0124     		movs	r4, #1
+ 1543 0038 6442     		rsbs	r4, r4, #0
+ 1544              	.L387:
+ 1545 003a 2000     		movs	r0, r4
+ 1546 003c 02B0     		add	sp, sp, #8
+ 1547              		@ sp needed
+ 1548 003e 70BD     		pop	{r4, r5, r6, pc}
+ 1549              	.L393:
+ 1550 0040 0424     		movs	r4, #4
+ 1551 0042 6442     		rsbs	r4, r4, #0
+ 1552 0044 F9E7     		b	.L387
+ 1553              	.L391:
+ 1554 0046 0624     		movs	r4, #6
+ 1555 0048 6442     		rsbs	r4, r4, #0
+ 1556 004a F6E7     		b	.L387
+ 1557              	.L403:
+ 1558 004c 019C     		ldr	r4, [sp, #4]
+ 1559 004e 0023     		movs	r3, #0
+ 1560 0050 2100     		movs	r1, r4
+ 1561 0052 0322     		movs	r2, #3
+ 1562 0054 A943     		bics	r1, r5
+ 1563 0056 3000     		movs	r0, r6
+ 1564 0058 0191     		str	r1, [sp, #4]
+ 1565 005a FFF7FEFF 		bl	xTaskGenericNotify
+ 1566 005e 0128     		cmp	r0, #1
+ 1567 0060 E9D1     		bne	.L392
+ 1568 0062 EAE7     		b	.L387
+ 1569              	.L405:
+ 1570              		.align	2
+ 1571              	.L404:
+ 1572 0064 00000000 		.word	.LANCHOR0
+ 1574              		.section	.text.osThreadFlagsGet,"ax",%progbits
+ 1575              		.align	1
+ 1576              		.p2align 2,,3
+ 1577              		.global	osThreadFlagsGet
+ 1578              		.syntax unified
+ 1579              		.code	16
+ 1580              		.thumb_func
+ 1581              		.fpu softvfp
+ 1583              	osThreadFlagsGet:
+ 1584              		@ args = 0, pretend = 0, frame = 8
+ 1585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1586 0000 00B5     		push	{lr}
+ 1587 0002 83B0     		sub	sp, sp, #12
+ 1588              		.syntax divided
+ 1589              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1590 0004 EFF30583 		MRS r3, ipsr
+ 1591              	@ 0 "" 2
+ 1592              		.thumb
+ 1593              		.syntax unified
+ 1594 0008 002B     		cmp	r3, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 28
+
+
+ 1595 000a 13D1     		bne	.L410
+ 1596              		.syntax divided
+ 1597              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1598 000c EFF31083 		MRS r3, primask
+ 1599              	@ 0 "" 2
+ 1600              		.thumb
+ 1601              		.syntax unified
+ 1602 0010 002B     		cmp	r3, #0
+ 1603 0012 03D0     		beq	.L409
+ 1604 0014 0A4B     		ldr	r3, .L419
+ 1605 0016 1B68     		ldr	r3, [r3]
+ 1606 0018 022B     		cmp	r3, #2
+ 1607 001a 0BD0     		beq	.L410
+ 1608              	.L409:
+ 1609 001c FFF7FEFF 		bl	xTaskGetCurrentTaskHandle
+ 1610 0020 0022     		movs	r2, #0
+ 1611 0022 0021     		movs	r1, #0
+ 1612 0024 01AB     		add	r3, sp, #4
+ 1613 0026 FFF7FEFF 		bl	xTaskGenericNotify
+ 1614 002a 0128     		cmp	r0, #1
+ 1615 002c 06D0     		beq	.L418
+ 1616 002e 0120     		movs	r0, #1
+ 1617 0030 4042     		rsbs	r0, r0, #0
+ 1618 0032 01E0     		b	.L406
+ 1619              	.L410:
+ 1620 0034 0620     		movs	r0, #6
+ 1621 0036 4042     		rsbs	r0, r0, #0
+ 1622              	.L406:
+ 1623 0038 03B0     		add	sp, sp, #12
+ 1624              		@ sp needed
+ 1625 003a 00BD     		pop	{pc}
+ 1626              	.L418:
+ 1627 003c 0198     		ldr	r0, [sp, #4]
+ 1628 003e FBE7     		b	.L406
+ 1629              	.L420:
+ 1630              		.align	2
+ 1631              	.L419:
+ 1632 0040 00000000 		.word	.LANCHOR0
+ 1634              		.section	.text.osThreadFlagsWait,"ax",%progbits
+ 1635              		.align	1
+ 1636              		.p2align 2,,3
+ 1637              		.global	osThreadFlagsWait
+ 1638              		.syntax unified
+ 1639              		.code	16
+ 1640              		.thumb_func
+ 1641              		.fpu softvfp
+ 1643              	osThreadFlagsWait:
+ 1644              		@ args = 0, pretend = 0, frame = 8
+ 1645              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1646 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1647 0002 4E46     		mov	r6, r9
+ 1648 0004 4546     		mov	r5, r8
+ 1649 0006 DE46     		mov	lr, fp
+ 1650 0008 5746     		mov	r7, r10
+ 1651 000a E0B5     		push	{r5, r6, r7, lr}
+ 1652 000c 1400     		movs	r4, r2
+ 1653 000e 0600     		movs	r6, r0
+ARM GAS  /tmp/ccqaOqW9.s 			page 29
+
+
+ 1654 0010 0D00     		movs	r5, r1
+ 1655 0012 83B0     		sub	sp, sp, #12
+ 1656              		.syntax divided
+ 1657              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1658 0014 EFF30583 		MRS r3, ipsr
+ 1659              	@ 0 "" 2
+ 1660              		.thumb
+ 1661              		.syntax unified
+ 1662 0018 002B     		cmp	r3, #0
+ 1663 001a 3FD1     		bne	.L425
+ 1664              		.syntax divided
+ 1665              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1666 001c EFF31083 		MRS r3, primask
+ 1667              	@ 0 "" 2
+ 1668              		.thumb
+ 1669              		.syntax unified
+ 1670 0020 002B     		cmp	r3, #0
+ 1671 0022 03D0     		beq	.L424
+ 1672 0024 524B     		ldr	r3, .L467
+ 1673 0026 1B68     		ldr	r3, [r3]
+ 1674 0028 022B     		cmp	r3, #2
+ 1675 002a 37D0     		beq	.L425
+ 1676              	.L424:
+ 1677 002c 002E     		cmp	r6, #0
+ 1678 002e 6ADB     		blt	.L444
+ 1679 0030 0027     		movs	r7, #0
+ 1680 0032 AB07     		lsls	r3, r5, #30
+ 1681 0034 00D4     		bmi	.L426
+ 1682 0036 3700     		movs	r7, r6
+ 1683              	.L426:
+ 1684 0038 FFF7FEFF 		bl	xTaskGetTickCount
+ 1685 003c 2300     		movs	r3, r4
+ 1686 003e 5A1E     		subs	r2, r3, #1
+ 1687 0040 9341     		sbcs	r3, r3, r2
+ 1688 0042 0121     		movs	r1, #1
+ 1689 0044 033B     		subs	r3, r3, #3
+ 1690 0046 8246     		mov	r10, r0
+ 1691 0048 9B46     		mov	fp, r3
+ 1692 004a 9946     		mov	r9, r3
+ 1693 004c 0D40     		ands	r5, r1
+ 1694 004e 002C     		cmp	r4, #0
+ 1695 0050 66D0     		beq	.L463
+ 1696 0052 002D     		cmp	r5, #0
+ 1697 0054 2FD1     		bne	.L446
+ 1698 0056 01AB     		add	r3, sp, #4
+ 1699 0058 9846     		mov	r8, r3
+ 1700              	.L439:
+ 1701 005a 2300     		movs	r3, r4
+ 1702 005c 4246     		mov	r2, r8
+ 1703 005e 3900     		movs	r1, r7
+ 1704 0060 0020     		movs	r0, #0
+ 1705 0062 FFF7FEFF 		bl	xTaskNotifyWait
+ 1706 0066 0128     		cmp	r0, #1
+ 1707 0068 0AD0     		beq	.L464
+ 1708              	.L437:
+ 1709 006a 0028     		cmp	r0, #0
+ 1710 006c 19D0     		beq	.L421
+ARM GAS  /tmp/ccqaOqW9.s 			page 30
+
+
+ 1711 006e 2300     		movs	r3, r4
+ 1712 0070 4246     		mov	r2, r8
+ 1713 0072 3900     		movs	r1, r7
+ 1714 0074 0020     		movs	r0, #0
+ 1715 0076 4D46     		mov	r5, r9
+ 1716 0078 FFF7FEFF 		bl	xTaskNotifyWait
+ 1717 007c 0128     		cmp	r0, #1
+ 1718 007e F4D1     		bne	.L437
+ 1719              	.L464:
+ 1720 0080 019B     		ldr	r3, [sp, #4]
+ 1721 0082 3540     		ands	r5, r6
+ 1722 0084 1D43     		orrs	r5, r3
+ 1723 0086 3542     		tst	r5, r6
+ 1724 0088 48D1     		bne	.L434
+ 1725 008a FFF7FEFF 		bl	xTaskGetTickCount
+ 1726 008e 5346     		mov	r3, r10
+ 1727 0090 C31A     		subs	r3, r0, r3
+ 1728 0092 9C42     		cmp	r4, r3
+ 1729 0094 0DD3     		bcc	.L447
+ 1730 0096 5444     		add	r4, r4, r10
+ 1731 0098 241A     		subs	r4, r4, r0
+ 1732 009a DEE7     		b	.L439
+ 1733              	.L425:
+ 1734 009c 0623     		movs	r3, #6
+ 1735 009e 5B42     		rsbs	r3, r3, #0
+ 1736 00a0 9B46     		mov	fp, r3
+ 1737              	.L421:
+ 1738 00a2 5846     		mov	r0, fp
+ 1739 00a4 03B0     		add	sp, sp, #12
+ 1740              		@ sp needed
+ 1741 00a6 3CBC     		pop	{r2, r3, r4, r5}
+ 1742 00a8 9046     		mov	r8, r2
+ 1743 00aa 9946     		mov	r9, r3
+ 1744 00ac A246     		mov	r10, r4
+ 1745 00ae AB46     		mov	fp, r5
+ 1746 00b0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1747              	.L447:
+ 1748 00b2 0024     		movs	r4, #0
+ 1749 00b4 D1E7     		b	.L439
+ 1750              	.L446:
+ 1751 00b6 01AB     		add	r3, sp, #4
+ 1752 00b8 0025     		movs	r5, #0
+ 1753 00ba 9846     		mov	r8, r3
+ 1754              	.L436:
+ 1755 00bc 2300     		movs	r3, r4
+ 1756 00be 4246     		mov	r2, r8
+ 1757 00c0 3900     		movs	r1, r7
+ 1758 00c2 0020     		movs	r0, #0
+ 1759 00c4 FFF7FEFF 		bl	xTaskNotifyWait
+ 1760 00c8 0128     		cmp	r0, #1
+ 1761 00ca 0AD0     		beq	.L440
+ 1762              	.L465:
+ 1763 00cc 0028     		cmp	r0, #0
+ 1764 00ce E8D0     		beq	.L421
+ 1765 00d0 2300     		movs	r3, r4
+ 1766 00d2 4246     		mov	r2, r8
+ 1767 00d4 3900     		movs	r1, r7
+ARM GAS  /tmp/ccqaOqW9.s 			page 31
+
+
+ 1768 00d6 0020     		movs	r0, #0
+ 1769 00d8 4D46     		mov	r5, r9
+ 1770 00da FFF7FEFF 		bl	xTaskNotifyWait
+ 1771 00de 0128     		cmp	r0, #1
+ 1772 00e0 F4D1     		bne	.L465
+ 1773              	.L440:
+ 1774 00e2 019B     		ldr	r3, [sp, #4]
+ 1775 00e4 3540     		ands	r5, r6
+ 1776 00e6 1D43     		orrs	r5, r3
+ 1777 00e8 2B00     		movs	r3, r5
+ 1778 00ea 3340     		ands	r3, r6
+ 1779 00ec 9E42     		cmp	r6, r3
+ 1780 00ee 15D0     		beq	.L434
+ 1781 00f0 FFF7FEFF 		bl	xTaskGetTickCount
+ 1782 00f4 5346     		mov	r3, r10
+ 1783 00f6 C31A     		subs	r3, r0, r3
+ 1784 00f8 9C42     		cmp	r4, r3
+ 1785 00fa 02D3     		bcc	.L449
+ 1786 00fc 5444     		add	r4, r4, r10
+ 1787 00fe 241A     		subs	r4, r4, r0
+ 1788 0100 DCE7     		b	.L436
+ 1789              	.L449:
+ 1790 0102 0024     		movs	r4, #0
+ 1791 0104 DAE7     		b	.L436
+ 1792              	.L444:
+ 1793 0106 0423     		movs	r3, #4
+ 1794 0108 5B42     		rsbs	r3, r3, #0
+ 1795 010a 9B46     		mov	fp, r3
+ 1796 010c C9E7     		b	.L421
+ 1797              	.L466:
+ 1798 010e 019D     		ldr	r5, [sp, #4]
+ 1799 0110 3440     		ands	r4, r6
+ 1800 0112 2543     		orrs	r5, r4
+ 1801 0114 2B00     		movs	r3, r5
+ 1802 0116 3340     		ands	r3, r6
+ 1803 0118 B342     		cmp	r3, r6
+ 1804 011a 24D1     		bne	.L435
+ 1805              	.L434:
+ 1806 011c AB46     		mov	fp, r5
+ 1807 011e C0E7     		b	.L421
+ 1808              	.L463:
+ 1809 0120 01AB     		add	r3, sp, #4
+ 1810 0122 9846     		mov	r8, r3
+ 1811 0124 002D     		cmp	r5, #0
+ 1812 0126 0CD1     		bne	.L430
+ 1813              	.L432:
+ 1814 0128 0023     		movs	r3, #0
+ 1815 012a 4246     		mov	r2, r8
+ 1816 012c 3900     		movs	r1, r7
+ 1817 012e 0020     		movs	r0, #0
+ 1818 0130 FFF7FEFF 		bl	xTaskNotifyWait
+ 1819 0134 0128     		cmp	r0, #1
+ 1820 0136 11D0     		beq	.L431
+ 1821 0138 0325     		movs	r5, #3
+ 1822 013a 6D42     		rsbs	r5, r5, #0
+ 1823 013c 0028     		cmp	r0, #0
+ 1824 013e F3D1     		bne	.L432
+ARM GAS  /tmp/ccqaOqW9.s 			page 32
+
+
+ 1825 0140 AFE7     		b	.L421
+ 1826              	.L430:
+ 1827 0142 0023     		movs	r3, #0
+ 1828 0144 4246     		mov	r2, r8
+ 1829 0146 3900     		movs	r1, r7
+ 1830 0148 0020     		movs	r0, #0
+ 1831 014a FFF7FEFF 		bl	xTaskNotifyWait
+ 1832 014e 0128     		cmp	r0, #1
+ 1833 0150 DDD0     		beq	.L466
+ 1834 0152 0324     		movs	r4, #3
+ 1835 0154 6442     		rsbs	r4, r4, #0
+ 1836 0156 0028     		cmp	r0, #0
+ 1837 0158 F3D1     		bne	.L430
+ 1838 015a A2E7     		b	.L421
+ 1839              	.L431:
+ 1840 015c 019B     		ldr	r3, [sp, #4]
+ 1841 015e 3540     		ands	r5, r6
+ 1842 0160 1D43     		orrs	r5, r3
+ 1843 0162 3542     		tst	r5, r6
+ 1844 0164 DAD1     		bne	.L434
+ 1845              	.L435:
+ 1846 0166 0323     		movs	r3, #3
+ 1847 0168 5B42     		rsbs	r3, r3, #0
+ 1848 016a 9B46     		mov	fp, r3
+ 1849 016c 99E7     		b	.L421
+ 1850              	.L468:
+ 1851 016e C046     		.align	2
+ 1852              	.L467:
+ 1853 0170 00000000 		.word	.LANCHOR0
+ 1855              		.section	.text.osDelay,"ax",%progbits
+ 1856              		.align	1
+ 1857              		.p2align 2,,3
+ 1858              		.global	osDelay
+ 1859              		.syntax unified
+ 1860              		.code	16
+ 1861              		.thumb_func
+ 1862              		.fpu softvfp
+ 1864              	osDelay:
+ 1865              		@ args = 0, pretend = 0, frame = 0
+ 1866              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1867 0000 10B5     		push	{r4, lr}
+ 1868              		.syntax divided
+ 1869              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1870 0002 EFF30583 		MRS r3, ipsr
+ 1871              	@ 0 "" 2
+ 1872              		.thumb
+ 1873              		.syntax unified
+ 1874 0006 002B     		cmp	r3, #0
+ 1875 0008 0CD1     		bne	.L473
+ 1876              		.syntax divided
+ 1877              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1878 000a EFF31083 		MRS r3, primask
+ 1879              	@ 0 "" 2
+ 1880              		.thumb
+ 1881              		.syntax unified
+ 1882 000e 002B     		cmp	r3, #0
+ 1883 0010 04D1     		bne	.L482
+ARM GAS  /tmp/ccqaOqW9.s 			page 33
+
+
+ 1884              	.L472:
+ 1885 0012 0024     		movs	r4, #0
+ 1886 0014 0028     		cmp	r0, #0
+ 1887 0016 08D1     		bne	.L483
+ 1888              	.L469:
+ 1889 0018 2000     		movs	r0, r4
+ 1890              		@ sp needed
+ 1891 001a 10BD     		pop	{r4, pc}
+ 1892              	.L482:
+ 1893 001c 044B     		ldr	r3, .L484
+ 1894 001e 1B68     		ldr	r3, [r3]
+ 1895 0020 022B     		cmp	r3, #2
+ 1896 0022 F6D1     		bne	.L472
+ 1897              	.L473:
+ 1898 0024 0624     		movs	r4, #6
+ 1899 0026 6442     		rsbs	r4, r4, #0
+ 1900 0028 F6E7     		b	.L469
+ 1901              	.L483:
+ 1902 002a FFF7FEFF 		bl	vTaskDelay
+ 1903 002e F3E7     		b	.L469
+ 1904              	.L485:
+ 1905              		.align	2
+ 1906              	.L484:
+ 1907 0030 00000000 		.word	.LANCHOR0
+ 1909              		.section	.text.osDelayUntil,"ax",%progbits
+ 1910              		.align	1
+ 1911              		.p2align 2,,3
+ 1912              		.global	osDelayUntil
+ 1913              		.syntax unified
+ 1914              		.code	16
+ 1915              		.thumb_func
+ 1916              		.fpu softvfp
+ 1918              	osDelayUntil:
+ 1919              		@ args = 0, pretend = 0, frame = 8
+ 1920              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1921 0000 10B5     		push	{r4, lr}
+ 1922 0002 0400     		movs	r4, r0
+ 1923 0004 82B0     		sub	sp, sp, #8
+ 1924              		.syntax divided
+ 1925              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1926 0006 EFF30583 		MRS r3, ipsr
+ 1927              	@ 0 "" 2
+ 1928              		.thumb
+ 1929              		.syntax unified
+ 1930 000a 002B     		cmp	r3, #0
+ 1931 000c 11D1     		bne	.L490
+ 1932              		.syntax divided
+ 1933              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1934 000e EFF31083 		MRS r3, primask
+ 1935              	@ 0 "" 2
+ 1936              		.thumb
+ 1937              		.syntax unified
+ 1938 0012 002B     		cmp	r3, #0
+ 1939 0014 03D0     		beq	.L489
+ 1940 0016 084B     		ldr	r3, .L497
+ 1941 0018 1B68     		ldr	r3, [r3]
+ 1942 001a 022B     		cmp	r3, #2
+ARM GAS  /tmp/ccqaOqW9.s 			page 34
+
+
+ 1943 001c 09D0     		beq	.L490
+ 1944              	.L489:
+ 1945 001e FFF7FEFF 		bl	xTaskGetTickCount
+ 1946 0022 0190     		str	r0, [sp, #4]
+ 1947 0024 211A     		subs	r1, r4, r0
+ 1948 0026 01A8     		add	r0, sp, #4
+ 1949 0028 FFF7FEFF 		bl	vTaskDelayUntil
+ 1950 002c 0020     		movs	r0, #0
+ 1951              	.L486:
+ 1952 002e 02B0     		add	sp, sp, #8
+ 1953              		@ sp needed
+ 1954 0030 10BD     		pop	{r4, pc}
+ 1955              	.L490:
+ 1956 0032 0620     		movs	r0, #6
+ 1957 0034 4042     		rsbs	r0, r0, #0
+ 1958 0036 FAE7     		b	.L486
+ 1959              	.L498:
+ 1960              		.align	2
+ 1961              	.L497:
+ 1962 0038 00000000 		.word	.LANCHOR0
+ 1964              		.section	.text.osTimerNew,"ax",%progbits
+ 1965              		.align	1
+ 1966              		.p2align 2,,3
+ 1967              		.global	osTimerNew
+ 1968              		.syntax unified
+ 1969              		.code	16
+ 1970              		.thumb_func
+ 1971              		.fpu softvfp
+ 1973              	osTimerNew:
+ 1974              		@ args = 0, pretend = 0, frame = 0
+ 1975              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1976 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1977 0002 0600     		movs	r6, r0
+ 1978 0004 0D00     		movs	r5, r1
+ 1979 0006 1700     		movs	r7, r2
+ 1980 0008 1C00     		movs	r4, r3
+ 1981 000a 83B0     		sub	sp, sp, #12
+ 1982              		.syntax divided
+ 1983              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1984 000c EFF30583 		MRS r3, ipsr
+ 1985              	@ 0 "" 2
+ 1986              		.thumb
+ 1987              		.syntax unified
+ 1988 0010 002B     		cmp	r3, #0
+ 1989 0012 22D1     		bne	.L503
+ 1990              		.syntax divided
+ 1991              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1992 0014 EFF31083 		MRS r3, primask
+ 1993              	@ 0 "" 2
+ 1994              		.thumb
+ 1995              		.syntax unified
+ 1996 0018 002B     		cmp	r3, #0
+ 1997 001a 21D1     		bne	.L524
+ 1998 001c 002E     		cmp	r6, #0
+ 1999 001e 1CD0     		beq	.L503
+ 2000              	.L525:
+ 2001 0020 0820     		movs	r0, #8
+ARM GAS  /tmp/ccqaOqW9.s 			page 35
+
+
+ 2002 0022 FFF7FEFF 		bl	pvPortMalloc
+ 2003 0026 031E     		subs	r3, r0, #0
+ 2004 0028 17D0     		beq	.L503
+ 2005 002a 2A00     		movs	r2, r5
+ 2006 002c 0660     		str	r6, [r0]
+ 2007 002e 551E     		subs	r5, r2, #1
+ 2008 0030 AA41     		sbcs	r2, r2, r5
+ 2009 0032 4760     		str	r7, [r0, #4]
+ 2010 0034 002C     		cmp	r4, #0
+ 2011 0036 1BD0     		beq	.L504
+ 2012 0038 A168     		ldr	r1, [r4, #8]
+ 2013 003a 2068     		ldr	r0, [r4]
+ 2014 003c 0029     		cmp	r1, #0
+ 2015 003e 09D0     		beq	.L506
+ 2016 0040 E468     		ldr	r4, [r4, #12]
+ 2017 0042 2F2C     		cmp	r4, #47
+ 2018 0044 09D9     		bls	.L503
+ 2019 0046 0191     		str	r1, [sp, #4]
+ 2020 0048 0D49     		ldr	r1, .L526
+ 2021 004a 0091     		str	r1, [sp]
+ 2022 004c 0121     		movs	r1, #1
+ 2023 004e FFF7FEFF 		bl	xTimerCreateStatic
+ 2024 0052 03E0     		b	.L499
+ 2025              	.L506:
+ 2026 0054 E168     		ldr	r1, [r4, #12]
+ 2027 0056 0029     		cmp	r1, #0
+ 2028 0058 09D0     		beq	.L508
+ 2029              	.L503:
+ 2030 005a 0020     		movs	r0, #0
+ 2031              	.L499:
+ 2032 005c 03B0     		add	sp, sp, #12
+ 2033              		@ sp needed
+ 2034 005e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 2035              	.L524:
+ 2036 0060 084B     		ldr	r3, .L526+4
+ 2037 0062 1B68     		ldr	r3, [r3]
+ 2038 0064 022B     		cmp	r3, #2
+ 2039 0066 F8D0     		beq	.L503
+ 2040 0068 002E     		cmp	r6, #0
+ 2041 006a D9D1     		bne	.L525
+ 2042 006c F5E7     		b	.L503
+ 2043              	.L508:
+ 2044 006e 0400     		movs	r4, r0
+ 2045              	.L504:
+ 2046 0070 0349     		ldr	r1, .L526
+ 2047 0072 2000     		movs	r0, r4
+ 2048 0074 0091     		str	r1, [sp]
+ 2049 0076 0121     		movs	r1, #1
+ 2050 0078 FFF7FEFF 		bl	xTimerCreate
+ 2051 007c EEE7     		b	.L499
+ 2052              	.L527:
+ 2053 007e C046     		.align	2
+ 2054              	.L526:
+ 2055 0080 00000000 		.word	TimerCallback
+ 2056 0084 00000000 		.word	.LANCHOR0
+ 2058              		.section	.text.osTimerGetName,"ax",%progbits
+ 2059              		.align	1
+ARM GAS  /tmp/ccqaOqW9.s 			page 36
+
+
+ 2060              		.p2align 2,,3
+ 2061              		.global	osTimerGetName
+ 2062              		.syntax unified
+ 2063              		.code	16
+ 2064              		.thumb_func
+ 2065              		.fpu softvfp
+ 2067              	osTimerGetName:
+ 2068              		@ args = 0, pretend = 0, frame = 0
+ 2069              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2070 0000 10B5     		push	{r4, lr}
+ 2071              		.syntax divided
+ 2072              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2073 0002 EFF30583 		MRS r3, ipsr
+ 2074              	@ 0 "" 2
+ 2075              		.thumb
+ 2076              		.syntax unified
+ 2077 0006 002B     		cmp	r3, #0
+ 2078 0008 0CD1     		bne	.L532
+ 2079              		.syntax divided
+ 2080              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2081 000a EFF31083 		MRS r3, primask
+ 2082              	@ 0 "" 2
+ 2083              		.thumb
+ 2084              		.syntax unified
+ 2085 000e 002B     		cmp	r3, #0
+ 2086 0010 03D0     		beq	.L531
+ 2087 0012 054B     		ldr	r3, .L542
+ 2088 0014 1B68     		ldr	r3, [r3]
+ 2089 0016 022B     		cmp	r3, #2
+ 2090 0018 04D0     		beq	.L532
+ 2091              	.L531:
+ 2092 001a 0028     		cmp	r0, #0
+ 2093 001c 02D0     		beq	.L532
+ 2094 001e FFF7FEFF 		bl	pcTimerGetName
+ 2095 0022 00E0     		b	.L528
+ 2096              	.L532:
+ 2097 0024 0020     		movs	r0, #0
+ 2098              	.L528:
+ 2099              		@ sp needed
+ 2100 0026 10BD     		pop	{r4, pc}
+ 2101              	.L543:
+ 2102              		.align	2
+ 2103              	.L542:
+ 2104 0028 00000000 		.word	.LANCHOR0
+ 2106              		.section	.text.osTimerStart,"ax",%progbits
+ 2107              		.align	1
+ 2108              		.p2align 2,,3
+ 2109              		.global	osTimerStart
+ 2110              		.syntax unified
+ 2111              		.code	16
+ 2112              		.thumb_func
+ 2113              		.fpu softvfp
+ 2115              	osTimerStart:
+ 2116              		@ args = 0, pretend = 0, frame = 0
+ 2117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2118 0000 00B5     		push	{lr}
+ 2119 0002 0A00     		movs	r2, r1
+ARM GAS  /tmp/ccqaOqW9.s 			page 37
+
+
+ 2120 0004 83B0     		sub	sp, sp, #12
+ 2121              		.syntax divided
+ 2122              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2123 0006 EFF30583 		MRS r3, ipsr
+ 2124              	@ 0 "" 2
+ 2125              		.thumb
+ 2126              		.syntax unified
+ 2127 000a 002B     		cmp	r3, #0
+ 2128 000c 17D1     		bne	.L548
+ 2129              		.syntax divided
+ 2130              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2131 000e EFF31083 		MRS r3, primask
+ 2132              	@ 0 "" 2
+ 2133              		.thumb
+ 2134              		.syntax unified
+ 2135 0012 002B     		cmp	r3, #0
+ 2136 0014 0FD1     		bne	.L557
+ 2137              	.L547:
+ 2138 0016 0028     		cmp	r0, #0
+ 2139 0018 14D0     		beq	.L549
+ 2140 001a 0023     		movs	r3, #0
+ 2141 001c 0421     		movs	r1, #4
+ 2142 001e 0093     		str	r3, [sp]
+ 2143 0020 FFF7FEFF 		bl	xTimerGenericCommand
+ 2144 0024 0138     		subs	r0, r0, #1
+ 2145 0026 4342     		rsbs	r3, r0, #0
+ 2146 0028 5841     		adcs	r0, r0, r3
+ 2147 002a 0323     		movs	r3, #3
+ 2148 002c 4042     		rsbs	r0, r0, #0
+ 2149 002e 1840     		ands	r0, r3
+ 2150 0030 0338     		subs	r0, r0, #3
+ 2151              	.L544:
+ 2152 0032 03B0     		add	sp, sp, #12
+ 2153              		@ sp needed
+ 2154 0034 00BD     		pop	{pc}
+ 2155              	.L557:
+ 2156 0036 054B     		ldr	r3, .L558
+ 2157 0038 1B68     		ldr	r3, [r3]
+ 2158 003a 022B     		cmp	r3, #2
+ 2159 003c EBD1     		bne	.L547
+ 2160              	.L548:
+ 2161 003e 0620     		movs	r0, #6
+ 2162 0040 4042     		rsbs	r0, r0, #0
+ 2163 0042 F6E7     		b	.L544
+ 2164              	.L549:
+ 2165 0044 0420     		movs	r0, #4
+ 2166 0046 4042     		rsbs	r0, r0, #0
+ 2167 0048 F3E7     		b	.L544
+ 2168              	.L559:
+ 2169 004a C046     		.align	2
+ 2170              	.L558:
+ 2171 004c 00000000 		.word	.LANCHOR0
+ 2173              		.section	.text.osTimerStop,"ax",%progbits
+ 2174              		.align	1
+ 2175              		.p2align 2,,3
+ 2176              		.global	osTimerStop
+ 2177              		.syntax unified
+ARM GAS  /tmp/ccqaOqW9.s 			page 38
+
+
+ 2178              		.code	16
+ 2179              		.thumb_func
+ 2180              		.fpu softvfp
+ 2182              	osTimerStop:
+ 2183              		@ args = 0, pretend = 0, frame = 0
+ 2184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2185 0000 10B5     		push	{r4, lr}
+ 2186 0002 0400     		movs	r4, r0
+ 2187 0004 82B0     		sub	sp, sp, #8
+ 2188              		.syntax divided
+ 2189              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2190 0006 EFF30583 		MRS r3, ipsr
+ 2191              	@ 0 "" 2
+ 2192              		.thumb
+ 2193              		.syntax unified
+ 2194 000a 002B     		cmp	r3, #0
+ 2195 000c 1BD1     		bne	.L564
+ 2196              		.syntax divided
+ 2197              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2198 000e EFF31083 		MRS r3, primask
+ 2199              	@ 0 "" 2
+ 2200              		.thumb
+ 2201              		.syntax unified
+ 2202 0012 002B     		cmp	r3, #0
+ 2203 0014 13D1     		bne	.L573
+ 2204              	.L563:
+ 2205 0016 002C     		cmp	r4, #0
+ 2206 0018 1BD0     		beq	.L565
+ 2207 001a 2000     		movs	r0, r4
+ 2208 001c FFF7FEFF 		bl	xTimerIsTimerActive
+ 2209 0020 0028     		cmp	r0, #0
+ 2210 0022 13D0     		beq	.L566
+ 2211 0024 0023     		movs	r3, #0
+ 2212 0026 0022     		movs	r2, #0
+ 2213 0028 0093     		str	r3, [sp]
+ 2214 002a 0321     		movs	r1, #3
+ 2215 002c 2000     		movs	r0, r4
+ 2216 002e FFF7FEFF 		bl	xTimerGenericCommand
+ 2217 0032 0138     		subs	r0, r0, #1
+ 2218 0034 431E     		subs	r3, r0, #1
+ 2219 0036 9841     		sbcs	r0, r0, r3
+ 2220 0038 4042     		rsbs	r0, r0, #0
+ 2221              	.L560:
+ 2222 003a 02B0     		add	sp, sp, #8
+ 2223              		@ sp needed
+ 2224 003c 10BD     		pop	{r4, pc}
+ 2225              	.L573:
+ 2226 003e 064B     		ldr	r3, .L574
+ 2227 0040 1B68     		ldr	r3, [r3]
+ 2228 0042 022B     		cmp	r3, #2
+ 2229 0044 E7D1     		bne	.L563
+ 2230              	.L564:
+ 2231 0046 0620     		movs	r0, #6
+ 2232 0048 4042     		rsbs	r0, r0, #0
+ 2233 004a F6E7     		b	.L560
+ 2234              	.L566:
+ 2235 004c 0320     		movs	r0, #3
+ARM GAS  /tmp/ccqaOqW9.s 			page 39
+
+
+ 2236 004e 4042     		rsbs	r0, r0, #0
+ 2237 0050 F3E7     		b	.L560
+ 2238              	.L565:
+ 2239 0052 0420     		movs	r0, #4
+ 2240 0054 4042     		rsbs	r0, r0, #0
+ 2241 0056 F0E7     		b	.L560
+ 2242              	.L575:
+ 2243              		.align	2
+ 2244              	.L574:
+ 2245 0058 00000000 		.word	.LANCHOR0
+ 2247              		.section	.text.osTimerIsRunning,"ax",%progbits
+ 2248              		.align	1
+ 2249              		.p2align 2,,3
+ 2250              		.global	osTimerIsRunning
+ 2251              		.syntax unified
+ 2252              		.code	16
+ 2253              		.thumb_func
+ 2254              		.fpu softvfp
+ 2256              	osTimerIsRunning:
+ 2257              		@ args = 0, pretend = 0, frame = 0
+ 2258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2259 0000 10B5     		push	{r4, lr}
+ 2260              		.syntax divided
+ 2261              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2262 0002 EFF30583 		MRS r3, ipsr
+ 2263              	@ 0 "" 2
+ 2264              		.thumb
+ 2265              		.syntax unified
+ 2266 0006 002B     		cmp	r3, #0
+ 2267 0008 0CD1     		bne	.L580
+ 2268              		.syntax divided
+ 2269              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2270 000a EFF31083 		MRS r3, primask
+ 2271              	@ 0 "" 2
+ 2272              		.thumb
+ 2273              		.syntax unified
+ 2274 000e 002B     		cmp	r3, #0
+ 2275 0010 04D1     		bne	.L590
+ 2276              	.L579:
+ 2277 0012 0028     		cmp	r0, #0
+ 2278 0014 06D0     		beq	.L580
+ 2279 0016 FFF7FEFF 		bl	xTimerIsTimerActive
+ 2280 001a 04E0     		b	.L576
+ 2281              	.L590:
+ 2282 001c 024B     		ldr	r3, .L591
+ 2283 001e 1B68     		ldr	r3, [r3]
+ 2284 0020 022B     		cmp	r3, #2
+ 2285 0022 F6D1     		bne	.L579
+ 2286              	.L580:
+ 2287 0024 0020     		movs	r0, #0
+ 2288              	.L576:
+ 2289              		@ sp needed
+ 2290 0026 10BD     		pop	{r4, pc}
+ 2291              	.L592:
+ 2292              		.align	2
+ 2293              	.L591:
+ 2294 0028 00000000 		.word	.LANCHOR0
+ARM GAS  /tmp/ccqaOqW9.s 			page 40
+
+
+ 2296              		.section	.text.osTimerDelete,"ax",%progbits
+ 2297              		.align	1
+ 2298              		.p2align 2,,3
+ 2299              		.global	osTimerDelete
+ 2300              		.syntax unified
+ 2301              		.code	16
+ 2302              		.thumb_func
+ 2303              		.fpu softvfp
+ 2305              	osTimerDelete:
+ 2306              		@ args = 0, pretend = 0, frame = 0
+ 2307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2308 0000 30B5     		push	{r4, r5, lr}
+ 2309 0002 0400     		movs	r4, r0
+ 2310 0004 83B0     		sub	sp, sp, #12
+ 2311              		.syntax divided
+ 2312              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2313 0006 EFF30583 		MRS r3, ipsr
+ 2314              	@ 0 "" 2
+ 2315              		.thumb
+ 2316              		.syntax unified
+ 2317 000a 002B     		cmp	r3, #0
+ 2318 000c 1CD1     		bne	.L597
+ 2319              		.syntax divided
+ 2320              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2321 000e EFF31083 		MRS r3, primask
+ 2322              	@ 0 "" 2
+ 2323              		.thumb
+ 2324              		.syntax unified
+ 2325 0012 002B     		cmp	r3, #0
+ 2326 0014 14D1     		bne	.L606
+ 2327              	.L596:
+ 2328 0016 002C     		cmp	r4, #0
+ 2329 0018 1CD0     		beq	.L598
+ 2330 001a 2000     		movs	r0, r4
+ 2331 001c FFF7FEFF 		bl	pvTimerGetTimerID
+ 2332 0020 0023     		movs	r3, #0
+ 2333 0022 0500     		movs	r5, r0
+ 2334 0024 0022     		movs	r2, #0
+ 2335 0026 0521     		movs	r1, #5
+ 2336 0028 2000     		movs	r0, r4
+ 2337 002a 0093     		str	r3, [sp]
+ 2338 002c FFF7FEFF 		bl	xTimerGenericCommand
+ 2339 0030 0128     		cmp	r0, #1
+ 2340 0032 0CD1     		bne	.L599
+ 2341 0034 2800     		movs	r0, r5
+ 2342 0036 FFF7FEFF 		bl	vPortFree
+ 2343 003a 0020     		movs	r0, #0
+ 2344              	.L593:
+ 2345 003c 03B0     		add	sp, sp, #12
+ 2346              		@ sp needed
+ 2347 003e 30BD     		pop	{r4, r5, pc}
+ 2348              	.L606:
+ 2349 0040 064B     		ldr	r3, .L607
+ 2350 0042 1B68     		ldr	r3, [r3]
+ 2351 0044 022B     		cmp	r3, #2
+ 2352 0046 E6D1     		bne	.L596
+ 2353              	.L597:
+ARM GAS  /tmp/ccqaOqW9.s 			page 41
+
+
+ 2354 0048 0620     		movs	r0, #6
+ 2355 004a 4042     		rsbs	r0, r0, #0
+ 2356 004c F6E7     		b	.L593
+ 2357              	.L599:
+ 2358 004e 0320     		movs	r0, #3
+ 2359 0050 4042     		rsbs	r0, r0, #0
+ 2360 0052 F3E7     		b	.L593
+ 2361              	.L598:
+ 2362 0054 0420     		movs	r0, #4
+ 2363 0056 4042     		rsbs	r0, r0, #0
+ 2364 0058 F0E7     		b	.L593
+ 2365              	.L608:
+ 2366 005a C046     		.align	2
+ 2367              	.L607:
+ 2368 005c 00000000 		.word	.LANCHOR0
+ 2370              		.section	.text.osEventFlagsNew,"ax",%progbits
+ 2371              		.align	1
+ 2372              		.p2align 2,,3
+ 2373              		.global	osEventFlagsNew
+ 2374              		.syntax unified
+ 2375              		.code	16
+ 2376              		.thumb_func
+ 2377              		.fpu softvfp
+ 2379              	osEventFlagsNew:
+ 2380              		@ args = 0, pretend = 0, frame = 0
+ 2381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2382 0000 10B5     		push	{r4, lr}
+ 2383              		.syntax divided
+ 2384              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2385 0002 EFF30583 		MRS r3, ipsr
+ 2386              	@ 0 "" 2
+ 2387              		.thumb
+ 2388              		.syntax unified
+ 2389 0006 002B     		cmp	r3, #0
+ 2390 0008 0BD1     		bne	.L613
+ 2391              		.syntax divided
+ 2392              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2393 000a EFF31083 		MRS r3, primask
+ 2394              	@ 0 "" 2
+ 2395              		.thumb
+ 2396              		.syntax unified
+ 2397 000e 002B     		cmp	r3, #0
+ 2398 0010 09D1     		bne	.L629
+ 2399 0012 0028     		cmp	r0, #0
+ 2400 0014 11D0     		beq	.L614
+ 2401              	.L631:
+ 2402 0016 8368     		ldr	r3, [r0, #8]
+ 2403 0018 002B     		cmp	r3, #0
+ 2404 001a 0BD0     		beq	.L615
+ 2405 001c C268     		ldr	r2, [r0, #12]
+ 2406 001e 1F2A     		cmp	r2, #31
+ 2407 0020 0ED8     		bhi	.L630
+ 2408              	.L613:
+ 2409 0022 0020     		movs	r0, #0
+ 2410              	.L609:
+ 2411              		@ sp needed
+ 2412 0024 10BD     		pop	{r4, pc}
+ARM GAS  /tmp/ccqaOqW9.s 			page 42
+
+
+ 2413              	.L629:
+ 2414 0026 084B     		ldr	r3, .L632
+ 2415 0028 1B68     		ldr	r3, [r3]
+ 2416 002a 022B     		cmp	r3, #2
+ 2417 002c F9D0     		beq	.L613
+ 2418 002e 0028     		cmp	r0, #0
+ 2419 0030 F1D1     		bne	.L631
+ 2420 0032 02E0     		b	.L614
+ 2421              	.L615:
+ 2422 0034 C368     		ldr	r3, [r0, #12]
+ 2423 0036 002B     		cmp	r3, #0
+ 2424 0038 F3D1     		bne	.L613
+ 2425              	.L614:
+ 2426 003a FFF7FEFF 		bl	xEventGroupCreate
+ 2427 003e F1E7     		b	.L609
+ 2428              	.L630:
+ 2429 0040 1800     		movs	r0, r3
+ 2430 0042 FFF7FEFF 		bl	xEventGroupCreateStatic
+ 2431 0046 EDE7     		b	.L609
+ 2432              	.L633:
+ 2433              		.align	2
+ 2434              	.L632:
+ 2435 0048 00000000 		.word	.LANCHOR0
+ 2437              		.section	.text.osEventFlagsSet,"ax",%progbits
+ 2438              		.align	1
+ 2439              		.p2align 2,,3
+ 2440              		.global	osEventFlagsSet
+ 2441              		.syntax unified
+ 2442              		.code	16
+ 2443              		.thumb_func
+ 2444              		.fpu softvfp
+ 2446              	osEventFlagsSet:
+ 2447              		@ args = 0, pretend = 0, frame = 8
+ 2448              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2449 0000 10B5     		push	{r4, lr}
+ 2450 0002 0C00     		movs	r4, r1
+ 2451 0004 82B0     		sub	sp, sp, #8
+ 2452 0006 0028     		cmp	r0, #0
+ 2453 0008 23D0     		beq	.L641
+ 2454 000a 0B0E     		lsrs	r3, r1, #24
+ 2455 000c 21D1     		bne	.L641
+ 2456              		.syntax divided
+ 2457              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2458 000e EFF30583 		MRS r3, ipsr
+ 2459              	@ 0 "" 2
+ 2460              		.thumb
+ 2461              		.syntax unified
+ 2462 0012 002B     		cmp	r3, #0
+ 2463 0014 0CD1     		bne	.L639
+ 2464              		.syntax divided
+ 2465              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2466 0016 EFF31083 		MRS r3, primask
+ 2467              	@ 0 "" 2
+ 2468              		.thumb
+ 2469              		.syntax unified
+ 2470 001a 002B     		cmp	r3, #0
+ 2471 001c 03D0     		beq	.L638
+ARM GAS  /tmp/ccqaOqW9.s 			page 43
+
+
+ 2472 001e 104B     		ldr	r3, .L653
+ 2473 0020 1B68     		ldr	r3, [r3]
+ 2474 0022 022B     		cmp	r3, #2
+ 2475 0024 04D0     		beq	.L639
+ 2476              	.L638:
+ 2477 0026 2100     		movs	r1, r4
+ 2478 0028 FFF7FEFF 		bl	xEventGroupSetBits
+ 2479              	.L634:
+ 2480 002c 02B0     		add	sp, sp, #8
+ 2481              		@ sp needed
+ 2482 002e 10BD     		pop	{r4, pc}
+ 2483              	.L639:
+ 2484 0030 0023     		movs	r3, #0
+ 2485 0032 2100     		movs	r1, r4
+ 2486 0034 01AA     		add	r2, sp, #4
+ 2487 0036 0193     		str	r3, [sp, #4]
+ 2488 0038 FFF7FEFF 		bl	xEventGroupSetBitsFromISR
+ 2489 003c 0028     		cmp	r0, #0
+ 2490 003e 0BD1     		bne	.L652
+ 2491 0040 019B     		ldr	r3, [sp, #4]
+ 2492 0042 2000     		movs	r0, r4
+ 2493 0044 002B     		cmp	r3, #0
+ 2494 0046 F1D0     		beq	.L634
+ 2495 0048 8022     		movs	r2, #128
+ 2496 004a 064B     		ldr	r3, .L653+4
+ 2497 004c 5205     		lsls	r2, r2, #21
+ 2498 004e 1A60     		str	r2, [r3]
+ 2499 0050 ECE7     		b	.L634
+ 2500              	.L641:
+ 2501 0052 0420     		movs	r0, #4
+ 2502 0054 4042     		rsbs	r0, r0, #0
+ 2503 0056 E9E7     		b	.L634
+ 2504              	.L652:
+ 2505 0058 0320     		movs	r0, #3
+ 2506 005a 4042     		rsbs	r0, r0, #0
+ 2507 005c E6E7     		b	.L634
+ 2508              	.L654:
+ 2509 005e C046     		.align	2
+ 2510              	.L653:
+ 2511 0060 00000000 		.word	.LANCHOR0
+ 2512 0064 04ED00E0 		.word	-536810236
+ 2514              		.section	.text.osEventFlagsClear,"ax",%progbits
+ 2515              		.align	1
+ 2516              		.p2align 2,,3
+ 2517              		.global	osEventFlagsClear
+ 2518              		.syntax unified
+ 2519              		.code	16
+ 2520              		.thumb_func
+ 2521              		.fpu softvfp
+ 2523              	osEventFlagsClear:
+ 2524              		@ args = 0, pretend = 0, frame = 0
+ 2525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2526 0000 70B5     		push	{r4, r5, r6, lr}
+ 2527 0002 0400     		movs	r4, r0
+ 2528 0004 0D00     		movs	r5, r1
+ 2529 0006 0028     		cmp	r0, #0
+ 2530 0008 21D0     		beq	.L661
+ARM GAS  /tmp/ccqaOqW9.s 			page 44
+
+
+ 2531 000a 0B0E     		lsrs	r3, r1, #24
+ 2532 000c 1FD1     		bne	.L661
+ 2533              		.syntax divided
+ 2534              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2535 000e EFF30583 		MRS r3, ipsr
+ 2536              	@ 0 "" 2
+ 2537              		.thumb
+ 2538              		.syntax unified
+ 2539 0012 002B     		cmp	r3, #0
+ 2540 0014 0ED1     		bne	.L659
+ 2541              		.syntax divided
+ 2542              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2543 0016 EFF31083 		MRS r3, primask
+ 2544              	@ 0 "" 2
+ 2545              		.thumb
+ 2546              		.syntax unified
+ 2547 001a 002B     		cmp	r3, #0
+ 2548 001c 03D0     		beq	.L658
+ 2549 001e 0D4B     		ldr	r3, .L668
+ 2550 0020 1B68     		ldr	r3, [r3]
+ 2551 0022 022B     		cmp	r3, #2
+ 2552 0024 06D0     		beq	.L659
+ 2553              	.L658:
+ 2554 0026 2900     		movs	r1, r5
+ 2555 0028 2000     		movs	r0, r4
+ 2556 002a FFF7FEFF 		bl	xEventGroupClearBits
+ 2557 002e 0600     		movs	r6, r0
+ 2558              	.L655:
+ 2559 0030 3000     		movs	r0, r6
+ 2560              		@ sp needed
+ 2561 0032 70BD     		pop	{r4, r5, r6, pc}
+ 2562              	.L659:
+ 2563 0034 2000     		movs	r0, r4
+ 2564 0036 FFF7FEFF 		bl	xEventGroupGetBitsFromISR
+ 2565 003a 2900     		movs	r1, r5
+ 2566 003c 0600     		movs	r6, r0
+ 2567 003e 2000     		movs	r0, r4
+ 2568 0040 FFF7FEFF 		bl	xEventGroupClearBitsFromISR
+ 2569 0044 0028     		cmp	r0, #0
+ 2570 0046 F3D1     		bne	.L655
+ 2571 0048 0326     		movs	r6, #3
+ 2572 004a 7642     		rsbs	r6, r6, #0
+ 2573 004c F0E7     		b	.L655
+ 2574              	.L661:
+ 2575 004e 0426     		movs	r6, #4
+ 2576 0050 7642     		rsbs	r6, r6, #0
+ 2577 0052 EDE7     		b	.L655
+ 2578              	.L669:
+ 2579              		.align	2
+ 2580              	.L668:
+ 2581 0054 00000000 		.word	.LANCHOR0
+ 2583              		.section	.text.osEventFlagsGet,"ax",%progbits
+ 2584              		.align	1
+ 2585              		.p2align 2,,3
+ 2586              		.global	osEventFlagsGet
+ 2587              		.syntax unified
+ 2588              		.code	16
+ARM GAS  /tmp/ccqaOqW9.s 			page 45
+
+
+ 2589              		.thumb_func
+ 2590              		.fpu softvfp
+ 2592              	osEventFlagsGet:
+ 2593              		@ args = 0, pretend = 0, frame = 0
+ 2594              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2595 0000 10B5     		push	{r4, lr}
+ 2596 0002 0028     		cmp	r0, #0
+ 2597 0004 12D0     		beq	.L675
+ 2598              		.syntax divided
+ 2599              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2600 0006 EFF30583 		MRS r3, ipsr
+ 2601              	@ 0 "" 2
+ 2602              		.thumb
+ 2603              		.syntax unified
+ 2604 000a 002B     		cmp	r3, #0
+ 2605 000c 0BD1     		bne	.L674
+ 2606              		.syntax divided
+ 2607              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2608 000e EFF31083 		MRS r3, primask
+ 2609              	@ 0 "" 2
+ 2610              		.thumb
+ 2611              		.syntax unified
+ 2612 0012 002B     		cmp	r3, #0
+ 2613 0014 03D0     		beq	.L673
+ 2614 0016 064B     		ldr	r3, .L682
+ 2615 0018 1B68     		ldr	r3, [r3]
+ 2616 001a 022B     		cmp	r3, #2
+ 2617 001c 03D0     		beq	.L674
+ 2618              	.L673:
+ 2619 001e 0021     		movs	r1, #0
+ 2620 0020 FFF7FEFF 		bl	xEventGroupClearBits
+ 2621              	.L670:
+ 2622              		@ sp needed
+ 2623 0024 10BD     		pop	{r4, pc}
+ 2624              	.L674:
+ 2625 0026 FFF7FEFF 		bl	xEventGroupGetBitsFromISR
+ 2626 002a FBE7     		b	.L670
+ 2627              	.L675:
+ 2628 002c 0020     		movs	r0, #0
+ 2629 002e F9E7     		b	.L670
+ 2630              	.L683:
+ 2631              		.align	2
+ 2632              	.L682:
+ 2633 0030 00000000 		.word	.LANCHOR0
+ 2635              		.section	.text.osEventFlagsWait,"ax",%progbits
+ 2636              		.align	1
+ 2637              		.p2align 2,,3
+ 2638              		.global	osEventFlagsWait
+ 2639              		.syntax unified
+ 2640              		.code	16
+ 2641              		.thumb_func
+ 2642              		.fpu softvfp
+ 2644              	osEventFlagsWait:
+ 2645              		@ args = 0, pretend = 0, frame = 0
+ 2646              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2647 0000 70B5     		push	{r4, r5, r6, lr}
+ 2648 0002 0C00     		movs	r4, r1
+ARM GAS  /tmp/ccqaOqW9.s 			page 46
+
+
+ 2649 0004 1D00     		movs	r5, r3
+ 2650 0006 82B0     		sub	sp, sp, #8
+ 2651 0008 0028     		cmp	r0, #0
+ 2652 000a 25D0     		beq	.L692
+ 2653 000c 0B0E     		lsrs	r3, r1, #24
+ 2654 000e 23D1     		bne	.L692
+ 2655              		.syntax divided
+ 2656              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2657 0010 EFF30583 		MRS r3, ipsr
+ 2658              	@ 0 "" 2
+ 2659              		.thumb
+ 2660              		.syntax unified
+ 2661 0014 002B     		cmp	r3, #0
+ 2662 0016 1BD1     		bne	.L688
+ 2663              		.syntax divided
+ 2664              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2665 0018 EFF31083 		MRS r3, primask
+ 2666              	@ 0 "" 2
+ 2667              		.thumb
+ 2668              		.syntax unified
+ 2669 001c 002B     		cmp	r3, #0
+ 2670 001e 03D0     		beq	.L687
+ 2671 0020 104B     		ldr	r3, .L704
+ 2672 0022 1B68     		ldr	r3, [r3]
+ 2673 0024 022B     		cmp	r3, #2
+ 2674 0026 13D0     		beq	.L688
+ 2675              	.L687:
+ 2676 0028 0123     		movs	r3, #1
+ 2677 002a 1E00     		movs	r6, r3
+ 2678 002c 1640     		ands	r6, r2
+ 2679 002e 5208     		lsrs	r2, r2, #1
+ 2680 0030 9343     		bics	r3, r2
+ 2681 0032 1A00     		movs	r2, r3
+ 2682 0034 2100     		movs	r1, r4
+ 2683 0036 3300     		movs	r3, r6
+ 2684 0038 0095     		str	r5, [sp]
+ 2685 003a FFF7FEFF 		bl	xEventGroupWaitBits
+ 2686 003e 002E     		cmp	r6, #0
+ 2687 0040 0DD1     		bne	.L703
+ 2688 0042 2042     		tst	r0, r4
+ 2689 0044 06D1     		bne	.L684
+ 2690              	.L690:
+ 2691 0046 2800     		movs	r0, r5
+ 2692 0048 451E     		subs	r5, r0, #1
+ 2693 004a A841     		sbcs	r0, r0, r5
+ 2694 004c 0338     		subs	r0, r0, #3
+ 2695 004e 01E0     		b	.L684
+ 2696              	.L688:
+ 2697 0050 0620     		movs	r0, #6
+ 2698 0052 4042     		rsbs	r0, r0, #0
+ 2699              	.L684:
+ 2700 0054 02B0     		add	sp, sp, #8
+ 2701              		@ sp needed
+ 2702 0056 70BD     		pop	{r4, r5, r6, pc}
+ 2703              	.L692:
+ 2704 0058 0420     		movs	r0, #4
+ 2705 005a 4042     		rsbs	r0, r0, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 47
+
+
+ 2706 005c FAE7     		b	.L684
+ 2707              	.L703:
+ 2708 005e 8442     		cmp	r4, r0
+ 2709 0060 F1D1     		bne	.L690
+ 2710 0062 F7E7     		b	.L684
+ 2711              	.L705:
+ 2712              		.align	2
+ 2713              	.L704:
+ 2714 0064 00000000 		.word	.LANCHOR0
+ 2716              		.section	.text.osEventFlagsDelete,"ax",%progbits
+ 2717              		.align	1
+ 2718              		.p2align 2,,3
+ 2719              		.global	osEventFlagsDelete
+ 2720              		.syntax unified
+ 2721              		.code	16
+ 2722              		.thumb_func
+ 2723              		.fpu softvfp
+ 2725              	osEventFlagsDelete:
+ 2726              		@ args = 0, pretend = 0, frame = 0
+ 2727              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2728 0000 10B5     		push	{r4, lr}
+ 2729              		.syntax divided
+ 2730              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2731 0002 EFF30583 		MRS r3, ipsr
+ 2732              	@ 0 "" 2
+ 2733              		.thumb
+ 2734              		.syntax unified
+ 2735 0006 002B     		cmp	r3, #0
+ 2736 0008 0DD1     		bne	.L710
+ 2737              		.syntax divided
+ 2738              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2739 000a EFF31083 		MRS r3, primask
+ 2740              	@ 0 "" 2
+ 2741              		.thumb
+ 2742              		.syntax unified
+ 2743 000e 002B     		cmp	r3, #0
+ 2744 0010 05D1     		bne	.L718
+ 2745              	.L709:
+ 2746 0012 0028     		cmp	r0, #0
+ 2747 0014 0AD0     		beq	.L711
+ 2748 0016 FFF7FEFF 		bl	vEventGroupDelete
+ 2749 001a 0020     		movs	r0, #0
+ 2750              	.L706:
+ 2751              		@ sp needed
+ 2752 001c 10BD     		pop	{r4, pc}
+ 2753              	.L718:
+ 2754 001e 054B     		ldr	r3, .L719
+ 2755 0020 1B68     		ldr	r3, [r3]
+ 2756 0022 022B     		cmp	r3, #2
+ 2757 0024 F5D1     		bne	.L709
+ 2758              	.L710:
+ 2759 0026 0620     		movs	r0, #6
+ 2760 0028 4042     		rsbs	r0, r0, #0
+ 2761 002a F7E7     		b	.L706
+ 2762              	.L711:
+ 2763 002c 0420     		movs	r0, #4
+ 2764 002e 4042     		rsbs	r0, r0, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 48
+
+
+ 2765 0030 F4E7     		b	.L706
+ 2766              	.L720:
+ 2767 0032 C046     		.align	2
+ 2768              	.L719:
+ 2769 0034 00000000 		.word	.LANCHOR0
+ 2771              		.section	.text.osMutexNew,"ax",%progbits
+ 2772              		.align	1
+ 2773              		.p2align 2,,3
+ 2774              		.global	osMutexNew
+ 2775              		.syntax unified
+ 2776              		.code	16
+ 2777              		.thumb_func
+ 2778              		.fpu softvfp
+ 2780              	osMutexNew:
+ 2781              		@ args = 0, pretend = 0, frame = 0
+ 2782              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2783 0000 70B5     		push	{r4, r5, r6, lr}
+ 2784 0002 0400     		movs	r4, r0
+ 2785              		.syntax divided
+ 2786              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2787 0004 EFF30583 		MRS r3, ipsr
+ 2788              	@ 0 "" 2
+ 2789              		.thumb
+ 2790              		.syntax unified
+ 2791 0008 002B     		cmp	r3, #0
+ 2792 000a 23D1     		bne	.L725
+ 2793              		.syntax divided
+ 2794              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2795 000c EFF31083 		MRS r3, primask
+ 2796              	@ 0 "" 2
+ 2797              		.thumb
+ 2798              		.syntax unified
+ 2799 0010 002B     		cmp	r3, #0
+ 2800 0012 22D1     		bne	.L751
+ 2801 0014 002C     		cmp	r4, #0
+ 2802 0016 26D0     		beq	.L726
+ 2803              	.L752:
+ 2804 0018 6368     		ldr	r3, [r4, #4]
+ 2805 001a 1A07     		lsls	r2, r3, #28
+ 2806 001c 1AD4     		bmi	.L725
+ 2807 001e 0126     		movs	r6, #1
+ 2808 0020 A168     		ldr	r1, [r4, #8]
+ 2809 0022 1E40     		ands	r6, r3
+ 2810 0024 E368     		ldr	r3, [r4, #12]
+ 2811 0026 0029     		cmp	r1, #0
+ 2812 0028 12D0     		beq	.L727
+ 2813 002a 4F2B     		cmp	r3, #79
+ 2814 002c 12D9     		bls	.L725
+ 2815 002e 002E     		cmp	r6, #0
+ 2816 0030 22D0     		beq	.L730
+ 2817 0032 0420     		movs	r0, #4
+ 2818 0034 FFF7FEFF 		bl	xQueueCreateMutexStatic
+ 2819 0038 0500     		movs	r5, r0
+ 2820              	.L731:
+ 2821 003a 002D     		cmp	r5, #0
+ 2822 003c 0AD0     		beq	.L725
+ 2823 003e 2800     		movs	r0, r5
+ARM GAS  /tmp/ccqaOqW9.s 			page 49
+
+
+ 2824 0040 2168     		ldr	r1, [r4]
+ 2825 0042 FFF7FEFF 		bl	vQueueAddToRegistry
+ 2826 0046 002E     		cmp	r6, #0
+ 2827 0048 05D0     		beq	.L721
+ 2828              	.L733:
+ 2829 004a 0123     		movs	r3, #1
+ 2830 004c 1D43     		orrs	r5, r3
+ 2831 004e 02E0     		b	.L721
+ 2832              	.L727:
+ 2833 0050 002B     		cmp	r3, #0
+ 2834 0052 16D0     		beq	.L729
+ 2835              	.L725:
+ 2836 0054 0025     		movs	r5, #0
+ 2837              	.L721:
+ 2838 0056 2800     		movs	r0, r5
+ 2839              		@ sp needed
+ 2840 0058 70BD     		pop	{r4, r5, r6, pc}
+ 2841              	.L751:
+ 2842 005a 144B     		ldr	r3, .L753
+ 2843 005c 1B68     		ldr	r3, [r3]
+ 2844 005e 022B     		cmp	r3, #2
+ 2845 0060 F8D0     		beq	.L725
+ 2846 0062 002C     		cmp	r4, #0
+ 2847 0064 D8D1     		bne	.L752
+ 2848              	.L726:
+ 2849 0066 0120     		movs	r0, #1
+ 2850 0068 FFF7FEFF 		bl	xQueueCreateMutex
+ 2851 006c 051E     		subs	r5, r0, #0
+ 2852 006e F1D0     		beq	.L725
+ 2853 0070 0021     		movs	r1, #0
+ 2854 0072 FFF7FEFF 		bl	vQueueAddToRegistry
+ 2855 0076 EEE7     		b	.L721
+ 2856              	.L730:
+ 2857 0078 0120     		movs	r0, #1
+ 2858 007a FFF7FEFF 		bl	xQueueCreateMutexStatic
+ 2859 007e 0500     		movs	r5, r0
+ 2860 0080 DBE7     		b	.L731
+ 2861              	.L729:
+ 2862 0082 002E     		cmp	r6, #0
+ 2863 0084 08D0     		beq	.L732
+ 2864 0086 0420     		movs	r0, #4
+ 2865 0088 FFF7FEFF 		bl	xQueueCreateMutex
+ 2866 008c 051E     		subs	r5, r0, #0
+ 2867 008e E1D0     		beq	.L725
+ 2868 0090 2168     		ldr	r1, [r4]
+ 2869 0092 FFF7FEFF 		bl	vQueueAddToRegistry
+ 2870 0096 D8E7     		b	.L733
+ 2871              	.L732:
+ 2872 0098 0120     		movs	r0, #1
+ 2873 009a FFF7FEFF 		bl	xQueueCreateMutex
+ 2874 009e 051E     		subs	r5, r0, #0
+ 2875 00a0 D8D0     		beq	.L725
+ 2876 00a2 2168     		ldr	r1, [r4]
+ 2877 00a4 FFF7FEFF 		bl	vQueueAddToRegistry
+ 2878 00a8 D5E7     		b	.L721
+ 2879              	.L754:
+ 2880 00aa C046     		.align	2
+ARM GAS  /tmp/ccqaOqW9.s 			page 50
+
+
+ 2881              	.L753:
+ 2882 00ac 00000000 		.word	.LANCHOR0
+ 2884              		.section	.text.osMutexAcquire,"ax",%progbits
+ 2885              		.align	1
+ 2886              		.p2align 2,,3
+ 2887              		.global	osMutexAcquire
+ 2888              		.syntax unified
+ 2889              		.code	16
+ 2890              		.thumb_func
+ 2891              		.fpu softvfp
+ 2893              	osMutexAcquire:
+ 2894              		@ args = 0, pretend = 0, frame = 0
+ 2895              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2896 0000 0122     		movs	r2, #1
+ 2897 0002 0300     		movs	r3, r0
+ 2898 0004 10B5     		push	{r4, lr}
+ 2899 0006 9043     		bics	r0, r2
+ 2900 0008 0C00     		movs	r4, r1
+ 2901 000a 1340     		ands	r3, r2
+ 2902              		.syntax divided
+ 2903              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2904 000c EFF30582 		MRS r2, ipsr
+ 2905              	@ 0 "" 2
+ 2906              		.thumb
+ 2907              		.syntax unified
+ 2908 0010 002A     		cmp	r2, #0
+ 2909 0012 15D1     		bne	.L759
+ 2910              		.syntax divided
+ 2911              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2912 0014 EFF31082 		MRS r2, primask
+ 2913              	@ 0 "" 2
+ 2914              		.thumb
+ 2915              		.syntax unified
+ 2916 0018 002A     		cmp	r2, #0
+ 2917 001a 0DD1     		bne	.L771
+ 2918              	.L758:
+ 2919 001c 0028     		cmp	r0, #0
+ 2920 001e 18D0     		beq	.L763
+ 2921 0020 2100     		movs	r1, r4
+ 2922 0022 002B     		cmp	r3, #0
+ 2923 0024 0FD1     		bne	.L772
+ 2924 0026 FFF7FEFF 		bl	xQueueSemaphoreTake
+ 2925 002a 0128     		cmp	r0, #1
+ 2926 002c 0FD0     		beq	.L762
+ 2927              	.L761:
+ 2928 002e 2000     		movs	r0, r4
+ 2929 0030 441E     		subs	r4, r0, #1
+ 2930 0032 A041     		sbcs	r0, r0, r4
+ 2931 0034 0338     		subs	r0, r0, #3
+ 2932              	.L755:
+ 2933              		@ sp needed
+ 2934 0036 10BD     		pop	{r4, pc}
+ 2935              	.L771:
+ 2936 0038 074A     		ldr	r2, .L773
+ 2937 003a 1268     		ldr	r2, [r2]
+ 2938 003c 022A     		cmp	r2, #2
+ 2939 003e EDD1     		bne	.L758
+ARM GAS  /tmp/ccqaOqW9.s 			page 51
+
+
+ 2940              	.L759:
+ 2941 0040 0620     		movs	r0, #6
+ 2942 0042 4042     		rsbs	r0, r0, #0
+ 2943 0044 F7E7     		b	.L755
+ 2944              	.L772:
+ 2945 0046 FFF7FEFF 		bl	xQueueTakeMutexRecursive
+ 2946 004a 0128     		cmp	r0, #1
+ 2947 004c EFD1     		bne	.L761
+ 2948              	.L762:
+ 2949 004e 0020     		movs	r0, #0
+ 2950 0050 F1E7     		b	.L755
+ 2951              	.L763:
+ 2952 0052 0420     		movs	r0, #4
+ 2953 0054 4042     		rsbs	r0, r0, #0
+ 2954 0056 EEE7     		b	.L755
+ 2955              	.L774:
+ 2956              		.align	2
+ 2957              	.L773:
+ 2958 0058 00000000 		.word	.LANCHOR0
+ 2960              		.section	.text.osMutexRelease,"ax",%progbits
+ 2961              		.align	1
+ 2962              		.p2align 2,,3
+ 2963              		.global	osMutexRelease
+ 2964              		.syntax unified
+ 2965              		.code	16
+ 2966              		.thumb_func
+ 2967              		.fpu softvfp
+ 2969              	osMutexRelease:
+ 2970              		@ args = 0, pretend = 0, frame = 0
+ 2971              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2972 0000 0122     		movs	r2, #1
+ 2973 0002 0300     		movs	r3, r0
+ 2974 0004 10B5     		push	{r4, lr}
+ 2975 0006 9043     		bics	r0, r2
+ 2976 0008 1340     		ands	r3, r2
+ 2977              		.syntax divided
+ 2978              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2979 000a EFF30582 		MRS r2, ipsr
+ 2980              	@ 0 "" 2
+ 2981              		.thumb
+ 2982              		.syntax unified
+ 2983 000e 002A     		cmp	r2, #0
+ 2984 0010 11D1     		bne	.L779
+ 2985              		.syntax divided
+ 2986              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 2987 0012 EFF31082 		MRS r2, primask
+ 2988              	@ 0 "" 2
+ 2989              		.thumb
+ 2990              		.syntax unified
+ 2991 0016 002A     		cmp	r2, #0
+ 2992 0018 09D1     		bne	.L790
+ 2993              	.L778:
+ 2994 001a 0028     		cmp	r0, #0
+ 2995 001c 18D0     		beq	.L783
+ 2996 001e 002B     		cmp	r3, #0
+ 2997 0020 0CD0     		beq	.L780
+ 2998 0022 FFF7FEFF 		bl	xQueueGiveMutexRecursive
+ARM GAS  /tmp/ccqaOqW9.s 			page 52
+
+
+ 2999 0026 0128     		cmp	r0, #1
+ 3000 0028 0FD1     		bne	.L781
+ 3001              	.L782:
+ 3002 002a 0020     		movs	r0, #0
+ 3003              	.L775:
+ 3004              		@ sp needed
+ 3005 002c 10BD     		pop	{r4, pc}
+ 3006              	.L790:
+ 3007 002e 0A4A     		ldr	r2, .L791
+ 3008 0030 1268     		ldr	r2, [r2]
+ 3009 0032 022A     		cmp	r2, #2
+ 3010 0034 F1D1     		bne	.L778
+ 3011              	.L779:
+ 3012 0036 0620     		movs	r0, #6
+ 3013 0038 4042     		rsbs	r0, r0, #0
+ 3014 003a F7E7     		b	.L775
+ 3015              	.L780:
+ 3016 003c 0023     		movs	r3, #0
+ 3017 003e 0022     		movs	r2, #0
+ 3018 0040 0021     		movs	r1, #0
+ 3019 0042 FFF7FEFF 		bl	xQueueGenericSend
+ 3020 0046 0128     		cmp	r0, #1
+ 3021 0048 EFD0     		beq	.L782
+ 3022              	.L781:
+ 3023 004a 0320     		movs	r0, #3
+ 3024 004c 4042     		rsbs	r0, r0, #0
+ 3025 004e EDE7     		b	.L775
+ 3026              	.L783:
+ 3027 0050 0420     		movs	r0, #4
+ 3028 0052 4042     		rsbs	r0, r0, #0
+ 3029 0054 EAE7     		b	.L775
+ 3030              	.L792:
+ 3031 0056 C046     		.align	2
+ 3032              	.L791:
+ 3033 0058 00000000 		.word	.LANCHOR0
+ 3035              		.section	.text.osMutexGetOwner,"ax",%progbits
+ 3036              		.align	1
+ 3037              		.p2align 2,,3
+ 3038              		.global	osMutexGetOwner
+ 3039              		.syntax unified
+ 3040              		.code	16
+ 3041              		.thumb_func
+ 3042              		.fpu softvfp
+ 3044              	osMutexGetOwner:
+ 3045              		@ args = 0, pretend = 0, frame = 0
+ 3046              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3047 0000 10B5     		push	{r4, lr}
+ 3048              		.syntax divided
+ 3049              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3050 0002 EFF30583 		MRS r3, ipsr
+ 3051              	@ 0 "" 2
+ 3052              		.thumb
+ 3053              		.syntax unified
+ 3054 0006 002B     		cmp	r3, #0
+ 3055 0008 0DD1     		bne	.L797
+ 3056              		.syntax divided
+ 3057              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ARM GAS  /tmp/ccqaOqW9.s 			page 53
+
+
+ 3058 000a EFF31083 		MRS r3, primask
+ 3059              	@ 0 "" 2
+ 3060              		.thumb
+ 3061              		.syntax unified
+ 3062 000e 002B     		cmp	r3, #0
+ 3063 0010 03D0     		beq	.L796
+ 3064 0012 064B     		ldr	r3, .L807
+ 3065 0014 1B68     		ldr	r3, [r3]
+ 3066 0016 022B     		cmp	r3, #2
+ 3067 0018 05D0     		beq	.L797
+ 3068              	.L796:
+ 3069 001a 0123     		movs	r3, #1
+ 3070 001c 9843     		bics	r0, r3
+ 3071 001e 02D0     		beq	.L797
+ 3072 0020 FFF7FEFF 		bl	xQueueGetMutexHolder
+ 3073 0024 00E0     		b	.L793
+ 3074              	.L797:
+ 3075 0026 0020     		movs	r0, #0
+ 3076              	.L793:
+ 3077              		@ sp needed
+ 3078 0028 10BD     		pop	{r4, pc}
+ 3079              	.L808:
+ 3080 002a C046     		.align	2
+ 3081              	.L807:
+ 3082 002c 00000000 		.word	.LANCHOR0
+ 3084              		.section	.text.osMutexDelete,"ax",%progbits
+ 3085              		.align	1
+ 3086              		.p2align 2,,3
+ 3087              		.global	osMutexDelete
+ 3088              		.syntax unified
+ 3089              		.code	16
+ 3090              		.thumb_func
+ 3091              		.fpu softvfp
+ 3093              	osMutexDelete:
+ 3094              		@ args = 0, pretend = 0, frame = 0
+ 3095              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3096 0000 0123     		movs	r3, #1
+ 3097 0002 9843     		bics	r0, r3
+ 3098 0004 10B5     		push	{r4, lr}
+ 3099 0006 0400     		movs	r4, r0
+ 3100              		.syntax divided
+ 3101              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3102 0008 EFF30583 		MRS r3, ipsr
+ 3103              	@ 0 "" 2
+ 3104              		.thumb
+ 3105              		.syntax unified
+ 3106 000c 002B     		cmp	r3, #0
+ 3107 000e 11D1     		bne	.L813
+ 3108              		.syntax divided
+ 3109              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3110 0010 EFF31083 		MRS r3, primask
+ 3111              	@ 0 "" 2
+ 3112              		.thumb
+ 3113              		.syntax unified
+ 3114 0014 002B     		cmp	r3, #0
+ 3115 0016 09D1     		bne	.L821
+ 3116              	.L812:
+ARM GAS  /tmp/ccqaOqW9.s 			page 54
+
+
+ 3117 0018 002C     		cmp	r4, #0
+ 3118 001a 0ED0     		beq	.L814
+ 3119 001c 2000     		movs	r0, r4
+ 3120 001e FFF7FEFF 		bl	vQueueUnregisterQueue
+ 3121 0022 2000     		movs	r0, r4
+ 3122 0024 FFF7FEFF 		bl	vQueueDelete
+ 3123 0028 0020     		movs	r0, #0
+ 3124              	.L809:
+ 3125              		@ sp needed
+ 3126 002a 10BD     		pop	{r4, pc}
+ 3127              	.L821:
+ 3128 002c 044B     		ldr	r3, .L822
+ 3129 002e 1B68     		ldr	r3, [r3]
+ 3130 0030 022B     		cmp	r3, #2
+ 3131 0032 F1D1     		bne	.L812
+ 3132              	.L813:
+ 3133 0034 0620     		movs	r0, #6
+ 3134 0036 4042     		rsbs	r0, r0, #0
+ 3135 0038 F7E7     		b	.L809
+ 3136              	.L814:
+ 3137 003a 0420     		movs	r0, #4
+ 3138 003c 4042     		rsbs	r0, r0, #0
+ 3139 003e F4E7     		b	.L809
+ 3140              	.L823:
+ 3141              		.align	2
+ 3142              	.L822:
+ 3143 0040 00000000 		.word	.LANCHOR0
+ 3145              		.section	.text.osSemaphoreNew,"ax",%progbits
+ 3146              		.align	1
+ 3147              		.p2align 2,,3
+ 3148              		.global	osSemaphoreNew
+ 3149              		.syntax unified
+ 3150              		.code	16
+ 3151              		.thumb_func
+ 3152              		.fpu softvfp
+ 3154              	osSemaphoreNew:
+ 3155              		@ args = 0, pretend = 0, frame = 0
+ 3156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3157 0000 70B5     		push	{r4, r5, r6, lr}
+ 3158 0002 0E00     		movs	r6, r1
+ 3159 0004 1400     		movs	r4, r2
+ 3160 0006 82B0     		sub	sp, sp, #8
+ 3161              		.syntax divided
+ 3162              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3163 0008 EFF30583 		MRS r3, ipsr
+ 3164              	@ 0 "" 2
+ 3165              		.thumb
+ 3166              		.syntax unified
+ 3167 000c 002B     		cmp	r3, #0
+ 3168 000e 35D1     		bne	.L870
+ 3169              		.syntax divided
+ 3170              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3171 0010 EFF31083 		MRS r3, primask
+ 3172              	@ 0 "" 2
+ 3173              		.thumb
+ 3174              		.syntax unified
+ 3175 0014 002B     		cmp	r3, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 55
+
+
+ 3176 0016 35D1     		bne	.L871
+ 3177 0018 0028     		cmp	r0, #0
+ 3178 001a 2FD0     		beq	.L870
+ 3179              	.L874:
+ 3180 001c B042     		cmp	r0, r6
+ 3181 001e 2DD3     		bcc	.L870
+ 3182 0020 002C     		cmp	r4, #0
+ 3183 0022 39D0     		beq	.L872
+ 3184 0024 A268     		ldr	r2, [r4, #8]
+ 3185 0026 E368     		ldr	r3, [r4, #12]
+ 3186 0028 002A     		cmp	r2, #0
+ 3187 002a 0ED0     		beq	.L832
+ 3188 002c 4F2B     		cmp	r3, #79
+ 3189 002e 25D9     		bls	.L870
+ 3190 0030 0128     		cmp	r0, #1
+ 3191 0032 3FD0     		beq	.L873
+ 3192 0034 3100     		movs	r1, r6
+ 3193 0036 FFF7FEFF 		bl	xQueueCreateCountingSemaphoreStatic
+ 3194 003a 051E     		subs	r5, r0, #0
+ 3195 003c 1ED0     		beq	.L870
+ 3196              	.L838:
+ 3197 003e 2468     		ldr	r4, [r4]
+ 3198              	.L839:
+ 3199 0040 2100     		movs	r1, r4
+ 3200 0042 2800     		movs	r0, r5
+ 3201 0044 FFF7FEFF 		bl	vQueueAddToRegistry
+ 3202 0048 19E0     		b	.L824
+ 3203              	.L832:
+ 3204 004a 002B     		cmp	r3, #0
+ 3205 004c 16D1     		bne	.L870
+ 3206 004e 0128     		cmp	r0, #1
+ 3207 0050 2AD1     		bne	.L869
+ 3208              	.L830:
+ 3209 0052 0322     		movs	r2, #3
+ 3210 0054 0021     		movs	r1, #0
+ 3211 0056 0120     		movs	r0, #1
+ 3212 0058 FFF7FEFF 		bl	xQueueGenericCreate
+ 3213 005c 0500     		movs	r5, r0
+ 3214              	.L836:
+ 3215 005e 002D     		cmp	r5, #0
+ 3216 0060 0CD0     		beq	.L870
+ 3217 0062 002E     		cmp	r6, #0
+ 3218 0064 15D0     		beq	.L837
+ 3219 0066 0023     		movs	r3, #0
+ 3220 0068 0022     		movs	r2, #0
+ 3221 006a 0021     		movs	r1, #0
+ 3222 006c 2800     		movs	r0, r5
+ 3223 006e FFF7FEFF 		bl	xQueueGenericSend
+ 3224 0072 0128     		cmp	r0, #1
+ 3225 0074 0DD0     		beq	.L837
+ 3226 0076 2800     		movs	r0, r5
+ 3227 0078 FFF7FEFF 		bl	vQueueDelete
+ 3228              	.L870:
+ 3229 007c 0025     		movs	r5, #0
+ 3230              	.L824:
+ 3231 007e 2800     		movs	r0, r5
+ 3232 0080 02B0     		add	sp, sp, #8
+ARM GAS  /tmp/ccqaOqW9.s 			page 56
+
+
+ 3233              		@ sp needed
+ 3234 0082 70BD     		pop	{r4, r5, r6, pc}
+ 3235              	.L871:
+ 3236 0084 104B     		ldr	r3, .L875
+ 3237 0086 1B68     		ldr	r3, [r3]
+ 3238 0088 022B     		cmp	r3, #2
+ 3239 008a F7D0     		beq	.L870
+ 3240 008c 0028     		cmp	r0, #0
+ 3241 008e C5D1     		bne	.L874
+ 3242 0090 F4E7     		b	.L870
+ 3243              	.L837:
+ 3244 0092 002C     		cmp	r4, #0
+ 3245 0094 D3D1     		bne	.L838
+ 3246 0096 D3E7     		b	.L839
+ 3247              	.L872:
+ 3248 0098 0128     		cmp	r0, #1
+ 3249 009a DAD0     		beq	.L830
+ 3250 009c 3100     		movs	r1, r6
+ 3251 009e FFF7FEFF 		bl	xQueueCreateCountingSemaphore
+ 3252 00a2 051E     		subs	r5, r0, #0
+ 3253 00a4 CCD1     		bne	.L839
+ 3254 00a6 E9E7     		b	.L870
+ 3255              	.L869:
+ 3256 00a8 3100     		movs	r1, r6
+ 3257 00aa FFF7FEFF 		bl	xQueueCreateCountingSemaphore
+ 3258 00ae 051E     		subs	r5, r0, #0
+ 3259 00b0 C5D1     		bne	.L838
+ 3260 00b2 E3E7     		b	.L870
+ 3261              	.L873:
+ 3262 00b4 0323     		movs	r3, #3
+ 3263 00b6 0021     		movs	r1, #0
+ 3264 00b8 0093     		str	r3, [sp]
+ 3265 00ba 0120     		movs	r0, #1
+ 3266 00bc 1300     		movs	r3, r2
+ 3267 00be 0022     		movs	r2, #0
+ 3268 00c0 FFF7FEFF 		bl	xQueueGenericCreateStatic
+ 3269 00c4 0500     		movs	r5, r0
+ 3270 00c6 CAE7     		b	.L836
+ 3271              	.L876:
+ 3272              		.align	2
+ 3273              	.L875:
+ 3274 00c8 00000000 		.word	.LANCHOR0
+ 3276              		.section	.text.osSemaphoreAcquire,"ax",%progbits
+ 3277              		.align	1
+ 3278              		.p2align 2,,3
+ 3279              		.global	osSemaphoreAcquire
+ 3280              		.syntax unified
+ 3281              		.code	16
+ 3282              		.thumb_func
+ 3283              		.fpu softvfp
+ 3285              	osSemaphoreAcquire:
+ 3286              		@ args = 0, pretend = 0, frame = 8
+ 3287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3288 0000 10B5     		push	{r4, lr}
+ 3289 0002 0C00     		movs	r4, r1
+ 3290 0004 82B0     		sub	sp, sp, #8
+ 3291 0006 0028     		cmp	r0, #0
+ARM GAS  /tmp/ccqaOqW9.s 			page 57
+
+
+ 3292 0008 2CD0     		beq	.L881
+ 3293              		.syntax divided
+ 3294              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3295 000a EFF30583 		MRS r3, ipsr
+ 3296              	@ 0 "" 2
+ 3297              		.thumb
+ 3298              		.syntax unified
+ 3299 000e 002B     		cmp	r3, #0
+ 3300 0010 11D1     		bne	.L884
+ 3301              		.syntax divided
+ 3302              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3303 0012 EFF31083 		MRS r3, primask
+ 3304              	@ 0 "" 2
+ 3305              		.thumb
+ 3306              		.syntax unified
+ 3307 0016 002B     		cmp	r3, #0
+ 3308 0018 03D0     		beq	.L883
+ 3309 001a 144B     		ldr	r3, .L900
+ 3310 001c 1B68     		ldr	r3, [r3]
+ 3311 001e 022B     		cmp	r3, #2
+ 3312 0020 09D0     		beq	.L884
+ 3313              	.L883:
+ 3314 0022 2100     		movs	r1, r4
+ 3315 0024 FFF7FEFF 		bl	xQueueSemaphoreTake
+ 3316 0028 0128     		cmp	r0, #1
+ 3317 002a 10D0     		beq	.L899
+ 3318 002c 002C     		cmp	r4, #0
+ 3319 002e 16D0     		beq	.L885
+ 3320 0030 0220     		movs	r0, #2
+ 3321 0032 4042     		rsbs	r0, r0, #0
+ 3322 0034 0CE0     		b	.L877
+ 3323              	.L884:
+ 3324 0036 002C     		cmp	r4, #0
+ 3325 0038 14D1     		bne	.L881
+ 3326 003a 0021     		movs	r1, #0
+ 3327 003c 01AA     		add	r2, sp, #4
+ 3328 003e 0194     		str	r4, [sp, #4]
+ 3329 0040 FFF7FEFF 		bl	xQueueReceiveFromISR
+ 3330 0044 0128     		cmp	r0, #1
+ 3331 0046 0AD1     		bne	.L885
+ 3332 0048 019B     		ldr	r3, [sp, #4]
+ 3333 004a 002B     		cmp	r3, #0
+ 3334 004c 02D1     		bne	.L886
+ 3335              	.L899:
+ 3336 004e 0020     		movs	r0, #0
+ 3337              	.L877:
+ 3338 0050 02B0     		add	sp, sp, #8
+ 3339              		@ sp needed
+ 3340 0052 10BD     		pop	{r4, pc}
+ 3341              	.L886:
+ 3342 0054 8022     		movs	r2, #128
+ 3343 0056 064B     		ldr	r3, .L900+4
+ 3344 0058 5205     		lsls	r2, r2, #21
+ 3345 005a 1A60     		str	r2, [r3]
+ 3346 005c F7E7     		b	.L899
+ 3347              	.L885:
+ 3348 005e 0320     		movs	r0, #3
+ARM GAS  /tmp/ccqaOqW9.s 			page 58
+
+
+ 3349 0060 4042     		rsbs	r0, r0, #0
+ 3350 0062 F5E7     		b	.L877
+ 3351              	.L881:
+ 3352 0064 0420     		movs	r0, #4
+ 3353 0066 4042     		rsbs	r0, r0, #0
+ 3354 0068 F2E7     		b	.L877
+ 3355              	.L901:
+ 3356 006a C046     		.align	2
+ 3357              	.L900:
+ 3358 006c 00000000 		.word	.LANCHOR0
+ 3359 0070 04ED00E0 		.word	-536810236
+ 3361              		.section	.text.osSemaphoreRelease,"ax",%progbits
+ 3362              		.align	1
+ 3363              		.p2align 2,,3
+ 3364              		.global	osSemaphoreRelease
+ 3365              		.syntax unified
+ 3366              		.code	16
+ 3367              		.thumb_func
+ 3368              		.fpu softvfp
+ 3370              	osSemaphoreRelease:
+ 3371              		@ args = 0, pretend = 0, frame = 8
+ 3372              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3373 0000 00B5     		push	{lr}
+ 3374 0002 83B0     		sub	sp, sp, #12
+ 3375 0004 0028     		cmp	r0, #0
+ 3376 0006 27D0     		beq	.L911
+ 3377              		.syntax divided
+ 3378              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3379 0008 EFF30583 		MRS r3, ipsr
+ 3380              	@ 0 "" 2
+ 3381              		.thumb
+ 3382              		.syntax unified
+ 3383 000c 002B     		cmp	r3, #0
+ 3384 000e 11D1     		bne	.L908
+ 3385              		.syntax divided
+ 3386              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3387 0010 EFF31083 		MRS r3, primask
+ 3388              	@ 0 "" 2
+ 3389              		.thumb
+ 3390              		.syntax unified
+ 3391 0014 002B     		cmp	r3, #0
+ 3392 0016 03D0     		beq	.L907
+ 3393 0018 114B     		ldr	r3, .L923
+ 3394 001a 1B68     		ldr	r3, [r3]
+ 3395 001c 022B     		cmp	r3, #2
+ 3396 001e 09D0     		beq	.L908
+ 3397              	.L907:
+ 3398 0020 0023     		movs	r3, #0
+ 3399 0022 0022     		movs	r2, #0
+ 3400 0024 0021     		movs	r1, #0
+ 3401 0026 FFF7FEFF 		bl	xQueueGenericSend
+ 3402 002a 0128     		cmp	r0, #1
+ 3403 002c 11D1     		bne	.L905
+ 3404              	.L922:
+ 3405 002e 0020     		movs	r0, #0
+ 3406              	.L902:
+ 3407 0030 03B0     		add	sp, sp, #12
+ARM GAS  /tmp/ccqaOqW9.s 			page 59
+
+
+ 3408              		@ sp needed
+ 3409 0032 00BD     		pop	{pc}
+ 3410              	.L908:
+ 3411 0034 0023     		movs	r3, #0
+ 3412 0036 01A9     		add	r1, sp, #4
+ 3413 0038 0193     		str	r3, [sp, #4]
+ 3414 003a FFF7FEFF 		bl	xQueueGiveFromISR
+ 3415 003e 0128     		cmp	r0, #1
+ 3416 0040 07D1     		bne	.L905
+ 3417 0042 019B     		ldr	r3, [sp, #4]
+ 3418 0044 002B     		cmp	r3, #0
+ 3419 0046 F2D0     		beq	.L922
+ 3420 0048 8022     		movs	r2, #128
+ 3421 004a 064B     		ldr	r3, .L923+4
+ 3422 004c 5205     		lsls	r2, r2, #21
+ 3423 004e 1A60     		str	r2, [r3]
+ 3424 0050 EDE7     		b	.L922
+ 3425              	.L905:
+ 3426 0052 0320     		movs	r0, #3
+ 3427 0054 4042     		rsbs	r0, r0, #0
+ 3428 0056 EBE7     		b	.L902
+ 3429              	.L911:
+ 3430 0058 0420     		movs	r0, #4
+ 3431 005a 4042     		rsbs	r0, r0, #0
+ 3432 005c E8E7     		b	.L902
+ 3433              	.L924:
+ 3434 005e C046     		.align	2
+ 3435              	.L923:
+ 3436 0060 00000000 		.word	.LANCHOR0
+ 3437 0064 04ED00E0 		.word	-536810236
+ 3439              		.section	.text.osSemaphoreGetCount,"ax",%progbits
+ 3440              		.align	1
+ 3441              		.p2align 2,,3
+ 3442              		.global	osSemaphoreGetCount
+ 3443              		.syntax unified
+ 3444              		.code	16
+ 3445              		.thumb_func
+ 3446              		.fpu softvfp
+ 3448              	osSemaphoreGetCount:
+ 3449              		@ args = 0, pretend = 0, frame = 0
+ 3450              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3451 0000 10B5     		push	{r4, lr}
+ 3452 0002 0028     		cmp	r0, #0
+ 3453 0004 11D0     		beq	.L930
+ 3454              		.syntax divided
+ 3455              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3456 0006 EFF30583 		MRS r3, ipsr
+ 3457              	@ 0 "" 2
+ 3458              		.thumb
+ 3459              		.syntax unified
+ 3460 000a 002B     		cmp	r3, #0
+ 3461 000c 0AD1     		bne	.L929
+ 3462              		.syntax divided
+ 3463              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3464 000e EFF31083 		MRS r3, primask
+ 3465              	@ 0 "" 2
+ 3466              		.thumb
+ARM GAS  /tmp/ccqaOqW9.s 			page 60
+
+
+ 3467              		.syntax unified
+ 3468 0012 002B     		cmp	r3, #0
+ 3469 0014 03D0     		beq	.L928
+ 3470 0016 064B     		ldr	r3, .L937
+ 3471 0018 1B68     		ldr	r3, [r3]
+ 3472 001a 022B     		cmp	r3, #2
+ 3473 001c 02D0     		beq	.L929
+ 3474              	.L928:
+ 3475 001e FFF7FEFF 		bl	uxQueueMessagesWaiting
+ 3476              	.L925:
+ 3477              		@ sp needed
+ 3478 0022 10BD     		pop	{r4, pc}
+ 3479              	.L929:
+ 3480 0024 FFF7FEFF 		bl	uxQueueMessagesWaitingFromISR
+ 3481 0028 FBE7     		b	.L925
+ 3482              	.L930:
+ 3483 002a 0020     		movs	r0, #0
+ 3484 002c F9E7     		b	.L925
+ 3485              	.L938:
+ 3486 002e C046     		.align	2
+ 3487              	.L937:
+ 3488 0030 00000000 		.word	.LANCHOR0
+ 3490              		.section	.text.osSemaphoreDelete,"ax",%progbits
+ 3491              		.align	1
+ 3492              		.p2align 2,,3
+ 3493              		.global	osSemaphoreDelete
+ 3494              		.syntax unified
+ 3495              		.code	16
+ 3496              		.thumb_func
+ 3497              		.fpu softvfp
+ 3499              	osSemaphoreDelete:
+ 3500              		@ args = 0, pretend = 0, frame = 0
+ 3501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3502 0000 10B5     		push	{r4, lr}
+ 3503 0002 0400     		movs	r4, r0
+ 3504              		.syntax divided
+ 3505              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3506 0004 EFF30583 		MRS r3, ipsr
+ 3507              	@ 0 "" 2
+ 3508              		.thumb
+ 3509              		.syntax unified
+ 3510 0008 002B     		cmp	r3, #0
+ 3511 000a 11D1     		bne	.L943
+ 3512              		.syntax divided
+ 3513              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3514 000c EFF31083 		MRS r3, primask
+ 3515              	@ 0 "" 2
+ 3516              		.thumb
+ 3517              		.syntax unified
+ 3518 0010 002B     		cmp	r3, #0
+ 3519 0012 09D1     		bne	.L951
+ 3520              	.L942:
+ 3521 0014 002C     		cmp	r4, #0
+ 3522 0016 0ED0     		beq	.L944
+ 3523 0018 2000     		movs	r0, r4
+ 3524 001a FFF7FEFF 		bl	vQueueUnregisterQueue
+ 3525 001e 2000     		movs	r0, r4
+ARM GAS  /tmp/ccqaOqW9.s 			page 61
+
+
+ 3526 0020 FFF7FEFF 		bl	vQueueDelete
+ 3527 0024 0020     		movs	r0, #0
+ 3528              	.L939:
+ 3529              		@ sp needed
+ 3530 0026 10BD     		pop	{r4, pc}
+ 3531              	.L951:
+ 3532 0028 044B     		ldr	r3, .L952
+ 3533 002a 1B68     		ldr	r3, [r3]
+ 3534 002c 022B     		cmp	r3, #2
+ 3535 002e F1D1     		bne	.L942
+ 3536              	.L943:
+ 3537 0030 0620     		movs	r0, #6
+ 3538 0032 4042     		rsbs	r0, r0, #0
+ 3539 0034 F7E7     		b	.L939
+ 3540              	.L944:
+ 3541 0036 0420     		movs	r0, #4
+ 3542 0038 4042     		rsbs	r0, r0, #0
+ 3543 003a F4E7     		b	.L939
+ 3544              	.L953:
+ 3545              		.align	2
+ 3546              	.L952:
+ 3547 003c 00000000 		.word	.LANCHOR0
+ 3549              		.section	.text.osMessageQueueNew,"ax",%progbits
+ 3550              		.align	1
+ 3551              		.p2align 2,,3
+ 3552              		.global	osMessageQueueNew
+ 3553              		.syntax unified
+ 3554              		.code	16
+ 3555              		.thumb_func
+ 3556              		.fpu softvfp
+ 3558              	osMessageQueueNew:
+ 3559              		@ args = 0, pretend = 0, frame = 0
+ 3560              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3561 0000 70B5     		push	{r4, r5, r6, lr}
+ 3562 0002 1400     		movs	r4, r2
+ 3563 0004 82B0     		sub	sp, sp, #8
+ 3564              		.syntax divided
+ 3565              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3566 0006 EFF30583 		MRS r3, ipsr
+ 3567              	@ 0 "" 2
+ 3568              		.thumb
+ 3569              		.syntax unified
+ 3570 000a 002B     		cmp	r3, #0
+ 3571 000c 17D1     		bne	.L958
+ 3572              		.syntax divided
+ 3573              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3574 000e EFF31083 		MRS r3, primask
+ 3575              	@ 0 "" 2
+ 3576              		.thumb
+ 3577              		.syntax unified
+ 3578 0012 002B     		cmp	r3, #0
+ 3579 0014 17D1     		bne	.L983
+ 3580 0016 0028     		cmp	r0, #0
+ 3581 0018 11D0     		beq	.L958
+ 3582              	.L985:
+ 3583 001a 0029     		cmp	r1, #0
+ 3584 001c 0FD0     		beq	.L958
+ARM GAS  /tmp/ccqaOqW9.s 			page 62
+
+
+ 3585 001e 002C     		cmp	r4, #0
+ 3586 0020 2CD0     		beq	.L959
+ 3587 0022 A368     		ldr	r3, [r4, #8]
+ 3588 0024 002B     		cmp	r3, #0
+ 3589 0026 15D0     		beq	.L960
+ 3590 0028 E268     		ldr	r2, [r4, #12]
+ 3591 002a 4F2A     		cmp	r2, #79
+ 3592 002c 07D9     		bls	.L958
+ 3593 002e 2269     		ldr	r2, [r4, #16]
+ 3594 0030 002A     		cmp	r2, #0
+ 3595 0032 04D0     		beq	.L958
+ 3596 0034 0D00     		movs	r5, r1
+ 3597 0036 4543     		muls	r5, r0
+ 3598 0038 6669     		ldr	r6, [r4, #20]
+ 3599 003a AE42     		cmp	r6, r5
+ 3600 003c 24D2     		bcs	.L984
+ 3601              	.L958:
+ 3602 003e 0025     		movs	r5, #0
+ 3603              	.L954:
+ 3604 0040 2800     		movs	r0, r5
+ 3605 0042 02B0     		add	sp, sp, #8
+ 3606              		@ sp needed
+ 3607 0044 70BD     		pop	{r4, r5, r6, pc}
+ 3608              	.L983:
+ 3609 0046 144B     		ldr	r3, .L986
+ 3610 0048 1B68     		ldr	r3, [r3]
+ 3611 004a 022B     		cmp	r3, #2
+ 3612 004c F7D0     		beq	.L958
+ 3613 004e 0028     		cmp	r0, #0
+ 3614 0050 E3D1     		bne	.L985
+ 3615 0052 F4E7     		b	.L958
+ 3616              	.L960:
+ 3617 0054 E368     		ldr	r3, [r4, #12]
+ 3618 0056 002B     		cmp	r3, #0
+ 3619 0058 F1D1     		bne	.L958
+ 3620 005a 2369     		ldr	r3, [r4, #16]
+ 3621 005c 002B     		cmp	r3, #0
+ 3622 005e EED1     		bne	.L958
+ 3623 0060 6369     		ldr	r3, [r4, #20]
+ 3624 0062 002B     		cmp	r3, #0
+ 3625 0064 EBD1     		bne	.L958
+ 3626 0066 0022     		movs	r2, #0
+ 3627 0068 FFF7FEFF 		bl	xQueueGenericCreate
+ 3628 006c 051E     		subs	r5, r0, #0
+ 3629 006e E6D0     		beq	.L958
+ 3630 0070 2468     		ldr	r4, [r4]
+ 3631              	.L964:
+ 3632 0072 2100     		movs	r1, r4
+ 3633 0074 2800     		movs	r0, r5
+ 3634 0076 FFF7FEFF 		bl	vQueueAddToRegistry
+ 3635 007a E1E7     		b	.L954
+ 3636              	.L959:
+ 3637 007c 0022     		movs	r2, #0
+ 3638 007e FFF7FEFF 		bl	xQueueGenericCreate
+ 3639 0082 051E     		subs	r5, r0, #0
+ 3640 0084 DBD0     		beq	.L958
+ 3641 0086 F4E7     		b	.L964
+ARM GAS  /tmp/ccqaOqW9.s 			page 63
+
+
+ 3642              	.L984:
+ 3643 0088 0025     		movs	r5, #0
+ 3644 008a 0095     		str	r5, [sp]
+ 3645 008c FFF7FEFF 		bl	xQueueGenericCreateStatic
+ 3646 0090 051E     		subs	r5, r0, #0
+ 3647 0092 D4D0     		beq	.L958
+ 3648 0094 2468     		ldr	r4, [r4]
+ 3649 0096 ECE7     		b	.L964
+ 3650              	.L987:
+ 3651              		.align	2
+ 3652              	.L986:
+ 3653 0098 00000000 		.word	.LANCHOR0
+ 3655              		.section	.text.osMessageQueuePut,"ax",%progbits
+ 3656              		.align	1
+ 3657              		.p2align 2,,3
+ 3658              		.global	osMessageQueuePut
+ 3659              		.syntax unified
+ 3660              		.code	16
+ 3661              		.thumb_func
+ 3662              		.fpu softvfp
+ 3664              	osMessageQueuePut:
+ 3665              		@ args = 0, pretend = 0, frame = 8
+ 3666              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3667 0000 10B5     		push	{r4, lr}
+ 3668 0002 1C00     		movs	r4, r3
+ 3669 0004 82B0     		sub	sp, sp, #8
+ 3670              		.syntax divided
+ 3671              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3672 0006 EFF30583 		MRS r3, ipsr
+ 3673              	@ 0 "" 2
+ 3674              		.thumb
+ 3675              		.syntax unified
+ 3676 000a 002B     		cmp	r3, #0
+ 3677 000c 16D1     		bne	.L993
+ 3678              		.syntax divided
+ 3679              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3680 000e EFF31083 		MRS r3, primask
+ 3681              	@ 0 "" 2
+ 3682              		.thumb
+ 3683              		.syntax unified
+ 3684 0012 002B     		cmp	r3, #0
+ 3685 0014 0ED1     		bne	.L1022
+ 3686              	.L992:
+ 3687 0016 0028     		cmp	r0, #0
+ 3688 0018 2BD0     		beq	.L990
+ 3689 001a 0029     		cmp	r1, #0
+ 3690 001c 29D0     		beq	.L990
+ 3691 001e 0023     		movs	r3, #0
+ 3692 0020 2200     		movs	r2, r4
+ 3693 0022 FFF7FEFF 		bl	xQueueGenericSend
+ 3694 0026 0128     		cmp	r0, #1
+ 3695 0028 18D0     		beq	.L1021
+ 3696 002a 002C     		cmp	r4, #0
+ 3697 002c 1ED0     		beq	.L995
+ 3698 002e 0220     		movs	r0, #2
+ 3699 0030 4042     		rsbs	r0, r0, #0
+ 3700 0032 14E0     		b	.L988
+ARM GAS  /tmp/ccqaOqW9.s 			page 64
+
+
+ 3701              	.L1022:
+ 3702 0034 104B     		ldr	r3, .L1023
+ 3703 0036 1B68     		ldr	r3, [r3]
+ 3704 0038 022B     		cmp	r3, #2
+ 3705 003a ECD1     		bne	.L992
+ 3706              	.L993:
+ 3707 003c 0028     		cmp	r0, #0
+ 3708 003e 18D0     		beq	.L990
+ 3709 0040 0029     		cmp	r1, #0
+ 3710 0042 16D0     		beq	.L990
+ 3711 0044 002C     		cmp	r4, #0
+ 3712 0046 14D1     		bne	.L990
+ 3713 0048 0023     		movs	r3, #0
+ 3714 004a 01AA     		add	r2, sp, #4
+ 3715 004c 0194     		str	r4, [sp, #4]
+ 3716 004e FFF7FEFF 		bl	xQueueGenericSendFromISR
+ 3717 0052 0128     		cmp	r0, #1
+ 3718 0054 0AD1     		bne	.L995
+ 3719 0056 019B     		ldr	r3, [sp, #4]
+ 3720 0058 002B     		cmp	r3, #0
+ 3721 005a 02D1     		bne	.L996
+ 3722              	.L1021:
+ 3723 005c 0020     		movs	r0, #0
+ 3724              	.L988:
+ 3725 005e 02B0     		add	sp, sp, #8
+ 3726              		@ sp needed
+ 3727 0060 10BD     		pop	{r4, pc}
+ 3728              	.L996:
+ 3729 0062 8022     		movs	r2, #128
+ 3730 0064 054B     		ldr	r3, .L1023+4
+ 3731 0066 5205     		lsls	r2, r2, #21
+ 3732 0068 1A60     		str	r2, [r3]
+ 3733 006a F7E7     		b	.L1021
+ 3734              	.L995:
+ 3735 006c 0320     		movs	r0, #3
+ 3736 006e 4042     		rsbs	r0, r0, #0
+ 3737 0070 F5E7     		b	.L988
+ 3738              	.L990:
+ 3739 0072 0420     		movs	r0, #4
+ 3740 0074 4042     		rsbs	r0, r0, #0
+ 3741 0076 F2E7     		b	.L988
+ 3742              	.L1024:
+ 3743              		.align	2
+ 3744              	.L1023:
+ 3745 0078 00000000 		.word	.LANCHOR0
+ 3746 007c 04ED00E0 		.word	-536810236
+ 3748              		.section	.text.osMessageQueueGet,"ax",%progbits
+ 3749              		.align	1
+ 3750              		.p2align 2,,3
+ 3751              		.global	osMessageQueueGet
+ 3752              		.syntax unified
+ 3753              		.code	16
+ 3754              		.thumb_func
+ 3755              		.fpu softvfp
+ 3757              	osMessageQueueGet:
+ 3758              		@ args = 0, pretend = 0, frame = 8
+ 3759              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccqaOqW9.s 			page 65
+
+
+ 3760 0000 10B5     		push	{r4, lr}
+ 3761 0002 1C00     		movs	r4, r3
+ 3762 0004 82B0     		sub	sp, sp, #8
+ 3763              		.syntax divided
+ 3764              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3765 0006 EFF30583 		MRS r3, ipsr
+ 3766              	@ 0 "" 2
+ 3767              		.thumb
+ 3768              		.syntax unified
+ 3769 000a 002B     		cmp	r3, #0
+ 3770 000c 15D1     		bne	.L1030
+ 3771              		.syntax divided
+ 3772              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3773 000e EFF31083 		MRS r3, primask
+ 3774              	@ 0 "" 2
+ 3775              		.thumb
+ 3776              		.syntax unified
+ 3777 0012 002B     		cmp	r3, #0
+ 3778 0014 0DD1     		bne	.L1059
+ 3779              	.L1029:
+ 3780 0016 0028     		cmp	r0, #0
+ 3781 0018 29D0     		beq	.L1027
+ 3782 001a 0029     		cmp	r1, #0
+ 3783 001c 27D0     		beq	.L1027
+ 3784 001e 2200     		movs	r2, r4
+ 3785 0020 FFF7FEFF 		bl	xQueueReceive
+ 3786 0024 0128     		cmp	r0, #1
+ 3787 0026 17D0     		beq	.L1058
+ 3788 0028 002C     		cmp	r4, #0
+ 3789 002a 1DD0     		beq	.L1032
+ 3790 002c 0220     		movs	r0, #2
+ 3791 002e 4042     		rsbs	r0, r0, #0
+ 3792 0030 13E0     		b	.L1025
+ 3793              	.L1059:
+ 3794 0032 104B     		ldr	r3, .L1060
+ 3795 0034 1B68     		ldr	r3, [r3]
+ 3796 0036 022B     		cmp	r3, #2
+ 3797 0038 EDD1     		bne	.L1029
+ 3798              	.L1030:
+ 3799 003a 0028     		cmp	r0, #0
+ 3800 003c 17D0     		beq	.L1027
+ 3801 003e 0029     		cmp	r1, #0
+ 3802 0040 15D0     		beq	.L1027
+ 3803 0042 002C     		cmp	r4, #0
+ 3804 0044 13D1     		bne	.L1027
+ 3805 0046 01AA     		add	r2, sp, #4
+ 3806 0048 0194     		str	r4, [sp, #4]
+ 3807 004a FFF7FEFF 		bl	xQueueReceiveFromISR
+ 3808 004e 0128     		cmp	r0, #1
+ 3809 0050 0AD1     		bne	.L1032
+ 3810 0052 019B     		ldr	r3, [sp, #4]
+ 3811 0054 002B     		cmp	r3, #0
+ 3812 0056 02D1     		bne	.L1033
+ 3813              	.L1058:
+ 3814 0058 0020     		movs	r0, #0
+ 3815              	.L1025:
+ 3816 005a 02B0     		add	sp, sp, #8
+ARM GAS  /tmp/ccqaOqW9.s 			page 66
+
+
+ 3817              		@ sp needed
+ 3818 005c 10BD     		pop	{r4, pc}
+ 3819              	.L1033:
+ 3820 005e 8022     		movs	r2, #128
+ 3821 0060 054B     		ldr	r3, .L1060+4
+ 3822 0062 5205     		lsls	r2, r2, #21
+ 3823 0064 1A60     		str	r2, [r3]
+ 3824 0066 F7E7     		b	.L1058
+ 3825              	.L1032:
+ 3826 0068 0320     		movs	r0, #3
+ 3827 006a 4042     		rsbs	r0, r0, #0
+ 3828 006c F5E7     		b	.L1025
+ 3829              	.L1027:
+ 3830 006e 0420     		movs	r0, #4
+ 3831 0070 4042     		rsbs	r0, r0, #0
+ 3832 0072 F2E7     		b	.L1025
+ 3833              	.L1061:
+ 3834              		.align	2
+ 3835              	.L1060:
+ 3836 0074 00000000 		.word	.LANCHOR0
+ 3837 0078 04ED00E0 		.word	-536810236
+ 3839              		.section	.text.osMessageQueueGetCapacity,"ax",%progbits
+ 3840              		.align	1
+ 3841              		.p2align 2,,3
+ 3842              		.global	osMessageQueueGetCapacity
+ 3843              		.syntax unified
+ 3844              		.code	16
+ 3845              		.thumb_func
+ 3846              		.fpu softvfp
+ 3848              	osMessageQueueGetCapacity:
+ 3849              		@ args = 0, pretend = 0, frame = 0
+ 3850              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3851              		@ link register save eliminated.
+ 3852 0000 0028     		cmp	r0, #0
+ 3853 0002 01D0     		beq	.L1064
+ 3854 0004 C06B     		ldr	r0, [r0, #60]
+ 3855              	.L1062:
+ 3856              		@ sp needed
+ 3857 0006 7047     		bx	lr
+ 3858              	.L1064:
+ 3859 0008 0020     		movs	r0, #0
+ 3860 000a FCE7     		b	.L1062
+ 3862              		.section	.text.osMessageQueueGetMsgSize,"ax",%progbits
+ 3863              		.align	1
+ 3864              		.p2align 2,,3
+ 3865              		.global	osMessageQueueGetMsgSize
+ 3866              		.syntax unified
+ 3867              		.code	16
+ 3868              		.thumb_func
+ 3869              		.fpu softvfp
+ 3871              	osMessageQueueGetMsgSize:
+ 3872              		@ args = 0, pretend = 0, frame = 0
+ 3873              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3874              		@ link register save eliminated.
+ 3875 0000 0028     		cmp	r0, #0
+ 3876 0002 01D0     		beq	.L1067
+ 3877 0004 006C     		ldr	r0, [r0, #64]
+ARM GAS  /tmp/ccqaOqW9.s 			page 67
+
+
+ 3878              	.L1065:
+ 3879              		@ sp needed
+ 3880 0006 7047     		bx	lr
+ 3881              	.L1067:
+ 3882 0008 0020     		movs	r0, #0
+ 3883 000a FCE7     		b	.L1065
+ 3885              		.section	.text.osMessageQueueGetCount,"ax",%progbits
+ 3886              		.align	1
+ 3887              		.p2align 2,,3
+ 3888              		.global	osMessageQueueGetCount
+ 3889              		.syntax unified
+ 3890              		.code	16
+ 3891              		.thumb_func
+ 3892              		.fpu softvfp
+ 3894              	osMessageQueueGetCount:
+ 3895              		@ args = 0, pretend = 0, frame = 0
+ 3896              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3897 0000 10B5     		push	{r4, lr}
+ 3898 0002 0028     		cmp	r0, #0
+ 3899 0004 11D0     		beq	.L1073
+ 3900              		.syntax divided
+ 3901              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3902 0006 EFF30583 		MRS r3, ipsr
+ 3903              	@ 0 "" 2
+ 3904              		.thumb
+ 3905              		.syntax unified
+ 3906 000a 002B     		cmp	r3, #0
+ 3907 000c 0AD1     		bne	.L1072
+ 3908              		.syntax divided
+ 3909              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3910 000e EFF31083 		MRS r3, primask
+ 3911              	@ 0 "" 2
+ 3912              		.thumb
+ 3913              		.syntax unified
+ 3914 0012 002B     		cmp	r3, #0
+ 3915 0014 03D0     		beq	.L1071
+ 3916 0016 064B     		ldr	r3, .L1080
+ 3917 0018 1B68     		ldr	r3, [r3]
+ 3918 001a 022B     		cmp	r3, #2
+ 3919 001c 02D0     		beq	.L1072
+ 3920              	.L1071:
+ 3921 001e FFF7FEFF 		bl	uxQueueMessagesWaiting
+ 3922              	.L1068:
+ 3923              		@ sp needed
+ 3924 0022 10BD     		pop	{r4, pc}
+ 3925              	.L1072:
+ 3926 0024 FFF7FEFF 		bl	uxQueueMessagesWaitingFromISR
+ 3927 0028 FBE7     		b	.L1068
+ 3928              	.L1073:
+ 3929 002a 0020     		movs	r0, #0
+ 3930 002c F9E7     		b	.L1068
+ 3931              	.L1081:
+ 3932 002e C046     		.align	2
+ 3933              	.L1080:
+ 3934 0030 00000000 		.word	.LANCHOR0
+ 3936              		.section	.text.osMessageQueueGetSpace,"ax",%progbits
+ 3937              		.align	1
+ARM GAS  /tmp/ccqaOqW9.s 			page 68
+
+
+ 3938              		.p2align 2,,3
+ 3939              		.global	osMessageQueueGetSpace
+ 3940              		.syntax unified
+ 3941              		.code	16
+ 3942              		.thumb_func
+ 3943              		.fpu softvfp
+ 3945              	osMessageQueueGetSpace:
+ 3946              		@ args = 0, pretend = 0, frame = 0
+ 3947              		@ frame_needed = 0, uses_anonymous_args = 0
+ 3948 0000 10B5     		push	{r4, lr}
+ 3949 0002 041E     		subs	r4, r0, #0
+ 3950 0004 19D0     		beq	.L1087
+ 3951              		.syntax divided
+ 3952              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3953 0006 EFF30583 		MRS r3, ipsr
+ 3954              	@ 0 "" 2
+ 3955              		.thumb
+ 3956              		.syntax unified
+ 3957 000a 002B     		cmp	r3, #0
+ 3958 000c 0DD1     		bne	.L1086
+ 3959              		.syntax divided
+ 3960              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 3961 000e EFF31083 		MRS r3, primask
+ 3962              	@ 0 "" 2
+ 3963              		.thumb
+ 3964              		.syntax unified
+ 3965 0012 002B     		cmp	r3, #0
+ 3966 0014 03D0     		beq	.L1085
+ 3967 0016 0A4B     		ldr	r3, .L1094
+ 3968 0018 1B68     		ldr	r3, [r3]
+ 3969 001a 022B     		cmp	r3, #2
+ 3970 001c 05D0     		beq	.L1086
+ 3971              	.L1085:
+ 3972 001e 2000     		movs	r0, r4
+ 3973 0020 FFF7FEFF 		bl	uxQueueSpacesAvailable
+ 3974 0024 0400     		movs	r4, r0
+ 3975              	.L1082:
+ 3976 0026 2000     		movs	r0, r4
+ 3977              		@ sp needed
+ 3978 0028 10BD     		pop	{r4, pc}
+ 3979              	.L1086:
+ 3980 002a FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 3981 002e E36B     		ldr	r3, [r4, #60]
+ 3982 0030 A46B     		ldr	r4, [r4, #56]
+ 3983 0032 1C1B     		subs	r4, r3, r4
+ 3984 0034 FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 3985 0038 F5E7     		b	.L1082
+ 3986              	.L1087:
+ 3987 003a 0024     		movs	r4, #0
+ 3988 003c F3E7     		b	.L1082
+ 3989              	.L1095:
+ 3990 003e C046     		.align	2
+ 3991              	.L1094:
+ 3992 0040 00000000 		.word	.LANCHOR0
+ 3994              		.section	.text.osMessageQueueReset,"ax",%progbits
+ 3995              		.align	1
+ 3996              		.p2align 2,,3
+ARM GAS  /tmp/ccqaOqW9.s 			page 69
+
+
+ 3997              		.global	osMessageQueueReset
+ 3998              		.syntax unified
+ 3999              		.code	16
+ 4000              		.thumb_func
+ 4001              		.fpu softvfp
+ 4003              	osMessageQueueReset:
+ 4004              		@ args = 0, pretend = 0, frame = 0
+ 4005              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4006 0000 10B5     		push	{r4, lr}
+ 4007              		.syntax divided
+ 4008              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 4009 0002 EFF30583 		MRS r3, ipsr
+ 4010              	@ 0 "" 2
+ 4011              		.thumb
+ 4012              		.syntax unified
+ 4013 0006 002B     		cmp	r3, #0
+ 4014 0008 0ED1     		bne	.L1100
+ 4015              		.syntax divided
+ 4016              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 4017 000a EFF31083 		MRS r3, primask
+ 4018              	@ 0 "" 2
+ 4019              		.thumb
+ 4020              		.syntax unified
+ 4021 000e 002B     		cmp	r3, #0
+ 4022 0010 06D1     		bne	.L1108
+ 4023              	.L1099:
+ 4024 0012 0028     		cmp	r0, #0
+ 4025 0014 0BD0     		beq	.L1101
+ 4026 0016 0021     		movs	r1, #0
+ 4027 0018 FFF7FEFF 		bl	xQueueGenericReset
+ 4028 001c 0020     		movs	r0, #0
+ 4029              	.L1096:
+ 4030              		@ sp needed
+ 4031 001e 10BD     		pop	{r4, pc}
+ 4032              	.L1108:
+ 4033 0020 044B     		ldr	r3, .L1109
+ 4034 0022 1B68     		ldr	r3, [r3]
+ 4035 0024 022B     		cmp	r3, #2
+ 4036 0026 F4D1     		bne	.L1099
+ 4037              	.L1100:
+ 4038 0028 0620     		movs	r0, #6
+ 4039 002a 4042     		rsbs	r0, r0, #0
+ 4040 002c F7E7     		b	.L1096
+ 4041              	.L1101:
+ 4042 002e 0420     		movs	r0, #4
+ 4043 0030 4042     		rsbs	r0, r0, #0
+ 4044 0032 F4E7     		b	.L1096
+ 4045              	.L1110:
+ 4046              		.align	2
+ 4047              	.L1109:
+ 4048 0034 00000000 		.word	.LANCHOR0
+ 4050              		.section	.text.osMessageQueueDelete,"ax",%progbits
+ 4051              		.align	1
+ 4052              		.p2align 2,,3
+ 4053              		.global	osMessageQueueDelete
+ 4054              		.syntax unified
+ 4055              		.code	16
+ARM GAS  /tmp/ccqaOqW9.s 			page 70
+
+
+ 4056              		.thumb_func
+ 4057              		.fpu softvfp
+ 4059              	osMessageQueueDelete:
+ 4060              		@ args = 0, pretend = 0, frame = 0
+ 4061              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4062 0000 10B5     		push	{r4, lr}
+ 4063 0002 0400     		movs	r4, r0
+ 4064              		.syntax divided
+ 4065              	@ 209 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 4066 0004 EFF30583 		MRS r3, ipsr
+ 4067              	@ 0 "" 2
+ 4068              		.thumb
+ 4069              		.syntax unified
+ 4070 0008 002B     		cmp	r3, #0
+ 4071 000a 11D1     		bne	.L1115
+ 4072              		.syntax divided
+ 4073              	@ 386 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 4074 000c EFF31083 		MRS r3, primask
+ 4075              	@ 0 "" 2
+ 4076              		.thumb
+ 4077              		.syntax unified
+ 4078 0010 002B     		cmp	r3, #0
+ 4079 0012 09D1     		bne	.L1123
+ 4080              	.L1114:
+ 4081 0014 002C     		cmp	r4, #0
+ 4082 0016 0ED0     		beq	.L1116
+ 4083 0018 2000     		movs	r0, r4
+ 4084 001a FFF7FEFF 		bl	vQueueUnregisterQueue
+ 4085 001e 2000     		movs	r0, r4
+ 4086 0020 FFF7FEFF 		bl	vQueueDelete
+ 4087 0024 0020     		movs	r0, #0
+ 4088              	.L1111:
+ 4089              		@ sp needed
+ 4090 0026 10BD     		pop	{r4, pc}
+ 4091              	.L1123:
+ 4092 0028 044B     		ldr	r3, .L1124
+ 4093 002a 1B68     		ldr	r3, [r3]
+ 4094 002c 022B     		cmp	r3, #2
+ 4095 002e F1D1     		bne	.L1114
+ 4096              	.L1115:
+ 4097 0030 0620     		movs	r0, #6
+ 4098 0032 4042     		rsbs	r0, r0, #0
+ 4099 0034 F7E7     		b	.L1111
+ 4100              	.L1116:
+ 4101 0036 0420     		movs	r0, #4
+ 4102 0038 4042     		rsbs	r0, r0, #0
+ 4103 003a F4E7     		b	.L1111
+ 4104              	.L1125:
+ 4105              		.align	2
+ 4106              	.L1124:
+ 4107 003c 00000000 		.word	.LANCHOR0
+ 4109              		.section	.text.vApplicationGetIdleTaskMemory,"ax",%progbits
+ 4110              		.align	1
+ 4111              		.p2align 2,,3
+ 4112              		.global	vApplicationGetIdleTaskMemory
+ 4113              		.syntax unified
+ 4114              		.code	16
+ARM GAS  /tmp/ccqaOqW9.s 			page 71
+
+
+ 4115              		.thumb_func
+ 4116              		.fpu softvfp
+ 4118              	vApplicationGetIdleTaskMemory:
+ 4119              		@ args = 0, pretend = 0, frame = 0
+ 4120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4121              		@ link register save eliminated.
+ 4122 0000 034B     		ldr	r3, .L1127
+ 4123              		@ sp needed
+ 4124 0002 0360     		str	r3, [r0]
+ 4125 0004 034B     		ldr	r3, .L1127+4
+ 4126 0006 0B60     		str	r3, [r1]
+ 4127 0008 6023     		movs	r3, #96
+ 4128 000a 1360     		str	r3, [r2]
+ 4129 000c 7047     		bx	lr
+ 4130              	.L1128:
+ 4131 000e C046     		.align	2
+ 4132              	.L1127:
+ 4133 0010 00000000 		.word	.LANCHOR2
+ 4134 0014 00000000 		.word	Idle_Stack
+ 4136              		.section	.text.vApplicationGetTimerTaskMemory,"ax",%progbits
+ 4137              		.align	1
+ 4138              		.p2align 2,,3
+ 4139              		.global	vApplicationGetTimerTaskMemory
+ 4140              		.syntax unified
+ 4141              		.code	16
+ 4142              		.thumb_func
+ 4143              		.fpu softvfp
+ 4145              	vApplicationGetTimerTaskMemory:
+ 4146              		@ args = 0, pretend = 0, frame = 0
+ 4147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 4148              		@ link register save eliminated.
+ 4149 0000 034B     		ldr	r3, .L1130
+ 4150              		@ sp needed
+ 4151 0002 0360     		str	r3, [r0]
+ 4152 0004 034B     		ldr	r3, .L1130+4
+ 4153 0006 0B60     		str	r3, [r1]
+ 4154 0008 C023     		movs	r3, #192
+ 4155 000a 1360     		str	r3, [r2]
+ 4156 000c 7047     		bx	lr
+ 4157              	.L1131:
+ 4158 000e C046     		.align	2
+ 4159              	.L1130:
+ 4160 0010 00000000 		.word	.LANCHOR3
+ 4161 0014 00000000 		.word	Timer_Stack
+ 4163              		.section	.bss.Idle_Stack,"aw",%nobits
+ 4164              		.align	2
+ 4167              	Idle_Stack:
+ 4168 0000 00000000 		.space	384
+ 4168      00000000 
+ 4168      00000000 
+ 4168      00000000 
+ 4168      00000000 
+ 4169              		.section	.bss.Idle_TCB,"aw",%nobits
+ 4170              		.align	2
+ 4171              		.set	.LANCHOR2,. + 0
+ 4174              	Idle_TCB:
+ 4175 0000 00000000 		.space	92
+ARM GAS  /tmp/ccqaOqW9.s 			page 72
+
+
+ 4175      00000000 
+ 4175      00000000 
+ 4175      00000000 
+ 4175      00000000 
+ 4176              		.section	.bss.KernelState,"aw",%nobits
+ 4177              		.align	2
+ 4178              		.set	.LANCHOR0,. + 0
+ 4181              	KernelState:
+ 4182 0000 00000000 		.space	4
+ 4183              		.section	.bss.Timer_Stack,"aw",%nobits
+ 4184              		.align	2
+ 4187              	Timer_Stack:
+ 4188 0000 00000000 		.space	768
+ 4188      00000000 
+ 4188      00000000 
+ 4188      00000000 
+ 4188      00000000 
+ 4189              		.section	.bss.Timer_TCB,"aw",%nobits
+ 4190              		.align	2
+ 4191              		.set	.LANCHOR3,. + 0
+ 4194              	Timer_TCB:
+ 4195 0000 00000000 		.space	92
+ 4195      00000000 
+ 4195      00000000 
+ 4195      00000000 
+ 4195      00000000 
+ 4196              		.section	.rodata.CSWTCH.97,"a"
+ 4197              		.align	2
+ 4198              		.set	.LANCHOR1,. + 0
+ 4201              	CSWTCH.97:
+ 4202 0000 02000000 		.word	2
+ 4203 0004 01000000 		.word	1
+ 4204 0008 03000000 		.word	3
+ 4205 000c 03000000 		.word	3
+ 4206 0010 04000000 		.word	4
+ 4207              		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccqaOqW9.s 			page 73
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 cmsis_os2.c
+     /tmp/ccqaOqW9.s:14     .text.TimerCallback:0000000000000000 $t
+     /tmp/ccqaOqW9.s:22     .text.TimerCallback:0000000000000000 TimerCallback
+     /tmp/ccqaOqW9.s:37     .text.osKernelInitialize:0000000000000000 $t
+     /tmp/ccqaOqW9.s:45     .text.osKernelInitialize:0000000000000000 osKernelInitialize
+     /tmp/ccqaOqW9.s:91     .text.osKernelInitialize:0000000000000034 $d
+     /tmp/ccqaOqW9.s:94     .rodata.osKernelGetInfo.str1.4:0000000000000000 $d
+     /tmp/ccqaOqW9.s:98     .text.osKernelGetInfo:0000000000000000 $t
+     /tmp/ccqaOqW9.s:106    .text.osKernelGetInfo:0000000000000000 osKernelGetInfo
+     /tmp/ccqaOqW9.s:140    .text.osKernelGetInfo:0000000000000034 $d
+     /tmp/ccqaOqW9.s:144    .text.osKernelGetState:0000000000000000 $t
+     /tmp/ccqaOqW9.s:152    .text.osKernelGetState:0000000000000000 osKernelGetState
+     /tmp/ccqaOqW9.s:175    .text.osKernelGetState:0000000000000020 $d
+     /tmp/ccqaOqW9.s:178    .text.osKernelStart:0000000000000000 $t
+     /tmp/ccqaOqW9.s:186    .text.osKernelStart:0000000000000000 osKernelStart
+     /tmp/ccqaOqW9.s:234    .text.osKernelStart:000000000000003c $d
+     /tmp/ccqaOqW9.s:237    .text.osKernelLock:0000000000000000 $t
+     /tmp/ccqaOqW9.s:245    .text.osKernelLock:0000000000000000 osKernelLock
+     /tmp/ccqaOqW9.s:294    .text.osKernelLock:0000000000000040 $d
+     /tmp/ccqaOqW9.s:297    .text.osKernelUnlock:0000000000000000 $t
+     /tmp/ccqaOqW9.s:305    .text.osKernelUnlock:0000000000000000 osKernelUnlock
+     /tmp/ccqaOqW9.s:360    .text.osKernelUnlock:000000000000004c $d
+     /tmp/ccqaOqW9.s:363    .text.osKernelRestoreLock:0000000000000000 $t
+     /tmp/ccqaOqW9.s:371    .text.osKernelRestoreLock:0000000000000000 osKernelRestoreLock
+     /tmp/ccqaOqW9.s:434    .text.osKernelRestoreLock:000000000000005c $d
+     /tmp/ccqaOqW9.s:437    .text.osKernelGetTickCount:0000000000000000 $t
+     /tmp/ccqaOqW9.s:445    .text.osKernelGetTickCount:0000000000000000 osKernelGetTickCount
+     /tmp/ccqaOqW9.s:480    .text.osKernelGetTickCount:0000000000000028 $d
+     /tmp/ccqaOqW9.s:483    .text.osKernelGetTickFreq:0000000000000000 $t
+     /tmp/ccqaOqW9.s:491    .text.osKernelGetTickFreq:0000000000000000 osKernelGetTickFreq
+     /tmp/ccqaOqW9.s:502    .text.osKernelGetSysTimerCount:0000000000000000 $t
+     /tmp/ccqaOqW9.s:510    .text.osKernelGetSysTimerCount:0000000000000000 osKernelGetSysTimerCount
+     /tmp/ccqaOqW9.s:539    .text.osKernelGetSysTimerCount:000000000000001c $d
+     /tmp/ccqaOqW9.s:542    .text.osKernelGetSysTimerFreq:0000000000000000 $t
+     /tmp/ccqaOqW9.s:550    .text.osKernelGetSysTimerFreq:0000000000000000 osKernelGetSysTimerFreq
+     /tmp/ccqaOqW9.s:561    .text.osKernelGetSysTimerFreq:0000000000000008 $d
+     /tmp/ccqaOqW9.s:564    .text.osThreadNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:572    .text.osThreadNew:0000000000000000 osThreadNew
+     /tmp/ccqaOqW9.s:697    .text.osThreadNew:00000000000000c8 $d
+     /tmp/ccqaOqW9.s:700    .text.osThreadGetName:0000000000000000 $t
+     /tmp/ccqaOqW9.s:708    .text.osThreadGetName:0000000000000000 osThreadGetName
+     /tmp/ccqaOqW9.s:745    .text.osThreadGetName:0000000000000028 $d
+     /tmp/ccqaOqW9.s:748    .text.osThreadGetId:0000000000000000 $t
+     /tmp/ccqaOqW9.s:756    .text.osThreadGetId:0000000000000000 osThreadGetId
+     /tmp/ccqaOqW9.s:791    .text.osThreadGetId:0000000000000024 $d
+     /tmp/ccqaOqW9.s:794    .text.osThreadGetState:0000000000000000 $t
+     /tmp/ccqaOqW9.s:802    .text.osThreadGetState:0000000000000000 osThreadGetState
+     /tmp/ccqaOqW9.s:848    .text.osThreadGetState:0000000000000038 $d
+     /tmp/ccqaOqW9.s:852    .text.osThreadGetStackSpace:0000000000000000 $t
+     /tmp/ccqaOqW9.s:860    .text.osThreadGetStackSpace:0000000000000000 osThreadGetStackSpace
+     /tmp/ccqaOqW9.s:898    .text.osThreadGetStackSpace:0000000000000028 $d
+     /tmp/ccqaOqW9.s:901    .text.osThreadGetStackSize:0000000000000000 $t
+     /tmp/ccqaOqW9.s:909    .text.osThreadGetStackSize:0000000000000000 osThreadGetStackSize
+     /tmp/ccqaOqW9.s:918    .text.osThreadSetPriority:0000000000000000 $t
+     /tmp/ccqaOqW9.s:926    .text.osThreadSetPriority:0000000000000000 osThreadSetPriority
+     /tmp/ccqaOqW9.s:973    .text.osThreadSetPriority:0000000000000038 $d
+ARM GAS  /tmp/ccqaOqW9.s 			page 74
+
+
+     /tmp/ccqaOqW9.s:976    .text.osThreadGetPriority:0000000000000000 $t
+     /tmp/ccqaOqW9.s:984    .text.osThreadGetPriority:0000000000000000 osThreadGetPriority
+     /tmp/ccqaOqW9.s:1023   .text.osThreadGetPriority:000000000000002c $d
+     /tmp/ccqaOqW9.s:1026   .text.osThreadYield:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1034   .text.osThreadYield:0000000000000000 osThreadYield
+     /tmp/ccqaOqW9.s:1071   .text.osThreadYield:0000000000000028 $d
+     /tmp/ccqaOqW9.s:1074   .text.osThreadSuspend:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1082   .text.osThreadSuspend:0000000000000000 osThreadSuspend
+     /tmp/ccqaOqW9.s:1126   .text.osThreadSuspend:0000000000000034 $d
+     /tmp/ccqaOqW9.s:1129   .text.osThreadResume:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1137   .text.osThreadResume:0000000000000000 osThreadResume
+     /tmp/ccqaOqW9.s:1181   .text.osThreadResume:0000000000000034 $d
+     /tmp/ccqaOqW9.s:1184   .text.osThreadExit:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1192   .text.osThreadExit:0000000000000000 osThreadExit
+     /tmp/ccqaOqW9.s:1203   .text.osThreadTerminate:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1211   .text.osThreadTerminate:0000000000000000 osThreadTerminate
+     /tmp/ccqaOqW9.s:1265   .text.osThreadTerminate:0000000000000048 $d
+     /tmp/ccqaOqW9.s:1268   .text.osThreadGetCount:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1276   .text.osThreadGetCount:0000000000000000 osThreadGetCount
+     /tmp/ccqaOqW9.s:1311   .text.osThreadGetCount:0000000000000024 $d
+     /tmp/ccqaOqW9.s:1314   .text.osThreadEnumerate:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1322   .text.osThreadEnumerate:0000000000000000 osThreadEnumerate
+     /tmp/ccqaOqW9.s:1401   .text.osThreadEnumerate:000000000000007c $d
+     /tmp/ccqaOqW9.s:1404   .text.osThreadFlagsSet:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1412   .text.osThreadFlagsSet:0000000000000000 osThreadFlagsSet
+     /tmp/ccqaOqW9.s:1492   .text.osThreadFlagsSet:0000000000000080 $d
+     /tmp/ccqaOqW9.s:1496   .text.osThreadFlagsClear:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1504   .text.osThreadFlagsClear:0000000000000000 osThreadFlagsClear
+     /tmp/ccqaOqW9.s:1572   .text.osThreadFlagsClear:0000000000000064 $d
+     /tmp/ccqaOqW9.s:1575   .text.osThreadFlagsGet:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1583   .text.osThreadFlagsGet:0000000000000000 osThreadFlagsGet
+     /tmp/ccqaOqW9.s:1632   .text.osThreadFlagsGet:0000000000000040 $d
+     /tmp/ccqaOqW9.s:1635   .text.osThreadFlagsWait:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1643   .text.osThreadFlagsWait:0000000000000000 osThreadFlagsWait
+     /tmp/ccqaOqW9.s:1853   .text.osThreadFlagsWait:0000000000000170 $d
+     /tmp/ccqaOqW9.s:1856   .text.osDelay:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1864   .text.osDelay:0000000000000000 osDelay
+     /tmp/ccqaOqW9.s:1907   .text.osDelay:0000000000000030 $d
+     /tmp/ccqaOqW9.s:1910   .text.osDelayUntil:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1918   .text.osDelayUntil:0000000000000000 osDelayUntil
+     /tmp/ccqaOqW9.s:1962   .text.osDelayUntil:0000000000000038 $d
+     /tmp/ccqaOqW9.s:1965   .text.osTimerNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:1973   .text.osTimerNew:0000000000000000 osTimerNew
+     /tmp/ccqaOqW9.s:2055   .text.osTimerNew:0000000000000080 $d
+     /tmp/ccqaOqW9.s:2059   .text.osTimerGetName:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2067   .text.osTimerGetName:0000000000000000 osTimerGetName
+     /tmp/ccqaOqW9.s:2104   .text.osTimerGetName:0000000000000028 $d
+     /tmp/ccqaOqW9.s:2107   .text.osTimerStart:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2115   .text.osTimerStart:0000000000000000 osTimerStart
+     /tmp/ccqaOqW9.s:2171   .text.osTimerStart:000000000000004c $d
+     /tmp/ccqaOqW9.s:2174   .text.osTimerStop:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2182   .text.osTimerStop:0000000000000000 osTimerStop
+     /tmp/ccqaOqW9.s:2245   .text.osTimerStop:0000000000000058 $d
+     /tmp/ccqaOqW9.s:2248   .text.osTimerIsRunning:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2256   .text.osTimerIsRunning:0000000000000000 osTimerIsRunning
+     /tmp/ccqaOqW9.s:2294   .text.osTimerIsRunning:0000000000000028 $d
+     /tmp/ccqaOqW9.s:2297   .text.osTimerDelete:0000000000000000 $t
+ARM GAS  /tmp/ccqaOqW9.s 			page 75
+
+
+     /tmp/ccqaOqW9.s:2305   .text.osTimerDelete:0000000000000000 osTimerDelete
+     /tmp/ccqaOqW9.s:2368   .text.osTimerDelete:000000000000005c $d
+     /tmp/ccqaOqW9.s:2371   .text.osEventFlagsNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2379   .text.osEventFlagsNew:0000000000000000 osEventFlagsNew
+     /tmp/ccqaOqW9.s:2435   .text.osEventFlagsNew:0000000000000048 $d
+     /tmp/ccqaOqW9.s:2438   .text.osEventFlagsSet:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2446   .text.osEventFlagsSet:0000000000000000 osEventFlagsSet
+     /tmp/ccqaOqW9.s:2511   .text.osEventFlagsSet:0000000000000060 $d
+     /tmp/ccqaOqW9.s:2515   .text.osEventFlagsClear:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2523   .text.osEventFlagsClear:0000000000000000 osEventFlagsClear
+     /tmp/ccqaOqW9.s:2581   .text.osEventFlagsClear:0000000000000054 $d
+     /tmp/ccqaOqW9.s:2584   .text.osEventFlagsGet:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2592   .text.osEventFlagsGet:0000000000000000 osEventFlagsGet
+     /tmp/ccqaOqW9.s:2633   .text.osEventFlagsGet:0000000000000030 $d
+     /tmp/ccqaOqW9.s:2636   .text.osEventFlagsWait:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2644   .text.osEventFlagsWait:0000000000000000 osEventFlagsWait
+     /tmp/ccqaOqW9.s:2714   .text.osEventFlagsWait:0000000000000064 $d
+     /tmp/ccqaOqW9.s:2717   .text.osEventFlagsDelete:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2725   .text.osEventFlagsDelete:0000000000000000 osEventFlagsDelete
+     /tmp/ccqaOqW9.s:2769   .text.osEventFlagsDelete:0000000000000034 $d
+     /tmp/ccqaOqW9.s:2772   .text.osMutexNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2780   .text.osMutexNew:0000000000000000 osMutexNew
+     /tmp/ccqaOqW9.s:2882   .text.osMutexNew:00000000000000ac $d
+     /tmp/ccqaOqW9.s:2885   .text.osMutexAcquire:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2893   .text.osMutexAcquire:0000000000000000 osMutexAcquire
+     /tmp/ccqaOqW9.s:2958   .text.osMutexAcquire:0000000000000058 $d
+     /tmp/ccqaOqW9.s:2961   .text.osMutexRelease:0000000000000000 $t
+     /tmp/ccqaOqW9.s:2969   .text.osMutexRelease:0000000000000000 osMutexRelease
+     /tmp/ccqaOqW9.s:3033   .text.osMutexRelease:0000000000000058 $d
+     /tmp/ccqaOqW9.s:3036   .text.osMutexGetOwner:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3044   .text.osMutexGetOwner:0000000000000000 osMutexGetOwner
+     /tmp/ccqaOqW9.s:3082   .text.osMutexGetOwner:000000000000002c $d
+     /tmp/ccqaOqW9.s:3085   .text.osMutexDelete:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3093   .text.osMutexDelete:0000000000000000 osMutexDelete
+     /tmp/ccqaOqW9.s:3143   .text.osMutexDelete:0000000000000040 $d
+     /tmp/ccqaOqW9.s:3146   .text.osSemaphoreNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3154   .text.osSemaphoreNew:0000000000000000 osSemaphoreNew
+     /tmp/ccqaOqW9.s:3274   .text.osSemaphoreNew:00000000000000c8 $d
+     /tmp/ccqaOqW9.s:3277   .text.osSemaphoreAcquire:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3285   .text.osSemaphoreAcquire:0000000000000000 osSemaphoreAcquire
+     /tmp/ccqaOqW9.s:3358   .text.osSemaphoreAcquire:000000000000006c $d
+     /tmp/ccqaOqW9.s:3362   .text.osSemaphoreRelease:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3370   .text.osSemaphoreRelease:0000000000000000 osSemaphoreRelease
+     /tmp/ccqaOqW9.s:3436   .text.osSemaphoreRelease:0000000000000060 $d
+     /tmp/ccqaOqW9.s:3440   .text.osSemaphoreGetCount:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3448   .text.osSemaphoreGetCount:0000000000000000 osSemaphoreGetCount
+     /tmp/ccqaOqW9.s:3488   .text.osSemaphoreGetCount:0000000000000030 $d
+     /tmp/ccqaOqW9.s:3491   .text.osSemaphoreDelete:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3499   .text.osSemaphoreDelete:0000000000000000 osSemaphoreDelete
+     /tmp/ccqaOqW9.s:3547   .text.osSemaphoreDelete:000000000000003c $d
+     /tmp/ccqaOqW9.s:3550   .text.osMessageQueueNew:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3558   .text.osMessageQueueNew:0000000000000000 osMessageQueueNew
+     /tmp/ccqaOqW9.s:3653   .text.osMessageQueueNew:0000000000000098 $d
+     /tmp/ccqaOqW9.s:3656   .text.osMessageQueuePut:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3664   .text.osMessageQueuePut:0000000000000000 osMessageQueuePut
+     /tmp/ccqaOqW9.s:3745   .text.osMessageQueuePut:0000000000000078 $d
+     /tmp/ccqaOqW9.s:3749   .text.osMessageQueueGet:0000000000000000 $t
+ARM GAS  /tmp/ccqaOqW9.s 			page 76
+
+
+     /tmp/ccqaOqW9.s:3757   .text.osMessageQueueGet:0000000000000000 osMessageQueueGet
+     /tmp/ccqaOqW9.s:3836   .text.osMessageQueueGet:0000000000000074 $d
+     /tmp/ccqaOqW9.s:3840   .text.osMessageQueueGetCapacity:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3848   .text.osMessageQueueGetCapacity:0000000000000000 osMessageQueueGetCapacity
+     /tmp/ccqaOqW9.s:3863   .text.osMessageQueueGetMsgSize:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3871   .text.osMessageQueueGetMsgSize:0000000000000000 osMessageQueueGetMsgSize
+     /tmp/ccqaOqW9.s:3886   .text.osMessageQueueGetCount:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3894   .text.osMessageQueueGetCount:0000000000000000 osMessageQueueGetCount
+     /tmp/ccqaOqW9.s:3934   .text.osMessageQueueGetCount:0000000000000030 $d
+     /tmp/ccqaOqW9.s:3937   .text.osMessageQueueGetSpace:0000000000000000 $t
+     /tmp/ccqaOqW9.s:3945   .text.osMessageQueueGetSpace:0000000000000000 osMessageQueueGetSpace
+     /tmp/ccqaOqW9.s:3992   .text.osMessageQueueGetSpace:0000000000000040 $d
+     /tmp/ccqaOqW9.s:3995   .text.osMessageQueueReset:0000000000000000 $t
+     /tmp/ccqaOqW9.s:4003   .text.osMessageQueueReset:0000000000000000 osMessageQueueReset
+     /tmp/ccqaOqW9.s:4048   .text.osMessageQueueReset:0000000000000034 $d
+     /tmp/ccqaOqW9.s:4051   .text.osMessageQueueDelete:0000000000000000 $t
+     /tmp/ccqaOqW9.s:4059   .text.osMessageQueueDelete:0000000000000000 osMessageQueueDelete
+     /tmp/ccqaOqW9.s:4107   .text.osMessageQueueDelete:000000000000003c $d
+     /tmp/ccqaOqW9.s:4110   .text.vApplicationGetIdleTaskMemory:0000000000000000 $t
+     /tmp/ccqaOqW9.s:4118   .text.vApplicationGetIdleTaskMemory:0000000000000000 vApplicationGetIdleTaskMemory
+     /tmp/ccqaOqW9.s:4133   .text.vApplicationGetIdleTaskMemory:0000000000000010 $d
+     /tmp/ccqaOqW9.s:4167   .bss.Idle_Stack:0000000000000000 Idle_Stack
+     /tmp/ccqaOqW9.s:4137   .text.vApplicationGetTimerTaskMemory:0000000000000000 $t
+     /tmp/ccqaOqW9.s:4145   .text.vApplicationGetTimerTaskMemory:0000000000000000 vApplicationGetTimerTaskMemory
+     /tmp/ccqaOqW9.s:4160   .text.vApplicationGetTimerTaskMemory:0000000000000010 $d
+     /tmp/ccqaOqW9.s:4187   .bss.Timer_Stack:0000000000000000 Timer_Stack
+     /tmp/ccqaOqW9.s:4164   .bss.Idle_Stack:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4170   .bss.Idle_TCB:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4174   .bss.Idle_TCB:0000000000000000 Idle_TCB
+     /tmp/ccqaOqW9.s:4177   .bss.KernelState:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4181   .bss.KernelState:0000000000000000 KernelState
+     /tmp/ccqaOqW9.s:4184   .bss.Timer_Stack:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4190   .bss.Timer_TCB:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4194   .bss.Timer_TCB:0000000000000000 Timer_TCB
+     /tmp/ccqaOqW9.s:4197   .rodata.CSWTCH.97:0000000000000000 $d
+     /tmp/ccqaOqW9.s:4201   .rodata.CSWTCH.97:0000000000000000 CSWTCH.97
+
+UNDEFINED SYMBOLS
+pvTimerGetTimerID
+memcpy
+xTaskGetSchedulerState
+vTaskStartScheduler
+vTaskSuspendAll
+xTaskResumeAll
+xTaskGetTickCount
+xTaskGetTickCountFromISR
+__aeabi_uidiv
+SystemCoreClock
+xTaskCreateStatic
+xTaskCreate
+pcTaskGetName
+xTaskGetCurrentTaskHandle
+eTaskGetState
+uxTaskGetStackHighWaterMark
+vTaskPrioritySet
+uxTaskPriorityGet
+vPortYield
+ARM GAS  /tmp/ccqaOqW9.s 			page 77
+
+
+vTaskSuspend
+vTaskResume
+vTaskDelete
+uxTaskGetNumberOfTasks
+pvPortMalloc
+uxTaskGetSystemState
+vPortFree
+xTaskGenericNotifyFromISR
+xTaskGenericNotify
+xTaskNotifyWait
+vTaskDelay
+vTaskDelayUntil
+xTimerCreateStatic
+xTimerCreate
+pcTimerGetName
+xTimerGenericCommand
+xTimerIsTimerActive
+xEventGroupCreate
+xEventGroupCreateStatic
+xEventGroupSetBits
+xEventGroupSetBitsFromISR
+xEventGroupClearBits
+xEventGroupGetBitsFromISR
+xEventGroupClearBitsFromISR
+xEventGroupWaitBits
+vEventGroupDelete
+xQueueCreateMutexStatic
+vQueueAddToRegistry
+xQueueCreateMutex
+xQueueSemaphoreTake
+xQueueTakeMutexRecursive
+xQueueGiveMutexRecursive
+xQueueGenericSend
+xQueueGetMutexHolder
+vQueueUnregisterQueue
+vQueueDelete
+xQueueCreateCountingSemaphoreStatic
+xQueueGenericCreate
+xQueueCreateCountingSemaphore
+xQueueGenericCreateStatic
+xQueueReceiveFromISR
+xQueueGiveFromISR
+uxQueueMessagesWaiting
+uxQueueMessagesWaitingFromISR
+xQueueGenericSendFromISR
+xQueueReceive
+uxQueueSpacesAvailable
+ulSetInterruptMaskFromISR
+vClearInterruptMaskFromISR
+xQueueGenericReset

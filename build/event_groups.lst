@@ -1,0 +1,925 @@
+ARM GAS  /tmp/ccdPU1po.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"event_groups.c"
+  12              		.text
+  13              		.section	.text.vEventGroupClearBitsCallback,"ax",%progbits
+  14              		.align	1
+  15              		.p2align 2,,3
+  16              		.global	vEventGroupClearBitsCallback
+  17              		.arch armv6s-m
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	vEventGroupClearBitsCallback:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26 0000 70B5     		push	{r4, r5, r6, lr}
+  27 0002 0400     		movs	r4, r0
+  28 0004 0D00     		movs	r5, r1
+  29 0006 0028     		cmp	r0, #0
+  30 0008 0BD0     		beq	.L7
+  31 000a 0B0E     		lsrs	r3, r1, #24
+  32 000c 01D0     		beq	.L4
+  33              		.syntax divided
+  34              	@ 454 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+  35 000e 72B6     		 cpsid i 
+  36              	@ 0 "" 2
+  37              		.thumb
+  38              		.syntax unified
+  39              	.L5:
+  40 0010 FEE7     		b	.L5
+  41              	.L4:
+  42 0012 FFF7FEFF 		bl	vPortEnterCritical
+  43 0016 2368     		ldr	r3, [r4]
+  44              		@ sp needed
+  45 0018 AB43     		bics	r3, r5
+  46 001a 2360     		str	r3, [r4]
+  47 001c FFF7FEFF 		bl	vPortExitCritical
+  48 0020 70BD     		pop	{r4, r5, r6, pc}
+  49              	.L7:
+  50              		.syntax divided
+  51              	@ 453 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+  52 0022 72B6     		 cpsid i 
+  53              	@ 0 "" 2
+  54              		.thumb
+  55              		.syntax unified
+  56              	.L3:
+  57 0024 FEE7     		b	.L3
+  59 0026 C046     		.section	.text.vEventGroupSetBitsCallback,"ax",%progbits
+ARM GAS  /tmp/ccdPU1po.s 			page 2
+
+
+  60              		.align	1
+  61              		.p2align 2,,3
+  62              		.global	vEventGroupSetBitsCallback
+  63              		.syntax unified
+  64              		.code	16
+  65              		.thumb_func
+  66              		.fpu softvfp
+  68              	vEventGroupSetBitsCallback:
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  72 0002 4546     		mov	r5, r8
+  73 0004 DE46     		mov	lr, fp
+  74 0006 5746     		mov	r7, r10
+  75 0008 4E46     		mov	r6, r9
+  76 000a 0C00     		movs	r4, r1
+  77 000c E0B5     		push	{r5, r6, r7, lr}
+  78 000e 051E     		subs	r5, r0, #0
+  79 0010 3FD0     		beq	.L24
+  80 0012 0B0E     		lsrs	r3, r1, #24
+  81 0014 1F06     		lsls	r7, r3, #24
+  82 0016 002B     		cmp	r3, #0
+  83 0018 01D0     		beq	.L11
+  84              		.syntax divided
+  85              	@ 516 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+  86 001a 72B6     		 cpsid i 
+  87              	@ 0 "" 2
+  88              		.thumb
+  89              		.syntax unified
+  90              	.L12:
+  91 001c FEE7     		b	.L12
+  92              	.L11:
+  93 001e 0C23     		movs	r3, #12
+  94 0020 9846     		mov	r8, r3
+  95 0022 8044     		add	r8, r8, r0
+  96 0024 FFF7FEFF 		bl	vTaskSuspendAll
+  97 0028 2968     		ldr	r1, [r5]
+  98 002a 2E69     		ldr	r6, [r5, #16]
+  99 002c 2143     		orrs	r1, r4
+ 100 002e 2960     		str	r1, [r5]
+ 101 0030 B045     		cmp	r8, r6
+ 102 0032 25D0     		beq	.L13
+ 103 0034 8023     		movs	r3, #128
+ 104 0036 DB04     		lsls	r3, r3, #19
+ 105 0038 9B46     		mov	fp, r3
+ 106 003a 8023     		movs	r3, #128
+ 107 003c 5B04     		lsls	r3, r3, #17
+ 108 003e 9A46     		mov	r10, r3
+ 109 0040 8023     		movs	r3, #128
+ 110 0042 9B04     		lsls	r3, r3, #18
+ 111 0044 9946     		mov	r9, r3
+ 112 0046 0CE0     		b	.L18
+ 113              	.L26:
+ 114 0048 0B42     		tst	r3, r1
+ 115 004a 08D0     		beq	.L16
+ 116              	.L15:
+ 117 004c 5446     		mov	r4, r10
+ARM GAS  /tmp/ccdPU1po.s 			page 3
+
+
+ 118 004e 2242     		tst	r2, r4
+ 119 0050 00D0     		beq	.L17
+ 120 0052 1F43     		orrs	r7, r3
+ 121              	.L17:
+ 122 0054 4B46     		mov	r3, r9
+ 123 0056 1943     		orrs	r1, r3
+ 124 0058 FFF7FEFF 		bl	vTaskRemoveFromUnorderedEventList
+ 125 005c 2968     		ldr	r1, [r5]
+ 126              	.L16:
+ 127 005e B045     		cmp	r8, r6
+ 128 0060 0DD0     		beq	.L25
+ 129              	.L18:
+ 130 0062 3000     		movs	r0, r6
+ 131 0064 5C46     		mov	r4, fp
+ 132 0066 0268     		ldr	r2, [r0]
+ 133 0068 7668     		ldr	r6, [r6, #4]
+ 134 006a 1302     		lsls	r3, r2, #8
+ 135 006c 1B0A     		lsrs	r3, r3, #8
+ 136 006e 2242     		tst	r2, r4
+ 137 0070 EAD0     		beq	.L26
+ 138 0072 1C00     		movs	r4, r3
+ 139 0074 0C40     		ands	r4, r1
+ 140 0076 A342     		cmp	r3, r4
+ 141 0078 E8D0     		beq	.L15
+ 142 007a B045     		cmp	r8, r6
+ 143 007c F1D1     		bne	.L18
+ 144              	.L25:
+ 145 007e B943     		bics	r1, r7
+ 146              	.L13:
+ 147 0080 2960     		str	r1, [r5]
+ 148 0082 FFF7FEFF 		bl	xTaskResumeAll
+ 149              		@ sp needed
+ 150 0086 3CBC     		pop	{r2, r3, r4, r5}
+ 151 0088 9046     		mov	r8, r2
+ 152 008a 9946     		mov	r9, r3
+ 153 008c A246     		mov	r10, r4
+ 154 008e AB46     		mov	fp, r5
+ 155 0090 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 156              	.L24:
+ 157              		.syntax divided
+ 158              	@ 515 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 159 0092 72B6     		 cpsid i 
+ 160              	@ 0 "" 2
+ 161              		.thumb
+ 162              		.syntax unified
+ 163              	.L10:
+ 164 0094 FEE7     		b	.L10
+ 166 0096 C046     		.section	.text.xEventGroupCreateStatic,"ax",%progbits
+ 167              		.align	1
+ 168              		.p2align 2,,3
+ 169              		.global	xEventGroupCreateStatic
+ 170              		.syntax unified
+ 171              		.code	16
+ 172              		.thumb_func
+ 173              		.fpu softvfp
+ 175              	xEventGroupCreateStatic:
+ 176              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /tmp/ccdPU1po.s 			page 4
+
+
+ 177              		@ frame_needed = 0, uses_anonymous_args = 0
+ 178 0000 10B5     		push	{r4, lr}
+ 179 0002 0400     		movs	r4, r0
+ 180 0004 82B0     		sub	sp, sp, #8
+ 181 0006 0028     		cmp	r0, #0
+ 182 0008 06D0     		beq	.L32
+ 183 000a 2023     		movs	r3, #32
+ 184 000c 0193     		str	r3, [sp, #4]
+ 185 000e 019B     		ldr	r3, [sp, #4]
+ 186 0010 202B     		cmp	r3, #32
+ 187 0012 03D0     		beq	.L30
+ 188              		.syntax divided
+ 189              	@ 106 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 190 0014 72B6     		 cpsid i 
+ 191              	@ 0 "" 2
+ 192              		.thumb
+ 193              		.syntax unified
+ 194              	.L31:
+ 195 0016 FEE7     		b	.L31
+ 196              	.L32:
+ 197              		.syntax divided
+ 198              	@ 98 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 199 0018 72B6     		 cpsid i 
+ 200              	@ 0 "" 2
+ 201              		.thumb
+ 202              		.syntax unified
+ 203              	.L29:
+ 204 001a FEE7     		b	.L29
+ 205              	.L30:
+ 206 001c 0023     		movs	r3, #0
+ 207 001e 08C0     		stmia	r0!, {r3}
+ 208 0020 FFF7FEFF 		bl	vListInitialise
+ 209 0024 0123     		movs	r3, #1
+ 210 0026 2000     		movs	r0, r4
+ 211 0028 2377     		strb	r3, [r4, #28]
+ 212 002a 02B0     		add	sp, sp, #8
+ 213              		@ sp needed
+ 214 002c 10BD     		pop	{r4, pc}
+ 216 002e C046     		.section	.text.xEventGroupCreate,"ax",%progbits
+ 217              		.align	1
+ 218              		.p2align 2,,3
+ 219              		.global	xEventGroupCreate
+ 220              		.syntax unified
+ 221              		.code	16
+ 222              		.thumb_func
+ 223              		.fpu softvfp
+ 225              	xEventGroupCreate:
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228 0000 70B5     		push	{r4, r5, r6, lr}
+ 229 0002 2020     		movs	r0, #32
+ 230 0004 FFF7FEFF 		bl	pvPortMalloc
+ 231 0008 041E     		subs	r4, r0, #0
+ 232 000a 04D0     		beq	.L33
+ 233 000c 0025     		movs	r5, #0
+ 234 000e 20C0     		stmia	r0!, {r5}
+ 235 0010 FFF7FEFF 		bl	vListInitialise
+ARM GAS  /tmp/ccdPU1po.s 			page 5
+
+
+ 236 0014 2577     		strb	r5, [r4, #28]
+ 237              	.L33:
+ 238 0016 2000     		movs	r0, r4
+ 239              		@ sp needed
+ 240 0018 70BD     		pop	{r4, r5, r6, pc}
+ 242 001a C046     		.section	.text.xEventGroupWaitBits,"ax",%progbits
+ 243              		.align	1
+ 244              		.p2align 2,,3
+ 245              		.global	xEventGroupWaitBits
+ 246              		.syntax unified
+ 247              		.code	16
+ 248              		.thumb_func
+ 249              		.fpu softvfp
+ 251              	xEventGroupWaitBits:
+ 252              		@ args = 4, pretend = 0, frame = 0
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 255 0002 4F46     		mov	r7, r9
+ 256 0004 D646     		mov	lr, r10
+ 257 0006 0600     		movs	r6, r0
+ 258 0008 80B5     		push	{r7, lr}
+ 259 000a 0D00     		movs	r5, r1
+ 260 000c 1700     		movs	r7, r2
+ 261 000e 9946     		mov	r9, r3
+ 262 0010 0028     		cmp	r0, #0
+ 263 0012 0AD0     		beq	.L67
+ 264 0014 0B0E     		lsrs	r3, r1, #24
+ 265 0016 1A06     		lsls	r2, r3, #24
+ 266 0018 9246     		mov	r10, r2
+ 267 001a 002B     		cmp	r3, #0
+ 268 001c 03D1     		bne	.L68
+ 269 001e 0029     		cmp	r1, #0
+ 270 0020 05D1     		bne	.L43
+ 271              		.syntax divided
+ 272              	@ 307 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 273 0022 72B6     		 cpsid i 
+ 274              	@ 0 "" 2
+ 275              		.thumb
+ 276              		.syntax unified
+ 277              	.L44:
+ 278 0024 FEE7     		b	.L44
+ 279              	.L68:
+ 280              		.syntax divided
+ 281              	@ 306 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 282 0026 72B6     		 cpsid i 
+ 283              	@ 0 "" 2
+ 284              		.thumb
+ 285              		.syntax unified
+ 286              	.L42:
+ 287 0028 FEE7     		b	.L42
+ 288              	.L67:
+ 289              		.syntax divided
+ 290              	@ 305 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 291 002a 72B6     		 cpsid i 
+ 292              	@ 0 "" 2
+ 293              		.thumb
+ 294              		.syntax unified
+ARM GAS  /tmp/ccdPU1po.s 			page 6
+
+
+ 295              	.L40:
+ 296 002c FEE7     		b	.L40
+ 297              	.L43:
+ 298 002e FFF7FEFF 		bl	xTaskGetSchedulerState
+ 299 0032 0028     		cmp	r0, #0
+ 300 0034 02D1     		bne	.L45
+ 301 0036 089B     		ldr	r3, [sp, #32]
+ 302 0038 002B     		cmp	r3, #0
+ 303 003a 2CD1     		bne	.L69
+ 304              	.L45:
+ 305 003c FFF7FEFF 		bl	vTaskSuspendAll
+ 306 0040 4B46     		mov	r3, r9
+ 307 0042 3468     		ldr	r4, [r6]
+ 308 0044 002B     		cmp	r3, #0
+ 309 0046 2ED0     		beq	.L70
+ 310 0048 2300     		movs	r3, r4
+ 311 004a 2B40     		ands	r3, r5
+ 312 004c 9D42     		cmp	r5, r3
+ 313 004e 2CD0     		beq	.L48
+ 314              	.L49:
+ 315 0050 089B     		ldr	r3, [sp, #32]
+ 316 0052 002B     		cmp	r3, #0
+ 317 0054 24D0     		beq	.L52
+ 318 0056 002F     		cmp	r7, #0
+ 319 0058 1FD0     		beq	.L60
+ 320 005a 8023     		movs	r3, #128
+ 321 005c A021     		movs	r1, #160
+ 322 005e 5B04     		lsls	r3, r3, #17
+ 323 0060 9A46     		mov	r10, r3
+ 324 0062 C904     		lsls	r1, r1, #19
+ 325              	.L53:
+ 326 0064 4B46     		mov	r3, r9
+ 327 0066 002B     		cmp	r3, #0
+ 328 0068 00D1     		bne	.L54
+ 329 006a 5146     		mov	r1, r10
+ 330              	.L54:
+ 331 006c 089A     		ldr	r2, [sp, #32]
+ 332 006e 2943     		orrs	r1, r5
+ 333 0070 301D     		adds	r0, r6, #4
+ 334 0072 FFF7FEFF 		bl	vTaskPlaceOnUnorderedEventList
+ 335 0076 FFF7FEFF 		bl	xTaskResumeAll
+ 336 007a 0028     		cmp	r0, #0
+ 337 007c 32D0     		beq	.L71
+ 338              	.L55:
+ 339 007e FFF7FEFF 		bl	uxTaskResetEventItemValue
+ 340 0082 0400     		movs	r4, r0
+ 341 0084 8301     		lsls	r3, r0, #6
+ 342 0086 18D5     		bpl	.L72
+ 343              	.L56:
+ 344 0088 2402     		lsls	r4, r4, #8
+ 345 008a 240A     		lsrs	r4, r4, #8
+ 346              	.L38:
+ 347 008c 2000     		movs	r0, r4
+ 348              		@ sp needed
+ 349 008e 0CBC     		pop	{r2, r3}
+ 350 0090 9146     		mov	r9, r2
+ 351 0092 9A46     		mov	r10, r3
+ARM GAS  /tmp/ccdPU1po.s 			page 7
+
+
+ 352 0094 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 353              	.L69:
+ 354              		.syntax divided
+ 355              	@ 310 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 356 0096 72B6     		 cpsid i 
+ 357              	@ 0 "" 2
+ 358              		.thumb
+ 359              		.syntax unified
+ 360              	.L46:
+ 361 0098 FEE7     		b	.L46
+ 362              	.L60:
+ 363 009a 8021     		movs	r1, #128
+ 364 009c C904     		lsls	r1, r1, #19
+ 365 009e E1E7     		b	.L53
+ 366              	.L52:
+ 367 00a0 FFF7FEFF 		bl	xTaskResumeAll
+ 368 00a4 F2E7     		b	.L38
+ 369              	.L70:
+ 370 00a6 2C42     		tst	r4, r5
+ 371 00a8 D2D0     		beq	.L49
+ 372              	.L48:
+ 373 00aa 002F     		cmp	r7, #0
+ 374 00ac F8D0     		beq	.L52
+ 375 00ae 2300     		movs	r3, r4
+ 376 00b0 AB43     		bics	r3, r5
+ 377 00b2 3360     		str	r3, [r6]
+ 378 00b4 FFF7FEFF 		bl	xTaskResumeAll
+ 379 00b8 E8E7     		b	.L38
+ 380              	.L72:
+ 381 00ba FFF7FEFF 		bl	vPortEnterCritical
+ 382 00be 4B46     		mov	r3, r9
+ 383 00c0 3468     		ldr	r4, [r6]
+ 384 00c2 002B     		cmp	r3, #0
+ 385 00c4 09D1     		bne	.L57
+ 386 00c6 2C42     		tst	r4, r5
+ 387 00c8 04D0     		beq	.L59
+ 388              	.L58:
+ 389 00ca 002F     		cmp	r7, #0
+ 390 00cc 02D0     		beq	.L59
+ 391 00ce 2300     		movs	r3, r4
+ 392 00d0 AB43     		bics	r3, r5
+ 393 00d2 3360     		str	r3, [r6]
+ 394              	.L59:
+ 395 00d4 FFF7FEFF 		bl	vPortExitCritical
+ 396 00d8 D6E7     		b	.L56
+ 397              	.L57:
+ 398 00da 2300     		movs	r3, r4
+ 399 00dc 2B40     		ands	r3, r5
+ 400 00de 9D42     		cmp	r5, r3
+ 401 00e0 F8D1     		bne	.L59
+ 402 00e2 F2E7     		b	.L58
+ 403              	.L71:
+ 404 00e4 FFF7FEFF 		bl	vPortYield
+ 405 00e8 C9E7     		b	.L55
+ 407 00ea C046     		.section	.text.xEventGroupClearBits,"ax",%progbits
+ 408              		.align	1
+ 409              		.p2align 2,,3
+ARM GAS  /tmp/ccdPU1po.s 			page 8
+
+
+ 410              		.global	xEventGroupClearBits
+ 411              		.syntax unified
+ 412              		.code	16
+ 413              		.thumb_func
+ 414              		.fpu softvfp
+ 416              	xEventGroupClearBits:
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 0, uses_anonymous_args = 0
+ 419 0000 70B5     		push	{r4, r5, r6, lr}
+ 420 0002 0400     		movs	r4, r0
+ 421 0004 0D00     		movs	r5, r1
+ 422 0006 0028     		cmp	r0, #0
+ 423 0008 03D0     		beq	.L78
+ 424 000a 0B0E     		lsrs	r3, r1, #24
+ 425 000c 03D0     		beq	.L76
+ 426              		.syntax divided
+ 427              	@ 454 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 428 000e 72B6     		 cpsid i 
+ 429              	@ 0 "" 2
+ 430              		.thumb
+ 431              		.syntax unified
+ 432              	.L77:
+ 433 0010 FEE7     		b	.L77
+ 434              	.L78:
+ 435              		.syntax divided
+ 436              	@ 453 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 437 0012 72B6     		 cpsid i 
+ 438              	@ 0 "" 2
+ 439              		.thumb
+ 440              		.syntax unified
+ 441              	.L75:
+ 442 0014 FEE7     		b	.L75
+ 443              	.L76:
+ 444 0016 FFF7FEFF 		bl	vPortEnterCritical
+ 445 001a 2668     		ldr	r6, [r4]
+ 446              		@ sp needed
+ 447 001c 3300     		movs	r3, r6
+ 448 001e AB43     		bics	r3, r5
+ 449 0020 2360     		str	r3, [r4]
+ 450 0022 FFF7FEFF 		bl	vPortExitCritical
+ 451 0026 3000     		movs	r0, r6
+ 452 0028 70BD     		pop	{r4, r5, r6, pc}
+ 454 002a C046     		.section	.text.xEventGroupClearBitsFromISR,"ax",%progbits
+ 455              		.align	1
+ 456              		.p2align 2,,3
+ 457              		.global	xEventGroupClearBitsFromISR
+ 458              		.syntax unified
+ 459              		.code	16
+ 460              		.thumb_func
+ 461              		.fpu softvfp
+ 463              	xEventGroupClearBitsFromISR:
+ 464              		@ args = 0, pretend = 0, frame = 0
+ 465              		@ frame_needed = 0, uses_anonymous_args = 0
+ 466 0000 10B5     		push	{r4, lr}
+ 467 0002 0A00     		movs	r2, r1
+ 468 0004 0023     		movs	r3, #0
+ 469 0006 0100     		movs	r1, r0
+ARM GAS  /tmp/ccdPU1po.s 			page 9
+
+
+ 470 0008 0148     		ldr	r0, .L80
+ 471 000a FFF7FEFF 		bl	xTimerPendFunctionCallFromISR
+ 472              		@ sp needed
+ 473 000e 10BD     		pop	{r4, pc}
+ 474              	.L81:
+ 475              		.align	2
+ 476              	.L80:
+ 477 0010 00000000 		.word	vEventGroupClearBitsCallback
+ 479              		.section	.text.xEventGroupGetBitsFromISR,"ax",%progbits
+ 480              		.align	1
+ 481              		.p2align 2,,3
+ 482              		.global	xEventGroupGetBitsFromISR
+ 483              		.syntax unified
+ 484              		.code	16
+ 485              		.thumb_func
+ 486              		.fpu softvfp
+ 488              	xEventGroupGetBitsFromISR:
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491 0000 10B5     		push	{r4, lr}
+ 492 0002 0400     		movs	r4, r0
+ 493 0004 FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 494 0008 2468     		ldr	r4, [r4]
+ 495              		@ sp needed
+ 496 000a FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 497 000e 2000     		movs	r0, r4
+ 498 0010 10BD     		pop	{r4, pc}
+ 500 0012 C046     		.section	.text.xEventGroupSetBits,"ax",%progbits
+ 501              		.align	1
+ 502              		.p2align 2,,3
+ 503              		.global	xEventGroupSetBits
+ 504              		.syntax unified
+ 505              		.code	16
+ 506              		.thumb_func
+ 507              		.fpu softvfp
+ 509              	xEventGroupSetBits:
+ 510              		@ args = 0, pretend = 0, frame = 0
+ 511              		@ frame_needed = 0, uses_anonymous_args = 0
+ 512 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 513 0002 4546     		mov	r5, r8
+ 514 0004 DE46     		mov	lr, fp
+ 515 0006 5746     		mov	r7, r10
+ 516 0008 4E46     		mov	r6, r9
+ 517 000a 0C00     		movs	r4, r1
+ 518 000c E0B5     		push	{r5, r6, r7, lr}
+ 519 000e 051E     		subs	r5, r0, #0
+ 520 0010 05D0     		beq	.L99
+ 521 0012 0B0E     		lsrs	r3, r1, #24
+ 522 0014 1F06     		lsls	r7, r3, #24
+ 523 0016 002B     		cmp	r3, #0
+ 524 0018 03D0     		beq	.L86
+ 525              		.syntax divided
+ 526              	@ 516 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 527 001a 72B6     		 cpsid i 
+ 528              	@ 0 "" 2
+ 529              		.thumb
+ 530              		.syntax unified
+ARM GAS  /tmp/ccdPU1po.s 			page 10
+
+
+ 531              	.L87:
+ 532 001c FEE7     		b	.L87
+ 533              	.L99:
+ 534              		.syntax divided
+ 535              	@ 515 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 536 001e 72B6     		 cpsid i 
+ 537              	@ 0 "" 2
+ 538              		.thumb
+ 539              		.syntax unified
+ 540              	.L85:
+ 541 0020 FEE7     		b	.L85
+ 542              	.L86:
+ 543 0022 0C23     		movs	r3, #12
+ 544 0024 9846     		mov	r8, r3
+ 545 0026 8044     		add	r8, r8, r0
+ 546 0028 FFF7FEFF 		bl	vTaskSuspendAll
+ 547 002c 2968     		ldr	r1, [r5]
+ 548 002e 2E69     		ldr	r6, [r5, #16]
+ 549 0030 2143     		orrs	r1, r4
+ 550 0032 2960     		str	r1, [r5]
+ 551 0034 B045     		cmp	r8, r6
+ 552 0036 25D0     		beq	.L88
+ 553 0038 8023     		movs	r3, #128
+ 554 003a DB04     		lsls	r3, r3, #19
+ 555 003c 9A46     		mov	r10, r3
+ 556 003e 8023     		movs	r3, #128
+ 557 0040 5B04     		lsls	r3, r3, #17
+ 558 0042 9946     		mov	r9, r3
+ 559 0044 8023     		movs	r3, #128
+ 560 0046 9B04     		lsls	r3, r3, #18
+ 561 0048 9B46     		mov	fp, r3
+ 562 004a 0CE0     		b	.L93
+ 563              	.L101:
+ 564 004c 0B42     		tst	r3, r1
+ 565 004e 08D0     		beq	.L91
+ 566              	.L90:
+ 567 0050 4C46     		mov	r4, r9
+ 568 0052 2242     		tst	r2, r4
+ 569 0054 00D0     		beq	.L92
+ 570 0056 1F43     		orrs	r7, r3
+ 571              	.L92:
+ 572 0058 5B46     		mov	r3, fp
+ 573 005a 1943     		orrs	r1, r3
+ 574 005c FFF7FEFF 		bl	vTaskRemoveFromUnorderedEventList
+ 575 0060 2968     		ldr	r1, [r5]
+ 576              	.L91:
+ 577 0062 B045     		cmp	r8, r6
+ 578 0064 0DD0     		beq	.L100
+ 579              	.L93:
+ 580 0066 3000     		movs	r0, r6
+ 581 0068 5446     		mov	r4, r10
+ 582 006a 0268     		ldr	r2, [r0]
+ 583 006c 7668     		ldr	r6, [r6, #4]
+ 584 006e 1302     		lsls	r3, r2, #8
+ 585 0070 1B0A     		lsrs	r3, r3, #8
+ 586 0072 2242     		tst	r2, r4
+ 587 0074 EAD0     		beq	.L101
+ARM GAS  /tmp/ccdPU1po.s 			page 11
+
+
+ 588 0076 1C00     		movs	r4, r3
+ 589 0078 0C40     		ands	r4, r1
+ 590 007a A342     		cmp	r3, r4
+ 591 007c E8D0     		beq	.L90
+ 592 007e B045     		cmp	r8, r6
+ 593 0080 F1D1     		bne	.L93
+ 594              	.L100:
+ 595 0082 B943     		bics	r1, r7
+ 596              	.L88:
+ 597 0084 2960     		str	r1, [r5]
+ 598 0086 FFF7FEFF 		bl	xTaskResumeAll
+ 599              		@ sp needed
+ 600 008a 2868     		ldr	r0, [r5]
+ 601 008c 3CBC     		pop	{r2, r3, r4, r5}
+ 602 008e 9046     		mov	r8, r2
+ 603 0090 9946     		mov	r9, r3
+ 604 0092 A246     		mov	r10, r4
+ 605 0094 AB46     		mov	fp, r5
+ 606 0096 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 608              		.section	.text.xEventGroupSync,"ax",%progbits
+ 609              		.align	1
+ 610              		.p2align 2,,3
+ 611              		.global	xEventGroupSync
+ 612              		.syntax unified
+ 613              		.code	16
+ 614              		.thumb_func
+ 615              		.fpu softvfp
+ 617              	xEventGroupSync:
+ 618              		@ args = 0, pretend = 0, frame = 0
+ 619              		@ frame_needed = 0, uses_anonymous_args = 0
+ 620 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 621 0002 C646     		mov	lr, r8
+ 622 0004 1F00     		movs	r7, r3
+ 623 0006 0600     		movs	r6, r0
+ 624 0008 0C00     		movs	r4, r1
+ 625 000a 1500     		movs	r5, r2
+ 626 000c 00B5     		push	{lr}
+ 627 000e 130E     		lsrs	r3, r2, #24
+ 628 0010 01D0     		beq	.L103
+ 629              		.syntax divided
+ 630              	@ 183 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 631 0012 72B6     		 cpsid i 
+ 632              	@ 0 "" 2
+ 633              		.thumb
+ 634              		.syntax unified
+ 635              	.L104:
+ 636 0014 FEE7     		b	.L104
+ 637              	.L103:
+ 638 0016 002A     		cmp	r2, #0
+ 639 0018 01D1     		bne	.L105
+ 640              		.syntax divided
+ 641              	@ 184 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 642 001a 72B6     		 cpsid i 
+ 643              	@ 0 "" 2
+ 644              		.thumb
+ 645              		.syntax unified
+ 646              	.L106:
+ARM GAS  /tmp/ccdPU1po.s 			page 12
+
+
+ 647 001c FEE7     		b	.L106
+ 648              	.L105:
+ 649 001e FFF7FEFF 		bl	xTaskGetSchedulerState
+ 650 0022 0028     		cmp	r0, #0
+ 651 0024 13D1     		bne	.L107
+ 652 0026 002F     		cmp	r7, #0
+ 653 0028 01D0     		beq	.L108
+ 654              		.syntax divided
+ 655              	@ 187 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 656 002a 72B6     		 cpsid i 
+ 657              	@ 0 "" 2
+ 658              		.thumb
+ 659              		.syntax unified
+ 660              	.L109:
+ 661 002c FEE7     		b	.L109
+ 662              	.L108:
+ 663 002e FFF7FEFF 		bl	vTaskSuspendAll
+ 664 0032 3768     		ldr	r7, [r6]
+ 665 0034 2100     		movs	r1, r4
+ 666 0036 3000     		movs	r0, r6
+ 667 0038 3C43     		orrs	r4, r7
+ 668 003a FFF7FEFF 		bl	xEventGroupSetBits
+ 669 003e 2300     		movs	r3, r4
+ 670 0040 2B40     		ands	r3, r5
+ 671 0042 9D42     		cmp	r5, r3
+ 672 0044 26D0     		beq	.L117
+ 673              	.L112:
+ 674 0046 3468     		ldr	r4, [r6]
+ 675 0048 FFF7FEFF 		bl	xTaskResumeAll
+ 676 004c 27E0     		b	.L102
+ 677              	.L107:
+ 678 004e FFF7FEFF 		bl	vTaskSuspendAll
+ 679 0052 3368     		ldr	r3, [r6]
+ 680 0054 2100     		movs	r1, r4
+ 681 0056 9846     		mov	r8, r3
+ 682 0058 3000     		movs	r0, r6
+ 683 005a FFF7FEFF 		bl	xEventGroupSetBits
+ 684 005e 4346     		mov	r3, r8
+ 685 0060 1C43     		orrs	r4, r3
+ 686 0062 2B00     		movs	r3, r5
+ 687 0064 2340     		ands	r3, r4
+ 688 0066 AB42     		cmp	r3, r5
+ 689 0068 14D0     		beq	.L117
+ 690 006a 002F     		cmp	r7, #0
+ 691 006c EBD0     		beq	.L112
+ 692 006e A021     		movs	r1, #160
+ 693 0070 C904     		lsls	r1, r1, #19
+ 694 0072 3A00     		movs	r2, r7
+ 695 0074 2943     		orrs	r1, r5
+ 696 0076 301D     		adds	r0, r6, #4
+ 697 0078 FFF7FEFF 		bl	vTaskPlaceOnUnorderedEventList
+ 698 007c FFF7FEFF 		bl	xTaskResumeAll
+ 699 0080 0028     		cmp	r0, #0
+ 700 0082 1DD0     		beq	.L121
+ 701              	.L114:
+ 702 0084 FFF7FEFF 		bl	uxTaskResetEventItemValue
+ 703 0088 0400     		movs	r4, r0
+ARM GAS  /tmp/ccdPU1po.s 			page 13
+
+
+ 704 008a 8301     		lsls	r3, r0, #6
+ 705 008c 0BD5     		bpl	.L122
+ 706              	.L115:
+ 707 008e 2402     		lsls	r4, r4, #8
+ 708 0090 240A     		lsrs	r4, r4, #8
+ 709 0092 04E0     		b	.L102
+ 710              	.L117:
+ 711 0094 3368     		ldr	r3, [r6]
+ 712 0096 AB43     		bics	r3, r5
+ 713 0098 3360     		str	r3, [r6]
+ 714 009a FFF7FEFF 		bl	xTaskResumeAll
+ 715              	.L102:
+ 716 009e 2000     		movs	r0, r4
+ 717              		@ sp needed
+ 718 00a0 04BC     		pop	{r2}
+ 719 00a2 9046     		mov	r8, r2
+ 720 00a4 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 721              	.L122:
+ 722 00a6 FFF7FEFF 		bl	vPortEnterCritical
+ 723 00aa 3468     		ldr	r4, [r6]
+ 724 00ac 2300     		movs	r3, r4
+ 725 00ae 2B40     		ands	r3, r5
+ 726 00b0 AB42     		cmp	r3, r5
+ 727 00b2 02D1     		bne	.L116
+ 728 00b4 2300     		movs	r3, r4
+ 729 00b6 AB43     		bics	r3, r5
+ 730 00b8 3360     		str	r3, [r6]
+ 731              	.L116:
+ 732 00ba FFF7FEFF 		bl	vPortExitCritical
+ 733 00be E6E7     		b	.L115
+ 734              	.L121:
+ 735 00c0 FFF7FEFF 		bl	vPortYield
+ 736 00c4 DEE7     		b	.L114
+ 738 00c6 C046     		.section	.text.vEventGroupDelete,"ax",%progbits
+ 739              		.align	1
+ 740              		.p2align 2,,3
+ 741              		.global	vEventGroupDelete
+ 742              		.syntax unified
+ 743              		.code	16
+ 744              		.thumb_func
+ 745              		.fpu softvfp
+ 747              	vEventGroupDelete:
+ 748              		@ args = 0, pretend = 0, frame = 0
+ 749              		@ frame_needed = 0, uses_anonymous_args = 0
+ 750 0000 70B5     		push	{r4, r5, r6, lr}
+ 751 0002 0400     		movs	r4, r0
+ 752 0004 2500     		movs	r5, r4
+ 753 0006 FFF7FEFF 		bl	vTaskSuspendAll
+ 754 000a 6368     		ldr	r3, [r4, #4]
+ 755 000c 0C35     		adds	r5, r5, #12
+ 756 000e 002B     		cmp	r3, #0
+ 757 0010 07D1     		bne	.L129
+ 758 0012 0BE0     		b	.L130
+ 759              	.L127:
+ 760 0014 8021     		movs	r1, #128
+ 761 0016 8904     		lsls	r1, r1, #18
+ 762 0018 FFF7FEFF 		bl	vTaskRemoveFromUnorderedEventList
+ARM GAS  /tmp/ccdPU1po.s 			page 14
+
+
+ 763 001c 6368     		ldr	r3, [r4, #4]
+ 764 001e 002B     		cmp	r3, #0
+ 765 0020 04D0     		beq	.L130
+ 766              	.L129:
+ 767 0022 2069     		ldr	r0, [r4, #16]
+ 768 0024 A842     		cmp	r0, r5
+ 769 0026 F5D1     		bne	.L127
+ 770              		.syntax divided
+ 771              	@ 611 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" 1
+ 772 0028 72B6     		 cpsid i 
+ 773              	@ 0 "" 2
+ 774              		.thumb
+ 775              		.syntax unified
+ 776              	.L128:
+ 777 002a FEE7     		b	.L128
+ 778              	.L130:
+ 779 002c 237F     		ldrb	r3, [r4, #28]
+ 780 002e 002B     		cmp	r3, #0
+ 781 0030 02D0     		beq	.L133
+ 782              	.L126:
+ 783 0032 FFF7FEFF 		bl	xTaskResumeAll
+ 784              		@ sp needed
+ 785 0036 70BD     		pop	{r4, r5, r6, pc}
+ 786              	.L133:
+ 787 0038 2000     		movs	r0, r4
+ 788 003a FFF7FEFF 		bl	vPortFree
+ 789 003e F8E7     		b	.L126
+ 791              		.section	.text.xEventGroupSetBitsFromISR,"ax",%progbits
+ 792              		.align	1
+ 793              		.p2align 2,,3
+ 794              		.global	xEventGroupSetBitsFromISR
+ 795              		.syntax unified
+ 796              		.code	16
+ 797              		.thumb_func
+ 798              		.fpu softvfp
+ 800              	xEventGroupSetBitsFromISR:
+ 801              		@ args = 0, pretend = 0, frame = 0
+ 802              		@ frame_needed = 0, uses_anonymous_args = 0
+ 803 0000 10B5     		push	{r4, lr}
+ 804 0002 1300     		movs	r3, r2
+ 805 0004 0A00     		movs	r2, r1
+ 806 0006 0100     		movs	r1, r0
+ 807 0008 0148     		ldr	r0, .L135
+ 808 000a FFF7FEFF 		bl	xTimerPendFunctionCallFromISR
+ 809              		@ sp needed
+ 810 000e 10BD     		pop	{r4, pc}
+ 811              	.L136:
+ 812              		.align	2
+ 813              	.L135:
+ 814 0010 00000000 		.word	vEventGroupSetBitsCallback
+ 816              		.section	.text.uxEventGroupGetNumber,"ax",%progbits
+ 817              		.align	1
+ 818              		.p2align 2,,3
+ 819              		.global	uxEventGroupGetNumber
+ 820              		.syntax unified
+ 821              		.code	16
+ 822              		.thumb_func
+ARM GAS  /tmp/ccdPU1po.s 			page 15
+
+
+ 823              		.fpu softvfp
+ 825              	uxEventGroupGetNumber:
+ 826              		@ args = 0, pretend = 0, frame = 0
+ 827              		@ frame_needed = 0, uses_anonymous_args = 0
+ 828              		@ link register save eliminated.
+ 829 0000 0028     		cmp	r0, #0
+ 830 0002 01D0     		beq	.L139
+ 831 0004 8069     		ldr	r0, [r0, #24]
+ 832              	.L137:
+ 833              		@ sp needed
+ 834 0006 7047     		bx	lr
+ 835              	.L139:
+ 836 0008 0020     		movs	r0, #0
+ 837 000a FCE7     		b	.L137
+ 839              		.section	.text.vEventGroupSetNumber,"ax",%progbits
+ 840              		.align	1
+ 841              		.p2align 2,,3
+ 842              		.global	vEventGroupSetNumber
+ 843              		.syntax unified
+ 844              		.code	16
+ 845              		.thumb_func
+ 846              		.fpu softvfp
+ 848              	vEventGroupSetNumber:
+ 849              		@ args = 0, pretend = 0, frame = 0
+ 850              		@ frame_needed = 0, uses_anonymous_args = 0
+ 851              		@ link register save eliminated.
+ 852              		@ sp needed
+ 853 0000 8161     		str	r1, [r0, #24]
+ 854 0002 7047     		bx	lr
+ 856              		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccdPU1po.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 event_groups.c
+     /tmp/ccdPU1po.s:14     .text.vEventGroupClearBitsCallback:0000000000000000 $t
+     /tmp/ccdPU1po.s:23     .text.vEventGroupClearBitsCallback:0000000000000000 vEventGroupClearBitsCallback
+     /tmp/ccdPU1po.s:60     .text.vEventGroupSetBitsCallback:0000000000000000 $t
+     /tmp/ccdPU1po.s:68     .text.vEventGroupSetBitsCallback:0000000000000000 vEventGroupSetBitsCallback
+     /tmp/ccdPU1po.s:167    .text.xEventGroupCreateStatic:0000000000000000 $t
+     /tmp/ccdPU1po.s:175    .text.xEventGroupCreateStatic:0000000000000000 xEventGroupCreateStatic
+     /tmp/ccdPU1po.s:217    .text.xEventGroupCreate:0000000000000000 $t
+     /tmp/ccdPU1po.s:225    .text.xEventGroupCreate:0000000000000000 xEventGroupCreate
+     /tmp/ccdPU1po.s:243    .text.xEventGroupWaitBits:0000000000000000 $t
+     /tmp/ccdPU1po.s:251    .text.xEventGroupWaitBits:0000000000000000 xEventGroupWaitBits
+     /tmp/ccdPU1po.s:408    .text.xEventGroupClearBits:0000000000000000 $t
+     /tmp/ccdPU1po.s:416    .text.xEventGroupClearBits:0000000000000000 xEventGroupClearBits
+     /tmp/ccdPU1po.s:455    .text.xEventGroupClearBitsFromISR:0000000000000000 $t
+     /tmp/ccdPU1po.s:463    .text.xEventGroupClearBitsFromISR:0000000000000000 xEventGroupClearBitsFromISR
+     /tmp/ccdPU1po.s:477    .text.xEventGroupClearBitsFromISR:0000000000000010 $d
+     /tmp/ccdPU1po.s:480    .text.xEventGroupGetBitsFromISR:0000000000000000 $t
+     /tmp/ccdPU1po.s:488    .text.xEventGroupGetBitsFromISR:0000000000000000 xEventGroupGetBitsFromISR
+     /tmp/ccdPU1po.s:501    .text.xEventGroupSetBits:0000000000000000 $t
+     /tmp/ccdPU1po.s:509    .text.xEventGroupSetBits:0000000000000000 xEventGroupSetBits
+     /tmp/ccdPU1po.s:609    .text.xEventGroupSync:0000000000000000 $t
+     /tmp/ccdPU1po.s:617    .text.xEventGroupSync:0000000000000000 xEventGroupSync
+     /tmp/ccdPU1po.s:739    .text.vEventGroupDelete:0000000000000000 $t
+     /tmp/ccdPU1po.s:747    .text.vEventGroupDelete:0000000000000000 vEventGroupDelete
+     /tmp/ccdPU1po.s:792    .text.xEventGroupSetBitsFromISR:0000000000000000 $t
+     /tmp/ccdPU1po.s:800    .text.xEventGroupSetBitsFromISR:0000000000000000 xEventGroupSetBitsFromISR
+     /tmp/ccdPU1po.s:814    .text.xEventGroupSetBitsFromISR:0000000000000010 $d
+     /tmp/ccdPU1po.s:817    .text.uxEventGroupGetNumber:0000000000000000 $t
+     /tmp/ccdPU1po.s:825    .text.uxEventGroupGetNumber:0000000000000000 uxEventGroupGetNumber
+     /tmp/ccdPU1po.s:840    .text.vEventGroupSetNumber:0000000000000000 $t
+     /tmp/ccdPU1po.s:848    .text.vEventGroupSetNumber:0000000000000000 vEventGroupSetNumber
+
+UNDEFINED SYMBOLS
+vPortEnterCritical
+vPortExitCritical
+vTaskSuspendAll
+vTaskRemoveFromUnorderedEventList
+xTaskResumeAll
+vListInitialise
+pvPortMalloc
+xTaskGetSchedulerState
+vTaskPlaceOnUnorderedEventList
+uxTaskResetEventItemValue
+vPortYield
+xTimerPendFunctionCallFromISR
+ulSetInterruptMaskFromISR
+vClearInterruptMaskFromISR
+vPortFree

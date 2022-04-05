@@ -1,0 +1,1832 @@
+ARM GAS  /tmp/ccpAyQXh.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stream_buffer.c"
+  12              		.text
+  13              		.section	.text.prvReadBytesFromBuffer,"ax",%progbits
+  14              		.align	1
+  15              		.p2align 2,,3
+  16              		.arch armv6s-m
+  17              		.syntax unified
+  18              		.code	16
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	prvReadBytesFromBuffer:
+  23              		@ args = 0, pretend = 0, frame = 0
+  24              		@ frame_needed = 0, uses_anonymous_args = 0
+  25 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  26 0002 4746     		mov	r7, r8
+  27 0004 CE46     		mov	lr, r9
+  28 0006 8846     		mov	r8, r1
+  29 0008 80B5     		push	{r7, lr}
+  30 000a 9146     		mov	r9, r2
+  31 000c 0700     		movs	r7, r0
+  32 000e 1500     		movs	r5, r2
+  33 0010 9A42     		cmp	r2, r3
+  34 0012 00D9     		bls	.L2
+  35 0014 1D00     		movs	r5, r3
+  36              	.L2:
+  37 0016 002D     		cmp	r5, #0
+  38 0018 14D0     		beq	.L1
+  39 001a 3E68     		ldr	r6, [r7]
+  40 001c BB68     		ldr	r3, [r7, #8]
+  41 001e 9C1B     		subs	r4, r3, r6
+  42 0020 AC42     		cmp	r4, r5
+  43 0022 19D8     		bhi	.L17
+  44 0024 A145     		cmp	r9, r4
+  45 0026 12D2     		bcs	.L5
+  46              	.L18:
+  47              		.syntax divided
+  48              	@ 1084 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+  49 0028 72B6     		 cpsid i 
+  50              	@ 0 "" 2
+  51              		.thumb
+  52              		.syntax unified
+  53              	.L6:
+  54 002a FEE7     		b	.L6
+  55              	.L10:
+  56 002c 4346     		mov	r3, r8
+  57 002e B969     		ldr	r1, [r7, #24]
+  58 0030 1819     		adds	r0, r3, r4
+ARM GAS  /tmp/ccpAyQXh.s 			page 2
+
+
+  59 0032 2A1B     		subs	r2, r5, r4
+  60 0034 FFF7FEFF 		bl	memcpy
+  61              	.L9:
+  62 0038 BB68     		ldr	r3, [r7, #8]
+  63 003a AE19     		adds	r6, r5, r6
+  64 003c B342     		cmp	r3, r6
+  65 003e 00D8     		bhi	.L12
+  66 0040 F61A     		subs	r6, r6, r3
+  67              	.L12:
+  68 0042 3E60     		str	r6, [r7]
+  69              	.L1:
+  70 0044 2800     		movs	r0, r5
+  71              		@ sp needed
+  72 0046 0CBC     		pop	{r2, r3}
+  73 0048 9046     		mov	r8, r2
+  74 004a 9946     		mov	r9, r3
+  75 004c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+  76              	.L5:
+  77 004e 3219     		adds	r2, r6, r4
+  78 0050 9342     		cmp	r3, r2
+  79 0052 05D2     		bcs	.L7
+  80              		.syntax divided
+  81              	@ 1085 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+  82 0054 72B6     		 cpsid i 
+  83              	@ 0 "" 2
+  84              		.thumb
+  85              		.syntax unified
+  86              	.L8:
+  87 0056 FEE7     		b	.L8
+  88              	.L17:
+  89 0058 2C00     		movs	r4, r5
+  90 005a A145     		cmp	r9, r4
+  91 005c F7D2     		bcs	.L5
+  92 005e E3E7     		b	.L18
+  93              	.L7:
+  94 0060 BB69     		ldr	r3, [r7, #24]
+  95 0062 2200     		movs	r2, r4
+  96 0064 4046     		mov	r0, r8
+  97 0066 9919     		adds	r1, r3, r6
+  98 0068 FFF7FEFF 		bl	memcpy
+  99 006c A542     		cmp	r5, r4
+ 100 006e E3D9     		bls	.L9
+ 101 0070 A945     		cmp	r9, r5
+ 102 0072 DBD2     		bcs	.L10
+ 103              		.syntax divided
+ 104              	@ 1093 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 105 0074 72B6     		 cpsid i 
+ 106              	@ 0 "" 2
+ 107              		.thumb
+ 108              		.syntax unified
+ 109              	.L11:
+ 110 0076 FEE7     		b	.L11
+ 112              		.section	.text.xStreamBufferGenericCreate,"ax",%progbits
+ 113              		.align	1
+ 114              		.p2align 2,,3
+ 115              		.global	xStreamBufferGenericCreate
+ 116              		.syntax unified
+ARM GAS  /tmp/ccpAyQXh.s 			page 3
+
+
+ 117              		.code	16
+ 118              		.thumb_func
+ 119              		.fpu softvfp
+ 121              	xStreamBufferGenericCreate:
+ 122              		@ args = 0, pretend = 0, frame = 0
+ 123              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 125 0002 C646     		mov	lr, r8
+ 126 0004 0500     		movs	r5, r0
+ 127 0006 0E00     		movs	r6, r1
+ 128 0008 9046     		mov	r8, r2
+ 129 000a 00B5     		push	{lr}
+ 130 000c 0428     		cmp	r0, #4
+ 131 000e 01D8     		bhi	.L20
+ 132              		.syntax divided
+ 133              	@ 227 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 134 0010 72B6     		 cpsid i 
+ 135              	@ 0 "" 2
+ 136              		.thumb
+ 137              		.syntax unified
+ 138              	.L21:
+ 139 0012 FEE7     		b	.L21
+ 140              	.L20:
+ 141 0014 8842     		cmp	r0, r1
+ 142 0016 01D2     		bcs	.L22
+ 143              		.syntax divided
+ 144              	@ 228 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 145 0018 72B6     		 cpsid i 
+ 146              	@ 0 "" 2
+ 147              		.thumb
+ 148              		.syntax unified
+ 149              	.L23:
+ 150 001a FEE7     		b	.L23
+ 151              	.L22:
+ 152 001c 2530     		adds	r0, r0, #37
+ 153 001e FFF7FEFF 		bl	pvPortMalloc
+ 154 0022 041E     		subs	r4, r0, #0
+ 155 0024 1BD0     		beq	.L19
+ 156 0026 0700     		movs	r7, r0
+ 157 0028 0135     		adds	r5, r5, #1
+ 158 002a 2437     		adds	r7, r7, #36
+ 159 002c 2A00     		movs	r2, r5
+ 160 002e 5521     		movs	r1, #85
+ 161 0030 3800     		movs	r0, r7
+ 162 0032 FFF7FEFF 		bl	memset
+ 163 0036 8742     		cmp	r7, r0
+ 164 0038 01D0     		beq	.L26
+ 165              		.syntax divided
+ 166              	@ 1156 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 167 003a 72B6     		 cpsid i 
+ 168              	@ 0 "" 2
+ 169              		.thumb
+ 170              		.syntax unified
+ 171              	.L27:
+ 172 003c FEE7     		b	.L27
+ 173              	.L26:
+ 174 003e 2422     		movs	r2, #36
+ARM GAS  /tmp/ccpAyQXh.s 			page 4
+
+
+ 175 0040 0021     		movs	r1, #0
+ 176 0042 2000     		movs	r0, r4
+ 177 0044 FFF7FEFF 		bl	memset
+ 178 0048 A761     		str	r7, [r4, #24]
+ 179 004a A560     		str	r5, [r4, #8]
+ 180 004c 002E     		cmp	r6, #0
+ 181 004e 00D1     		bne	.L28
+ 182 0050 0136     		adds	r6, r6, #1
+ 183              	.L28:
+ 184 0052 4346     		mov	r3, r8
+ 185 0054 E660     		str	r6, [r4, #12]
+ 186 0056 002B     		cmp	r3, #0
+ 187 0058 01D0     		beq	.L19
+ 188 005a 0123     		movs	r3, #1
+ 189 005c 2377     		strb	r3, [r4, #28]
+ 190              	.L19:
+ 191 005e 2000     		movs	r0, r4
+ 192              		@ sp needed
+ 193 0060 04BC     		pop	{r2}
+ 194 0062 9046     		mov	r8, r2
+ 195 0064 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 197 0066 C046     		.section	.text.xStreamBufferGenericCreateStatic,"ax",%progbits
+ 198              		.align	1
+ 199              		.p2align 2,,3
+ 200              		.global	xStreamBufferGenericCreateStatic
+ 201              		.syntax unified
+ 202              		.code	16
+ 203              		.thumb_func
+ 204              		.fpu softvfp
+ 206              	xStreamBufferGenericCreateStatic:
+ 207              		@ args = 4, pretend = 0, frame = 8
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 210 0002 C646     		mov	lr, r8
+ 211 0004 00B5     		push	{lr}
+ 212 0006 82B0     		sub	sp, sp, #8
+ 213 0008 0700     		movs	r7, r0
+ 214 000a 0C00     		movs	r4, r1
+ 215 000c 9046     		mov	r8, r2
+ 216 000e 1E1E     		subs	r6, r3, #0
+ 217 0010 089D     		ldr	r5, [sp, #32]
+ 218 0012 10D0     		beq	.L49
+ 219 0014 002D     		cmp	r5, #0
+ 220 0016 03D0     		beq	.L50
+ 221 0018 8142     		cmp	r1, r0
+ 222 001a 03D9     		bls	.L38
+ 223              		.syntax divided
+ 224              	@ 282 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 225 001c 72B6     		 cpsid i 
+ 226              	@ 0 "" 2
+ 227              		.thumb
+ 228              		.syntax unified
+ 229              	.L39:
+ 230 001e FEE7     		b	.L39
+ 231              	.L50:
+ 232              		.syntax divided
+ 233              	@ 281 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ARM GAS  /tmp/ccpAyQXh.s 			page 5
+
+
+ 234 0020 72B6     		 cpsid i 
+ 235              	@ 0 "" 2
+ 236              		.thumb
+ 237              		.syntax unified
+ 238              	.L37:
+ 239 0022 FEE7     		b	.L37
+ 240              	.L38:
+ 241 0024 0428     		cmp	r0, #4
+ 242 0026 08D9     		bls	.L51
+ 243 0028 2423     		movs	r3, #36
+ 244 002a 0193     		str	r3, [sp, #4]
+ 245 002c 019B     		ldr	r3, [sp, #4]
+ 246 002e 242B     		cmp	r3, #36
+ 247 0030 05D0     		beq	.L42
+ 248              		.syntax divided
+ 249              	@ 303 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 250 0032 72B6     		 cpsid i 
+ 251              	@ 0 "" 2
+ 252              		.thumb
+ 253              		.syntax unified
+ 254              	.L43:
+ 255 0034 FEE7     		b	.L43
+ 256              	.L49:
+ 257              		.syntax divided
+ 258              	@ 280 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 259 0036 72B6     		 cpsid i 
+ 260              	@ 0 "" 2
+ 261              		.thumb
+ 262              		.syntax unified
+ 263              	.L35:
+ 264 0038 FEE7     		b	.L35
+ 265              	.L51:
+ 266              		.syntax divided
+ 267              	@ 295 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 268 003a 72B6     		 cpsid i 
+ 269              	@ 0 "" 2
+ 270              		.thumb
+ 271              		.syntax unified
+ 272              	.L41:
+ 273 003c FEE7     		b	.L41
+ 274              	.L42:
+ 275 003e 0200     		movs	r2, r0
+ 276 0040 5521     		movs	r1, #85
+ 277 0042 3000     		movs	r0, r6
+ 278 0044 FFF7FEFF 		bl	memset
+ 279 0048 8642     		cmp	r6, r0
+ 280 004a 01D0     		beq	.L44
+ 281              		.syntax divided
+ 282              	@ 1156 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 283 004c 72B6     		 cpsid i 
+ 284              	@ 0 "" 2
+ 285              		.thumb
+ 286              		.syntax unified
+ 287              	.L45:
+ 288 004e FEE7     		b	.L45
+ 289              	.L44:
+ 290 0050 2422     		movs	r2, #36
+ARM GAS  /tmp/ccpAyQXh.s 			page 6
+
+
+ 291 0052 0021     		movs	r1, #0
+ 292 0054 2800     		movs	r0, r5
+ 293 0056 FFF7FEFF 		bl	memset
+ 294 005a AE61     		str	r6, [r5, #24]
+ 295 005c AF60     		str	r7, [r5, #8]
+ 296 005e 002C     		cmp	r4, #0
+ 297 0060 00D1     		bne	.L46
+ 298 0062 0134     		adds	r4, r4, #1
+ 299              	.L46:
+ 300 0064 4646     		mov	r6, r8
+ 301 0066 721E     		subs	r2, r6, #1
+ 302 0068 9641     		sbcs	r6, r6, r2
+ 303 006a 2800     		movs	r0, r5
+ 304 006c 0236     		adds	r6, r6, #2
+ 305 006e EC60     		str	r4, [r5, #12]
+ 306 0070 2E77     		strb	r6, [r5, #28]
+ 307 0072 02B0     		add	sp, sp, #8
+ 308              		@ sp needed
+ 309 0074 04BC     		pop	{r2}
+ 310 0076 9046     		mov	r8, r2
+ 311 0078 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 313 007a C046     		.section	.text.vStreamBufferDelete,"ax",%progbits
+ 314              		.align	1
+ 315              		.p2align 2,,3
+ 316              		.global	vStreamBufferDelete
+ 317              		.syntax unified
+ 318              		.code	16
+ 319              		.thumb_func
+ 320              		.fpu softvfp
+ 322              	vStreamBufferDelete:
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325 0000 10B5     		push	{r4, lr}
+ 326 0002 0028     		cmp	r0, #0
+ 327 0004 0AD0     		beq	.L57
+ 328 0006 037F     		ldrb	r3, [r0, #28]
+ 329 0008 9B07     		lsls	r3, r3, #30
+ 330 000a 04D5     		bpl	.L58
+ 331 000c 2422     		movs	r2, #36
+ 332 000e 0021     		movs	r1, #0
+ 333 0010 FFF7FEFF 		bl	memset
+ 334              	.L52:
+ 335              		@ sp needed
+ 336 0014 10BD     		pop	{r4, pc}
+ 337              	.L58:
+ 338 0016 FFF7FEFF 		bl	vPortFree
+ 339 001a FBE7     		b	.L52
+ 340              	.L57:
+ 341              		.syntax divided
+ 342              	@ 339 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 343 001c 72B6     		 cpsid i 
+ 344              	@ 0 "" 2
+ 345              		.thumb
+ 346              		.syntax unified
+ 347              	.L54:
+ 348 001e FEE7     		b	.L54
+ 350              		.section	.text.xStreamBufferReset,"ax",%progbits
+ARM GAS  /tmp/ccpAyQXh.s 			page 7
+
+
+ 351              		.align	1
+ 352              		.p2align 2,,3
+ 353              		.global	xStreamBufferReset
+ 354              		.syntax unified
+ 355              		.code	16
+ 356              		.thumb_func
+ 357              		.fpu softvfp
+ 359              	xStreamBufferReset:
+ 360              		@ args = 0, pretend = 0, frame = 0
+ 361              		@ frame_needed = 0, uses_anonymous_args = 0
+ 362 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 363 0002 CE46     		mov	lr, r9
+ 364 0004 4746     		mov	r7, r8
+ 365 0006 0400     		movs	r4, r0
+ 366 0008 80B5     		push	{r7, lr}
+ 367 000a 0028     		cmp	r0, #0
+ 368 000c 1BD0     		beq	.L71
+ 369 000e 0369     		ldr	r3, [r0, #16]
+ 370 0010 0020     		movs	r0, #0
+ 371 0012 002B     		cmp	r3, #0
+ 372 0014 03D0     		beq	.L72
+ 373              	.L59:
+ 374              		@ sp needed
+ 375 0016 0CBC     		pop	{r2, r3}
+ 376 0018 9046     		mov	r8, r2
+ 377 001a 9946     		mov	r9, r3
+ 378 001c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 379              	.L72:
+ 380 001e 6269     		ldr	r2, [r4, #20]
+ 381 0020 1800     		movs	r0, r3
+ 382 0022 002A     		cmp	r2, #0
+ 383 0024 F7D1     		bne	.L59
+ 384 0026 237F     		ldrb	r3, [r4, #28]
+ 385 0028 A569     		ldr	r5, [r4, #24]
+ 386 002a A668     		ldr	r6, [r4, #8]
+ 387 002c 9846     		mov	r8, r3
+ 388 002e E368     		ldr	r3, [r4, #12]
+ 389 0030 3200     		movs	r2, r6
+ 390 0032 5521     		movs	r1, #85
+ 391 0034 2800     		movs	r0, r5
+ 392 0036 9946     		mov	r9, r3
+ 393 0038 276A     		ldr	r7, [r4, #32]
+ 394 003a FFF7FEFF 		bl	memset
+ 395 003e 8542     		cmp	r5, r0
+ 396 0040 03D0     		beq	.L63
+ 397              		.syntax divided
+ 398              	@ 1156 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 399 0042 72B6     		 cpsid i 
+ 400              	@ 0 "" 2
+ 401              		.thumb
+ 402              		.syntax unified
+ 403              	.L64:
+ 404 0044 FEE7     		b	.L64
+ 405              	.L71:
+ 406              		.syntax divided
+ 407              	@ 377 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 408 0046 72B6     		 cpsid i 
+ARM GAS  /tmp/ccpAyQXh.s 			page 8
+
+
+ 409              	@ 0 "" 2
+ 410              		.thumb
+ 411              		.syntax unified
+ 412              	.L61:
+ 413 0048 FEE7     		b	.L61
+ 414              	.L63:
+ 415 004a 2422     		movs	r2, #36
+ 416 004c 0021     		movs	r1, #0
+ 417 004e 2000     		movs	r0, r4
+ 418 0050 FFF7FEFF 		bl	memset
+ 419 0054 4B46     		mov	r3, r9
+ 420 0056 4246     		mov	r2, r8
+ 421 0058 E360     		str	r3, [r4, #12]
+ 422 005a 0123     		movs	r3, #1
+ 423 005c A561     		str	r5, [r4, #24]
+ 424 005e A660     		str	r6, [r4, #8]
+ 425 0060 1342     		tst	r3, r2
+ 426 0062 00D0     		beq	.L65
+ 427 0064 2377     		strb	r3, [r4, #28]
+ 428              	.L65:
+ 429 0066 0120     		movs	r0, #1
+ 430 0068 2762     		str	r7, [r4, #32]
+ 431 006a D4E7     		b	.L59
+ 433              		.section	.text.xStreamBufferSetTriggerLevel,"ax",%progbits
+ 434              		.align	1
+ 435              		.p2align 2,,3
+ 436              		.global	xStreamBufferSetTriggerLevel
+ 437              		.syntax unified
+ 438              		.code	16
+ 439              		.thumb_func
+ 440              		.fpu softvfp
+ 442              	xStreamBufferSetTriggerLevel:
+ 443              		@ args = 0, pretend = 0, frame = 0
+ 444              		@ frame_needed = 0, uses_anonymous_args = 0
+ 445              		@ link register save eliminated.
+ 446 0000 0200     		movs	r2, r0
+ 447 0002 0B00     		movs	r3, r1
+ 448 0004 0028     		cmp	r0, #0
+ 449 0006 0ED0     		beq	.L79
+ 450 0008 0029     		cmp	r1, #0
+ 451 000a 06D0     		beq	.L80
+ 452 000c 9168     		ldr	r1, [r2, #8]
+ 453 000e 0020     		movs	r0, #0
+ 454 0010 9942     		cmp	r1, r3
+ 455 0012 01D3     		bcc	.L73
+ 456              	.L81:
+ 457 0014 D360     		str	r3, [r2, #12]
+ 458 0016 0130     		adds	r0, r0, #1
+ 459              	.L73:
+ 460              		@ sp needed
+ 461 0018 7047     		bx	lr
+ 462              	.L80:
+ 463 001a 9168     		ldr	r1, [r2, #8]
+ 464 001c 0133     		adds	r3, r3, #1
+ 465 001e 0020     		movs	r0, #0
+ 466 0020 9942     		cmp	r1, r3
+ 467 0022 F9D3     		bcc	.L73
+ARM GAS  /tmp/ccpAyQXh.s 			page 9
+
+
+ 468 0024 F6E7     		b	.L81
+ 469              	.L79:
+ 470              		.syntax divided
+ 471              	@ 427 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 472 0026 72B6     		 cpsid i 
+ 473              	@ 0 "" 2
+ 474              		.thumb
+ 475              		.syntax unified
+ 476              	.L75:
+ 477 0028 FEE7     		b	.L75
+ 479 002a C046     		.section	.text.xStreamBufferSpacesAvailable,"ax",%progbits
+ 480              		.align	1
+ 481              		.p2align 2,,3
+ 482              		.global	xStreamBufferSpacesAvailable
+ 483              		.syntax unified
+ 484              		.code	16
+ 485              		.thumb_func
+ 486              		.fpu softvfp
+ 488              	xStreamBufferSpacesAvailable:
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491              		@ link register save eliminated.
+ 492 0000 031E     		subs	r3, r0, #0
+ 493 0002 09D0     		beq	.L86
+ 494 0004 8268     		ldr	r2, [r0, #8]
+ 495 0006 0068     		ldr	r0, [r0]
+ 496 0008 5B68     		ldr	r3, [r3, #4]
+ 497 000a 1018     		adds	r0, r2, r0
+ 498 000c 0138     		subs	r0, r0, #1
+ 499 000e C01A     		subs	r0, r0, r3
+ 500 0010 8242     		cmp	r2, r0
+ 501 0012 00D8     		bhi	.L82
+ 502 0014 801A     		subs	r0, r0, r2
+ 503              	.L82:
+ 504              		@ sp needed
+ 505 0016 7047     		bx	lr
+ 506              	.L86:
+ 507              		.syntax divided
+ 508              	@ 456 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 509 0018 72B6     		 cpsid i 
+ 510              	@ 0 "" 2
+ 511              		.thumb
+ 512              		.syntax unified
+ 513              	.L84:
+ 514 001a FEE7     		b	.L84
+ 516              		.section	.text.xStreamBufferBytesAvailable,"ax",%progbits
+ 517              		.align	1
+ 518              		.p2align 2,,3
+ 519              		.global	xStreamBufferBytesAvailable
+ 520              		.syntax unified
+ 521              		.code	16
+ 522              		.thumb_func
+ 523              		.fpu softvfp
+ 525              	xStreamBufferBytesAvailable:
+ 526              		@ args = 0, pretend = 0, frame = 0
+ 527              		@ frame_needed = 0, uses_anonymous_args = 0
+ 528              		@ link register save eliminated.
+ARM GAS  /tmp/ccpAyQXh.s 			page 10
+
+
+ 529 0000 031E     		subs	r3, r0, #0
+ 530 0002 08D0     		beq	.L91
+ 531 0004 8268     		ldr	r2, [r0, #8]
+ 532 0006 4068     		ldr	r0, [r0, #4]
+ 533 0008 1B68     		ldr	r3, [r3]
+ 534 000a 1018     		adds	r0, r2, r0
+ 535 000c C01A     		subs	r0, r0, r3
+ 536 000e 8242     		cmp	r2, r0
+ 537 0010 00D8     		bhi	.L87
+ 538 0012 801A     		subs	r0, r0, r2
+ 539              	.L87:
+ 540              		@ sp needed
+ 541 0014 7047     		bx	lr
+ 542              	.L91:
+ 543              		.syntax divided
+ 544              	@ 480 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 545 0016 72B6     		 cpsid i 
+ 546              	@ 0 "" 2
+ 547              		.thumb
+ 548              		.syntax unified
+ 549              	.L89:
+ 550 0018 FEE7     		b	.L89
+ 552 001a C046     		.section	.text.xStreamBufferSend,"ax",%progbits
+ 553              		.align	1
+ 554              		.p2align 2,,3
+ 555              		.global	xStreamBufferSend
+ 556              		.syntax unified
+ 557              		.code	16
+ 558              		.thumb_func
+ 559              		.fpu softvfp
+ 561              	xStreamBufferSend:
+ 562              		@ args = 0, pretend = 0, frame = 24
+ 563              		@ frame_needed = 0, uses_anonymous_args = 0
+ 564 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 565 0002 4746     		mov	r7, r8
+ 566 0004 CE46     		mov	lr, r9
+ 567 0006 80B5     		push	{r7, lr}
+ 568 0008 87B0     		sub	sp, sp, #28
+ 569 000a 0400     		movs	r4, r0
+ 570 000c 8846     		mov	r8, r1
+ 571 000e 1600     		movs	r6, r2
+ 572 0010 0193     		str	r3, [sp, #4]
+ 573 0012 0029     		cmp	r1, #0
+ 574 0014 5AD0     		beq	.L145
+ 575 0016 0028     		cmp	r0, #0
+ 576 0018 56D0     		beq	.L146
+ 577 001a 037F     		ldrb	r3, [r0, #28]
+ 578 001c 1700     		movs	r7, r2
+ 579 001e DB07     		lsls	r3, r3, #31
+ 580 0020 00D5     		bpl	.L97
+ 581 0022 171D     		adds	r7, r2, #4
+ 582              	.L97:
+ 583 0024 019B     		ldr	r3, [sp, #4]
+ 584 0026 002B     		cmp	r3, #0
+ 585 0028 12D1     		bne	.L98
+ 586              	.L107:
+ 587 002a 2568     		ldr	r5, [r4]
+ARM GAS  /tmp/ccpAyQXh.s 			page 11
+
+
+ 588 002c A368     		ldr	r3, [r4, #8]
+ 589 002e 6268     		ldr	r2, [r4, #4]
+ 590 0030 5D19     		adds	r5, r3, r5
+ 591 0032 013D     		subs	r5, r5, #1
+ 592 0034 AD1A     		subs	r5, r5, r2
+ 593 0036 AB42     		cmp	r3, r5
+ 594 0038 00D8     		bhi	.L100
+ 595 003a ED1A     		subs	r5, r5, r3
+ 596              	.L100:
+ 597 003c 0396     		str	r6, [sp, #12]
+ 598 003e 002D     		cmp	r5, #0
+ 599 0040 37D1     		bne	.L109
+ 600              	.L114:
+ 601 0042 0026     		movs	r6, #0
+ 602              	.L92:
+ 603 0044 3000     		movs	r0, r6
+ 604 0046 07B0     		add	sp, sp, #28
+ 605              		@ sp needed
+ 606 0048 0CBC     		pop	{r2, r3}
+ 607 004a 9046     		mov	r8, r2
+ 608 004c 9946     		mov	r9, r3
+ 609 004e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 610              	.L98:
+ 611 0050 04A8     		add	r0, sp, #16
+ 612 0052 FFF7FEFF 		bl	vTaskSetTimeOutState
+ 613 0056 1AE0     		b	.L105
+ 614              	.L148:
+ 615 0058 0020     		movs	r0, #0
+ 616 005a FFF7FEFF 		bl	xTaskNotifyStateClear
+ 617 005e 6369     		ldr	r3, [r4, #20]
+ 618 0060 9946     		mov	r9, r3
+ 619 0062 002B     		cmp	r3, #0
+ 620 0064 4CD1     		bne	.L147
+ 621 0066 FFF7FEFF 		bl	xTaskGetCurrentTaskHandle
+ 622 006a 6061     		str	r0, [r4, #20]
+ 623 006c FFF7FEFF 		bl	vPortExitCritical
+ 624 0070 0121     		movs	r1, #1
+ 625 0072 019B     		ldr	r3, [sp, #4]
+ 626 0074 4942     		rsbs	r1, r1, #0
+ 627 0076 0022     		movs	r2, #0
+ 628 0078 0020     		movs	r0, #0
+ 629 007a FFF7FEFF 		bl	xTaskNotifyWait
+ 630 007e 4B46     		mov	r3, r9
+ 631 0080 01A9     		add	r1, sp, #4
+ 632 0082 6361     		str	r3, [r4, #20]
+ 633 0084 04A8     		add	r0, sp, #16
+ 634 0086 FFF7FEFF 		bl	xTaskCheckForTimeOut
+ 635 008a 0028     		cmp	r0, #0
+ 636 008c 0ED1     		bne	.L106
+ 637              	.L105:
+ 638 008e FFF7FEFF 		bl	vPortEnterCritical
+ 639 0092 2568     		ldr	r5, [r4]
+ 640 0094 A368     		ldr	r3, [r4, #8]
+ 641 0096 6268     		ldr	r2, [r4, #4]
+ 642 0098 5D19     		adds	r5, r3, r5
+ 643 009a 013D     		subs	r5, r5, #1
+ 644 009c AD1A     		subs	r5, r5, r2
+ARM GAS  /tmp/ccpAyQXh.s 			page 12
+
+
+ 645 009e AB42     		cmp	r3, r5
+ 646 00a0 00D8     		bhi	.L101
+ 647 00a2 ED1A     		subs	r5, r5, r3
+ 648              	.L101:
+ 649 00a4 AF42     		cmp	r7, r5
+ 650 00a6 D7D8     		bhi	.L148
+ 651 00a8 FFF7FEFF 		bl	vPortExitCritical
+ 652              	.L106:
+ 653 00ac 002D     		cmp	r5, #0
+ 654 00ae BCD0     		beq	.L107
+ 655 00b0 0396     		str	r6, [sp, #12]
+ 656              	.L109:
+ 657 00b2 237F     		ldrb	r3, [r4, #28]
+ 658 00b4 DB07     		lsls	r3, r3, #31
+ 659 00b6 0BD4     		bmi	.L111
+ 660 00b8 AE42     		cmp	r6, r5
+ 661 00ba 00D9     		bls	.L112
+ 662 00bc 2E00     		movs	r6, r5
+ 663              	.L112:
+ 664 00be 0396     		str	r6, [sp, #12]
+ 665              	.L113:
+ 666 00c0 002E     		cmp	r6, #0
+ 667 00c2 13D1     		bne	.L122
+ 668              		.syntax divided
+ 669              	@ 1024 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 670 00c4 72B6     		 cpsid i 
+ 671              	@ 0 "" 2
+ 672              		.thumb
+ 673              		.syntax unified
+ 674              	.L123:
+ 675 00c6 FEE7     		b	.L123
+ 676              	.L146:
+ 677              		.syntax divided
+ 678              	@ 498 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 679 00c8 72B6     		 cpsid i 
+ 680              	@ 0 "" 2
+ 681              		.thumb
+ 682              		.syntax unified
+ 683              	.L96:
+ 684 00ca FEE7     		b	.L96
+ 685              	.L145:
+ 686              		.syntax divided
+ 687              	@ 497 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 688 00cc 72B6     		 cpsid i 
+ 689              	@ 0 "" 2
+ 690              		.thumb
+ 691              		.syntax unified
+ 692              	.L94:
+ 693 00ce FEE7     		b	.L94
+ 694              	.L111:
+ 695 00d0 AF42     		cmp	r7, r5
+ 696 00d2 B6D8     		bhi	.L114
+ 697 00d4 6668     		ldr	r6, [r4, #4]
+ 698 00d6 A368     		ldr	r3, [r4, #8]
+ 699 00d8 9F1B     		subs	r7, r3, r6
+ 700 00da 3D00     		movs	r5, r7
+ 701 00dc 042F     		cmp	r7, #4
+ARM GAS  /tmp/ccpAyQXh.s 			page 13
+
+
+ 702 00de 00D9     		bls	.L115
+ 703 00e0 0425     		movs	r5, #4
+ 704              	.L115:
+ 705 00e2 7219     		adds	r2, r6, r5
+ 706 00e4 9342     		cmp	r3, r2
+ 707 00e6 0DD2     		bcs	.L116
+ 708              		.syntax divided
+ 709              	@ 1034 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 710 00e8 72B6     		 cpsid i 
+ 711              	@ 0 "" 2
+ 712              		.thumb
+ 713              		.syntax unified
+ 714              	.L117:
+ 715 00ea FEE7     		b	.L117
+ 716              	.L122:
+ 717 00ec 6568     		ldr	r5, [r4, #4]
+ 718 00ee A368     		ldr	r3, [r4, #8]
+ 719 00f0 5F1B     		subs	r7, r3, r5
+ 720 00f2 B742     		cmp	r7, r6
+ 721 00f4 56D8     		bhi	.L149
+ 722              	.L124:
+ 723 00f6 EA19     		adds	r2, r5, r7
+ 724 00f8 9342     		cmp	r3, r2
+ 725 00fa 1FD2     		bcs	.L125
+ 726              		.syntax divided
+ 727              	@ 1034 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 728 00fc 72B6     		 cpsid i 
+ 729              	@ 0 "" 2
+ 730              		.thumb
+ 731              		.syntax unified
+ 732              	.L126:
+ 733 00fe FEE7     		b	.L126
+ 734              	.L147:
+ 735              		.syntax divided
+ 736              	@ 531 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 737 0100 72B6     		 cpsid i 
+ 738              	@ 0 "" 2
+ 739              		.thumb
+ 740              		.syntax unified
+ 741              	.L104:
+ 742 0102 FEE7     		b	.L104
+ 743              	.L116:
+ 744 0104 A369     		ldr	r3, [r4, #24]
+ 745 0106 2A00     		movs	r2, r5
+ 746 0108 9819     		adds	r0, r3, r6
+ 747 010a 03A9     		add	r1, sp, #12
+ 748 010c FFF7FEFF 		bl	memcpy
+ 749 0110 032F     		cmp	r7, #3
+ 750 0112 0BD8     		bhi	.L118
+ 751 0114 0422     		movs	r2, #4
+ 752 0116 A368     		ldr	r3, [r4, #8]
+ 753 0118 521B     		subs	r2, r2, r5
+ 754 011a 9A42     		cmp	r2, r3
+ 755 011c 01D9     		bls	.L119
+ 756              		.syntax divided
+ 757              	@ 1042 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 758 011e 72B6     		 cpsid i 
+ARM GAS  /tmp/ccpAyQXh.s 			page 14
+
+
+ 759              	@ 0 "" 2
+ 760              		.thumb
+ 761              		.syntax unified
+ 762              	.L120:
+ 763 0120 FEE7     		b	.L120
+ 764              	.L119:
+ 765 0122 03AB     		add	r3, sp, #12
+ 766 0124 A069     		ldr	r0, [r4, #24]
+ 767 0126 5919     		adds	r1, r3, r5
+ 768 0128 FFF7FEFF 		bl	memcpy
+ 769              	.L118:
+ 770 012c A268     		ldr	r2, [r4, #8]
+ 771 012e 0436     		adds	r6, r6, #4
+ 772 0130 9642     		cmp	r6, r2
+ 773 0132 00D3     		bcc	.L121
+ 774 0134 B61A     		subs	r6, r6, r2
+ 775              	.L121:
+ 776 0136 6660     		str	r6, [r4, #4]
+ 777 0138 039E     		ldr	r6, [sp, #12]
+ 778 013a C1E7     		b	.L113
+ 779              	.L125:
+ 780 013c A369     		ldr	r3, [r4, #24]
+ 781 013e 3A00     		movs	r2, r7
+ 782 0140 4146     		mov	r1, r8
+ 783 0142 5819     		adds	r0, r3, r5
+ 784 0144 FFF7FEFF 		bl	memcpy
+ 785 0148 B742     		cmp	r7, r6
+ 786 014a 0AD2     		bcs	.L127
+ 787 014c A368     		ldr	r3, [r4, #8]
+ 788 014e F21B     		subs	r2, r6, r7
+ 789 0150 9A42     		cmp	r2, r3
+ 790 0152 01D9     		bls	.L128
+ 791              		.syntax divided
+ 792              	@ 1042 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 793 0154 72B6     		 cpsid i 
+ 794              	@ 0 "" 2
+ 795              		.thumb
+ 796              		.syntax unified
+ 797              	.L129:
+ 798 0156 FEE7     		b	.L129
+ 799              	.L128:
+ 800 0158 3900     		movs	r1, r7
+ 801 015a A069     		ldr	r0, [r4, #24]
+ 802 015c 4144     		add	r1, r1, r8
+ 803 015e FFF7FEFF 		bl	memcpy
+ 804              	.L127:
+ 805 0162 A268     		ldr	r2, [r4, #8]
+ 806 0164 AD19     		adds	r5, r5, r6
+ 807 0166 9542     		cmp	r5, r2
+ 808 0168 00D3     		bcc	.L130
+ 809 016a AD1A     		subs	r5, r5, r2
+ 810              	.L130:
+ 811 016c 6560     		str	r5, [r4, #4]
+ 812 016e 6368     		ldr	r3, [r4, #4]
+ 813 0170 2168     		ldr	r1, [r4]
+ 814 0172 9B18     		adds	r3, r3, r2
+ 815 0174 5B1A     		subs	r3, r3, r1
+ARM GAS  /tmp/ccpAyQXh.s 			page 15
+
+
+ 816 0176 9342     		cmp	r3, r2
+ 817 0178 00D3     		bcc	.L133
+ 818 017a 9B1A     		subs	r3, r3, r2
+ 819              	.L133:
+ 820 017c E268     		ldr	r2, [r4, #12]
+ 821 017e 9A42     		cmp	r2, r3
+ 822 0180 00D9     		bls	.LCB799
+ 823 0182 5FE7     		b	.L92	@long jump
+ 824              	.LCB799:
+ 825 0184 FFF7FEFF 		bl	vTaskSuspendAll
+ 826 0188 2369     		ldr	r3, [r4, #16]
+ 827 018a 002B     		cmp	r3, #0
+ 828 018c 07D0     		beq	.L131
+ 829 018e 0023     		movs	r3, #0
+ 830 0190 0022     		movs	r2, #0
+ 831 0192 0021     		movs	r1, #0
+ 832 0194 2069     		ldr	r0, [r4, #16]
+ 833 0196 FFF7FEFF 		bl	xTaskGenericNotify
+ 834 019a 0023     		movs	r3, #0
+ 835 019c 2361     		str	r3, [r4, #16]
+ 836              	.L131:
+ 837 019e FFF7FEFF 		bl	xTaskResumeAll
+ 838 01a2 4FE7     		b	.L92
+ 839              	.L149:
+ 840 01a4 3700     		movs	r7, r6
+ 841 01a6 A6E7     		b	.L124
+ 843              		.section	.text.xStreamBufferSendFromISR,"ax",%progbits
+ 844              		.align	1
+ 845              		.p2align 2,,3
+ 846              		.global	xStreamBufferSendFromISR
+ 847              		.syntax unified
+ 848              		.code	16
+ 849              		.thumb_func
+ 850              		.fpu softvfp
+ 852              	xStreamBufferSendFromISR:
+ 853              		@ args = 0, pretend = 0, frame = 8
+ 854              		@ frame_needed = 0, uses_anonymous_args = 0
+ 855 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 856 0002 4646     		mov	r6, r8
+ 857 0004 D646     		mov	lr, r10
+ 858 0006 4F46     		mov	r7, r9
+ 859 0008 C0B5     		push	{r6, r7, lr}
+ 860 000a 0400     		movs	r4, r0
+ 861 000c 0E00     		movs	r6, r1
+ 862 000e 1500     		movs	r5, r2
+ 863 0010 9846     		mov	r8, r3
+ 864 0012 84B0     		sub	sp, sp, #16
+ 865 0014 0029     		cmp	r1, #0
+ 866 0016 20D0     		beq	.L187
+ 867 0018 0028     		cmp	r0, #0
+ 868 001a 1CD0     		beq	.L188
+ 869 001c 0121     		movs	r1, #1
+ 870 001e 0F00     		movs	r7, r1
+ 871 0020 037F     		ldrb	r3, [r0, #28]
+ 872 0022 1F40     		ands	r7, r3
+ 873 0024 1942     		tst	r1, r3
+ 874 0026 00D0     		beq	.L155
+ARM GAS  /tmp/ccpAyQXh.s 			page 16
+
+
+ 875 0028 0432     		adds	r2, r2, #4
+ 876              	.L155:
+ 877 002a 2068     		ldr	r0, [r4]
+ 878 002c A368     		ldr	r3, [r4, #8]
+ 879 002e 6168     		ldr	r1, [r4, #4]
+ 880 0030 1818     		adds	r0, r3, r0
+ 881 0032 0138     		subs	r0, r0, #1
+ 882 0034 401A     		subs	r0, r0, r1
+ 883 0036 8342     		cmp	r3, r0
+ 884 0038 00D8     		bhi	.L156
+ 885 003a C01A     		subs	r0, r0, r3
+ 886              	.L156:
+ 887 003c 0395     		str	r5, [sp, #12]
+ 888 003e 0028     		cmp	r0, #0
+ 889 0040 0FD0     		beq	.L162
+ 890 0042 002F     		cmp	r7, #0
+ 891 0044 0BD1     		bne	.L159
+ 892 0046 8542     		cmp	r5, r0
+ 893 0048 00D9     		bls	.L160
+ 894 004a 0500     		movs	r5, r0
+ 895              	.L160:
+ 896 004c 0395     		str	r5, [sp, #12]
+ 897              	.L161:
+ 898 004e 002D     		cmp	r5, #0
+ 899 0050 0FD1     		bne	.L170
+ 900              		.syntax divided
+ 901              	@ 1024 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 902 0052 72B6     		 cpsid i 
+ 903              	@ 0 "" 2
+ 904              		.thumb
+ 905              		.syntax unified
+ 906              	.L171:
+ 907 0054 FEE7     		b	.L171
+ 908              	.L188:
+ 909              		.syntax divided
+ 910              	@ 598 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 911 0056 72B6     		 cpsid i 
+ 912              	@ 0 "" 2
+ 913              		.thumb
+ 914              		.syntax unified
+ 915              	.L154:
+ 916 0058 FEE7     		b	.L154
+ 917              	.L187:
+ 918              		.syntax divided
+ 919              	@ 597 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 920 005a 72B6     		 cpsid i 
+ 921              	@ 0 "" 2
+ 922              		.thumb
+ 923              		.syntax unified
+ 924              	.L152:
+ 925 005c FEE7     		b	.L152
+ 926              	.L159:
+ 927 005e 8242     		cmp	r2, r0
+ 928 0060 12D9     		bls	.L189
+ 929              	.L162:
+ 930 0062 0025     		movs	r5, #0
+ 931              	.L150:
+ARM GAS  /tmp/ccpAyQXh.s 			page 17
+
+
+ 932 0064 2800     		movs	r0, r5
+ 933 0066 04B0     		add	sp, sp, #16
+ 934              		@ sp needed
+ 935 0068 1CBC     		pop	{r2, r3, r4}
+ 936 006a 9046     		mov	r8, r2
+ 937 006c 9946     		mov	r9, r3
+ 938 006e A246     		mov	r10, r4
+ 939 0070 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 940              	.L170:
+ 941 0072 6768     		ldr	r7, [r4, #4]
+ 942 0074 DA1B     		subs	r2, r3, r7
+ 943 0076 9146     		mov	r9, r2
+ 944 0078 AA42     		cmp	r2, r5
+ 945 007a 68D8     		bhi	.L190
+ 946              	.L172:
+ 947 007c 4A46     		mov	r2, r9
+ 948 007e BA18     		adds	r2, r7, r2
+ 949 0080 9342     		cmp	r3, r2
+ 950 0082 2CD2     		bcs	.L173
+ 951              		.syntax divided
+ 952              	@ 1034 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 953 0084 72B6     		 cpsid i 
+ 954              	@ 0 "" 2
+ 955              		.thumb
+ 956              		.syntax unified
+ 957              	.L174:
+ 958 0086 FEE7     		b	.L174
+ 959              	.L189:
+ 960 0088 6768     		ldr	r7, [r4, #4]
+ 961 008a DA1B     		subs	r2, r3, r7
+ 962 008c 9246     		mov	r10, r2
+ 963 008e 9146     		mov	r9, r2
+ 964 0090 042A     		cmp	r2, #4
+ 965 0092 01D9     		bls	.L163
+ 966 0094 0422     		movs	r2, #4
+ 967 0096 9146     		mov	r9, r2
+ 968              	.L163:
+ 969 0098 4A46     		mov	r2, r9
+ 970 009a BA18     		adds	r2, r7, r2
+ 971 009c 9342     		cmp	r3, r2
+ 972 009e 01D2     		bcs	.L164
+ 973              		.syntax divided
+ 974              	@ 1034 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 975 00a0 72B6     		 cpsid i 
+ 976              	@ 0 "" 2
+ 977              		.thumb
+ 978              		.syntax unified
+ 979              	.L165:
+ 980 00a2 FEE7     		b	.L165
+ 981              	.L164:
+ 982 00a4 A369     		ldr	r3, [r4, #24]
+ 983 00a6 4A46     		mov	r2, r9
+ 984 00a8 D819     		adds	r0, r3, r7
+ 985 00aa 03A9     		add	r1, sp, #12
+ 986 00ac FFF7FEFF 		bl	memcpy
+ 987 00b0 5346     		mov	r3, r10
+ 988 00b2 032B     		cmp	r3, #3
+ARM GAS  /tmp/ccpAyQXh.s 			page 18
+
+
+ 989 00b4 0CD8     		bhi	.L166
+ 990 00b6 4B46     		mov	r3, r9
+ 991 00b8 0422     		movs	r2, #4
+ 992 00ba D21A     		subs	r2, r2, r3
+ 993 00bc A368     		ldr	r3, [r4, #8]
+ 994 00be 9A42     		cmp	r2, r3
+ 995 00c0 01D9     		bls	.L167
+ 996              		.syntax divided
+ 997              	@ 1042 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 998 00c2 72B6     		 cpsid i 
+ 999              	@ 0 "" 2
+ 1000              		.thumb
+ 1001              		.syntax unified
+ 1002              	.L168:
+ 1003 00c4 FEE7     		b	.L168
+ 1004              	.L167:
+ 1005 00c6 03A9     		add	r1, sp, #12
+ 1006 00c8 A069     		ldr	r0, [r4, #24]
+ 1007 00ca 4944     		add	r1, r1, r9
+ 1008 00cc FFF7FEFF 		bl	memcpy
+ 1009              	.L166:
+ 1010 00d0 A368     		ldr	r3, [r4, #8]
+ 1011 00d2 3A1D     		adds	r2, r7, #4
+ 1012 00d4 9A42     		cmp	r2, r3
+ 1013 00d6 00D3     		bcc	.L169
+ 1014 00d8 D21A     		subs	r2, r2, r3
+ 1015              	.L169:
+ 1016 00da 6260     		str	r2, [r4, #4]
+ 1017 00dc B7E7     		b	.L161
+ 1018              	.L173:
+ 1019 00de A369     		ldr	r3, [r4, #24]
+ 1020 00e0 4A46     		mov	r2, r9
+ 1021 00e2 3100     		movs	r1, r6
+ 1022 00e4 D819     		adds	r0, r3, r7
+ 1023 00e6 FFF7FEFF 		bl	memcpy
+ 1024 00ea 4D45     		cmp	r5, r9
+ 1025 00ec 0BD9     		bls	.L175
+ 1026 00ee 4B46     		mov	r3, r9
+ 1027 00f0 EA1A     		subs	r2, r5, r3
+ 1028 00f2 A368     		ldr	r3, [r4, #8]
+ 1029 00f4 9A42     		cmp	r2, r3
+ 1030 00f6 01D9     		bls	.L176
+ 1031              		.syntax divided
+ 1032              	@ 1042 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1033 00f8 72B6     		 cpsid i 
+ 1034              	@ 0 "" 2
+ 1035              		.thumb
+ 1036              		.syntax unified
+ 1037              	.L177:
+ 1038 00fa FEE7     		b	.L177
+ 1039              	.L176:
+ 1040 00fc 3100     		movs	r1, r6
+ 1041 00fe A069     		ldr	r0, [r4, #24]
+ 1042 0100 4944     		add	r1, r1, r9
+ 1043 0102 FFF7FEFF 		bl	memcpy
+ 1044              	.L175:
+ 1045 0106 A268     		ldr	r2, [r4, #8]
+ARM GAS  /tmp/ccpAyQXh.s 			page 19
+
+
+ 1046 0108 EB19     		adds	r3, r5, r7
+ 1047 010a 9342     		cmp	r3, r2
+ 1048 010c 00D3     		bcc	.L178
+ 1049 010e 9B1A     		subs	r3, r3, r2
+ 1050              	.L178:
+ 1051 0110 6360     		str	r3, [r4, #4]
+ 1052 0112 6368     		ldr	r3, [r4, #4]
+ 1053 0114 2168     		ldr	r1, [r4]
+ 1054 0116 9B18     		adds	r3, r3, r2
+ 1055 0118 5B1A     		subs	r3, r3, r1
+ 1056 011a 9342     		cmp	r3, r2
+ 1057 011c 00D3     		bcc	.L181
+ 1058 011e 9B1A     		subs	r3, r3, r2
+ 1059              	.L181:
+ 1060 0120 E268     		ldr	r2, [r4, #12]
+ 1061 0122 9A42     		cmp	r2, r3
+ 1062 0124 9ED8     		bhi	.L150
+ 1063 0126 FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 1064 012a 2369     		ldr	r3, [r4, #16]
+ 1065 012c 0600     		movs	r6, r0
+ 1066 012e 002B     		cmp	r3, #0
+ 1067 0130 09D0     		beq	.L179
+ 1068 0132 4346     		mov	r3, r8
+ 1069 0134 0022     		movs	r2, #0
+ 1070 0136 0093     		str	r3, [sp]
+ 1071 0138 0021     		movs	r1, #0
+ 1072 013a 0023     		movs	r3, #0
+ 1073 013c 2069     		ldr	r0, [r4, #16]
+ 1074 013e FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1075 0142 0023     		movs	r3, #0
+ 1076 0144 2361     		str	r3, [r4, #16]
+ 1077              	.L179:
+ 1078 0146 3000     		movs	r0, r6
+ 1079 0148 FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 1080 014c 8AE7     		b	.L150
+ 1081              	.L190:
+ 1082 014e A946     		mov	r9, r5
+ 1083 0150 94E7     		b	.L172
+ 1085 0152 C046     		.section	.text.xStreamBufferReceive,"ax",%progbits
+ 1086              		.align	1
+ 1087              		.p2align 2,,3
+ 1088              		.global	xStreamBufferReceive
+ 1089              		.syntax unified
+ 1090              		.code	16
+ 1091              		.thumb_func
+ 1092              		.fpu softvfp
+ 1094              	xStreamBufferReceive:
+ 1095              		@ args = 0, pretend = 0, frame = 8
+ 1096              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1097 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1098 0002 CE46     		mov	lr, r9
+ 1099 0004 4746     		mov	r7, r8
+ 1100 0006 80B5     		push	{r7, lr}
+ 1101 0008 0500     		movs	r5, r0
+ 1102 000a 8946     		mov	r9, r1
+ 1103 000c 9046     		mov	r8, r2
+ 1104 000e 1E00     		movs	r6, r3
+ARM GAS  /tmp/ccpAyQXh.s 			page 20
+
+
+ 1105 0010 83B0     		sub	sp, sp, #12
+ 1106 0012 0029     		cmp	r1, #0
+ 1107 0014 19D0     		beq	.L230
+ 1108 0016 0028     		cmp	r0, #0
+ 1109 0018 15D0     		beq	.L231
+ 1110 001a 0127     		movs	r7, #1
+ 1111 001c 037F     		ldrb	r3, [r0, #28]
+ 1112 001e 1F40     		ands	r7, r3
+ 1113 0020 BF00     		lsls	r7, r7, #2
+ 1114 0022 002E     		cmp	r6, #0
+ 1115 0024 15D1     		bne	.L232
+ 1116              	.L197:
+ 1117 0026 6C68     		ldr	r4, [r5, #4]
+ 1118 0028 AB68     		ldr	r3, [r5, #8]
+ 1119 002a 2A68     		ldr	r2, [r5]
+ 1120 002c 1C19     		adds	r4, r3, r4
+ 1121 002e A41A     		subs	r4, r4, r2
+ 1122 0030 A342     		cmp	r3, r4
+ 1123 0032 0CD9     		bls	.L233
+ 1124              	.L202:
+ 1125 0034 0026     		movs	r6, #0
+ 1126 0036 BC42     		cmp	r4, r7
+ 1127 0038 19D8     		bhi	.L219
+ 1128              	.L191:
+ 1129 003a 3000     		movs	r0, r6
+ 1130 003c 03B0     		add	sp, sp, #12
+ 1131              		@ sp needed
+ 1132 003e 0CBC     		pop	{r2, r3}
+ 1133 0040 9046     		mov	r8, r2
+ 1134 0042 9946     		mov	r9, r3
+ 1135 0044 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1136              	.L231:
+ 1137              		.syntax divided
+ 1138              	@ 700 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1139 0046 72B6     		 cpsid i 
+ 1140              	@ 0 "" 2
+ 1141              		.thumb
+ 1142              		.syntax unified
+ 1143              	.L195:
+ 1144 0048 FEE7     		b	.L195
+ 1145              	.L230:
+ 1146              		.syntax divided
+ 1147              	@ 699 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1148 004a 72B6     		 cpsid i 
+ 1149              	@ 0 "" 2
+ 1150              		.thumb
+ 1151              		.syntax unified
+ 1152              	.L193:
+ 1153 004c FEE7     		b	.L193
+ 1154              	.L233:
+ 1155 004e E41A     		subs	r4, r4, r3
+ 1156 0050 F0E7     		b	.L202
+ 1157              	.L232:
+ 1158 0052 FFF7FEFF 		bl	vPortEnterCritical
+ 1159 0056 6C68     		ldr	r4, [r5, #4]
+ 1160 0058 AB68     		ldr	r3, [r5, #8]
+ 1161 005a 2A68     		ldr	r2, [r5]
+ARM GAS  /tmp/ccpAyQXh.s 			page 21
+
+
+ 1162 005c 1C19     		adds	r4, r3, r4
+ 1163 005e A41A     		subs	r4, r4, r2
+ 1164 0060 A342     		cmp	r3, r4
+ 1165 0062 00D8     		bhi	.L198
+ 1166 0064 E41A     		subs	r4, r4, r3
+ 1167              	.L198:
+ 1168 0066 A742     		cmp	r7, r4
+ 1169 0068 17D2     		bcs	.L234
+ 1170 006a FFF7FEFF 		bl	vPortExitCritical
+ 1171              	.L219:
+ 1172 006e 002F     		cmp	r7, #0
+ 1173 0070 1ED1     		bne	.L235
+ 1174 0072 4346     		mov	r3, r8
+ 1175 0074 0193     		str	r3, [sp, #4]
+ 1176              	.L206:
+ 1177 0076 2600     		movs	r6, r4
+ 1178 0078 4445     		cmp	r4, r8
+ 1179 007a 00D9     		bls	.L208
+ 1180 007c 4646     		mov	r6, r8
+ 1181              	.L208:
+ 1182 007e 002E     		cmp	r6, #0
+ 1183 0080 14D0     		beq	.L207
+ 1184 0082 2F68     		ldr	r7, [r5]
+ 1185 0084 AB68     		ldr	r3, [r5, #8]
+ 1186 0086 DC1B     		subs	r4, r3, r7
+ 1187 0088 B442     		cmp	r4, r6
+ 1188 008a 54D8     		bhi	.L236
+ 1189              	.L209:
+ 1190 008c 4445     		cmp	r4, r8
+ 1191 008e 54D8     		bhi	.L237
+ 1192 0090 3A19     		adds	r2, r7, r4
+ 1193 0092 9342     		cmp	r3, r2
+ 1194 0094 19D2     		bcs	.L212
+ 1195              		.syntax divided
+ 1196              	@ 1085 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1197 0096 72B6     		 cpsid i 
+ 1198              	@ 0 "" 2
+ 1199              		.thumb
+ 1200              		.syntax unified
+ 1201              	.L213:
+ 1202 0098 FEE7     		b	.L213
+ 1203              	.L234:
+ 1204 009a 0020     		movs	r0, #0
+ 1205 009c FFF7FEFF 		bl	xTaskNotifyStateClear
+ 1206 00a0 2C69     		ldr	r4, [r5, #16]
+ 1207 00a2 002C     		cmp	r4, #0
+ 1208 00a4 39D0     		beq	.L200
+ 1209              		.syntax divided
+ 1210              	@ 735 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1211 00a6 72B6     		 cpsid i 
+ 1212              	@ 0 "" 2
+ 1213              		.thumb
+ 1214              		.syntax unified
+ 1215              	.L201:
+ 1216 00a8 FEE7     		b	.L201
+ 1217              	.L205:
+ 1218 00aa 2E60     		str	r6, [r5]
+ARM GAS  /tmp/ccpAyQXh.s 			page 22
+
+
+ 1219              	.L207:
+ 1220 00ac 0026     		movs	r6, #0
+ 1221 00ae C4E7     		b	.L191
+ 1222              	.L235:
+ 1223 00b0 2300     		movs	r3, r4
+ 1224 00b2 3A00     		movs	r2, r7
+ 1225 00b4 2800     		movs	r0, r5
+ 1226 00b6 01A9     		add	r1, sp, #4
+ 1227 00b8 2E68     		ldr	r6, [r5]
+ 1228 00ba FFF7FEFF 		bl	prvReadBytesFromBuffer
+ 1229 00be 019B     		ldr	r3, [sp, #4]
+ 1230 00c0 9845     		cmp	r8, r3
+ 1231 00c2 F2D3     		bcc	.L205
+ 1232 00c4 9846     		mov	r8, r3
+ 1233 00c6 E41B     		subs	r4, r4, r7
+ 1234 00c8 D5E7     		b	.L206
+ 1235              	.L212:
+ 1236 00ca AB69     		ldr	r3, [r5, #24]
+ 1237 00cc 2200     		movs	r2, r4
+ 1238 00ce 4846     		mov	r0, r9
+ 1239 00d0 D919     		adds	r1, r3, r7
+ 1240 00d2 FFF7FEFF 		bl	memcpy
+ 1241 00d6 A642     		cmp	r6, r4
+ 1242 00d8 09D9     		bls	.L214
+ 1243 00da 4645     		cmp	r6, r8
+ 1244 00dc 01D9     		bls	.L215
+ 1245              		.syntax divided
+ 1246              	@ 1093 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1247 00de 72B6     		 cpsid i 
+ 1248              	@ 0 "" 2
+ 1249              		.thumb
+ 1250              		.syntax unified
+ 1251              	.L216:
+ 1252 00e0 FEE7     		b	.L216
+ 1253              	.L215:
+ 1254 00e2 4B46     		mov	r3, r9
+ 1255 00e4 A969     		ldr	r1, [r5, #24]
+ 1256 00e6 1819     		adds	r0, r3, r4
+ 1257 00e8 321B     		subs	r2, r6, r4
+ 1258 00ea FFF7FEFF 		bl	memcpy
+ 1259              	.L214:
+ 1260 00ee AB68     		ldr	r3, [r5, #8]
+ 1261 00f0 F719     		adds	r7, r6, r7
+ 1262 00f2 9F42     		cmp	r7, r3
+ 1263 00f4 00D3     		bcc	.L217
+ 1264 00f6 FF1A     		subs	r7, r7, r3
+ 1265              	.L217:
+ 1266 00f8 2F60     		str	r7, [r5]
+ 1267 00fa FFF7FEFF 		bl	vTaskSuspendAll
+ 1268 00fe 6B69     		ldr	r3, [r5, #20]
+ 1269 0100 002B     		cmp	r3, #0
+ 1270 0102 07D0     		beq	.L218
+ 1271 0104 0023     		movs	r3, #0
+ 1272 0106 0022     		movs	r2, #0
+ 1273 0108 0021     		movs	r1, #0
+ 1274 010a 6869     		ldr	r0, [r5, #20]
+ 1275 010c FFF7FEFF 		bl	xTaskGenericNotify
+ARM GAS  /tmp/ccpAyQXh.s 			page 23
+
+
+ 1276 0110 0023     		movs	r3, #0
+ 1277 0112 6B61     		str	r3, [r5, #20]
+ 1278              	.L218:
+ 1279 0114 FFF7FEFF 		bl	xTaskResumeAll
+ 1280 0118 8FE7     		b	.L191
+ 1281              	.L200:
+ 1282 011a FFF7FEFF 		bl	xTaskGetCurrentTaskHandle
+ 1283 011e 2861     		str	r0, [r5, #16]
+ 1284 0120 FFF7FEFF 		bl	vPortExitCritical
+ 1285 0124 0121     		movs	r1, #1
+ 1286 0126 3300     		movs	r3, r6
+ 1287 0128 0022     		movs	r2, #0
+ 1288 012a 0020     		movs	r0, #0
+ 1289 012c 4942     		rsbs	r1, r1, #0
+ 1290 012e FFF7FEFF 		bl	xTaskNotifyWait
+ 1291 0132 2C61     		str	r4, [r5, #16]
+ 1292 0134 77E7     		b	.L197
+ 1293              	.L236:
+ 1294 0136 3400     		movs	r4, r6
+ 1295 0138 A8E7     		b	.L209
+ 1296              	.L237:
+ 1297              		.syntax divided
+ 1298              	@ 1084 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1299 013a 72B6     		 cpsid i 
+ 1300              	@ 0 "" 2
+ 1301              		.thumb
+ 1302              		.syntax unified
+ 1303              	.L211:
+ 1304 013c FEE7     		b	.L211
+ 1306 013e C046     		.section	.text.xStreamBufferReceiveFromISR,"ax",%progbits
+ 1307              		.align	1
+ 1308              		.p2align 2,,3
+ 1309              		.global	xStreamBufferReceiveFromISR
+ 1310              		.syntax unified
+ 1311              		.code	16
+ 1312              		.thumb_func
+ 1313              		.fpu softvfp
+ 1315              	xStreamBufferReceiveFromISR:
+ 1316              		@ args = 0, pretend = 0, frame = 8
+ 1317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1318 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1319 0002 D646     		mov	lr, r10
+ 1320 0004 4F46     		mov	r7, r9
+ 1321 0006 4646     		mov	r6, r8
+ 1322 0008 C0B5     		push	{r6, r7, lr}
+ 1323 000a 0400     		movs	r4, r0
+ 1324 000c 8A46     		mov	r10, r1
+ 1325 000e 9146     		mov	r9, r2
+ 1326 0010 9846     		mov	r8, r3
+ 1327 0012 84B0     		sub	sp, sp, #16
+ 1328 0014 0029     		cmp	r1, #0
+ 1329 0016 19D0     		beq	.L269
+ 1330 0018 0028     		cmp	r0, #0
+ 1331 001a 15D0     		beq	.L270
+ 1332 001c 0127     		movs	r7, #1
+ 1333 001e 037F     		ldrb	r3, [r0, #28]
+ 1334 0020 4668     		ldr	r6, [r0, #4]
+ARM GAS  /tmp/ccpAyQXh.s 			page 24
+
+
+ 1335 0022 1F40     		ands	r7, r3
+ 1336 0024 8368     		ldr	r3, [r0, #8]
+ 1337 0026 0268     		ldr	r2, [r0]
+ 1338 0028 9E19     		adds	r6, r3, r6
+ 1339 002a BF00     		lsls	r7, r7, #2
+ 1340 002c B61A     		subs	r6, r6, r2
+ 1341 002e B342     		cmp	r3, r6
+ 1342 0030 00D8     		bhi	.L244
+ 1343 0032 F61A     		subs	r6, r6, r3
+ 1344              	.L244:
+ 1345 0034 0025     		movs	r5, #0
+ 1346 0036 B742     		cmp	r7, r6
+ 1347 0038 0AD3     		bcc	.L271
+ 1348              	.L238:
+ 1349 003a 2800     		movs	r0, r5
+ 1350 003c 04B0     		add	sp, sp, #16
+ 1351              		@ sp needed
+ 1352 003e 1CBC     		pop	{r2, r3, r4}
+ 1353 0040 9046     		mov	r8, r2
+ 1354 0042 9946     		mov	r9, r3
+ 1355 0044 A246     		mov	r10, r4
+ 1356 0046 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1357              	.L270:
+ 1358              		.syntax divided
+ 1359              	@ 804 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1360 0048 72B6     		 cpsid i 
+ 1361              	@ 0 "" 2
+ 1362              		.thumb
+ 1363              		.syntax unified
+ 1364              	.L242:
+ 1365 004a FEE7     		b	.L242
+ 1366              	.L269:
+ 1367              		.syntax divided
+ 1368              	@ 803 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1369 004c 72B6     		 cpsid i 
+ 1370              	@ 0 "" 2
+ 1371              		.thumb
+ 1372              		.syntax unified
+ 1373              	.L240:
+ 1374 004e FEE7     		b	.L240
+ 1375              	.L271:
+ 1376 0050 002F     		cmp	r7, #0
+ 1377 0052 13D1     		bne	.L272
+ 1378 0054 4B46     		mov	r3, r9
+ 1379 0056 0393     		str	r3, [sp, #12]
+ 1380              	.L248:
+ 1381 0058 3500     		movs	r5, r6
+ 1382 005a 4E45     		cmp	r6, r9
+ 1383 005c 00D9     		bls	.L250
+ 1384 005e 4D46     		mov	r5, r9
+ 1385              	.L250:
+ 1386 0060 002D     		cmp	r5, #0
+ 1387 0062 16D0     		beq	.L249
+ 1388 0064 2768     		ldr	r7, [r4]
+ 1389 0066 A368     		ldr	r3, [r4, #8]
+ 1390 0068 DE1B     		subs	r6, r3, r7
+ 1391 006a AE42     		cmp	r6, r5
+ARM GAS  /tmp/ccpAyQXh.s 			page 25
+
+
+ 1392 006c 13D8     		bhi	.L273
+ 1393              	.L251:
+ 1394 006e 4E45     		cmp	r6, r9
+ 1395 0070 3FD8     		bhi	.L274
+ 1396 0072 BA19     		adds	r2, r7, r6
+ 1397 0074 9342     		cmp	r3, r2
+ 1398 0076 10D2     		bcs	.L254
+ 1399              		.syntax divided
+ 1400              	@ 1085 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1401 0078 72B6     		 cpsid i 
+ 1402              	@ 0 "" 2
+ 1403              		.thumb
+ 1404              		.syntax unified
+ 1405              	.L255:
+ 1406 007a FEE7     		b	.L255
+ 1407              	.L272:
+ 1408 007c 3300     		movs	r3, r6
+ 1409 007e 3A00     		movs	r2, r7
+ 1410 0080 2000     		movs	r0, r4
+ 1411 0082 03A9     		add	r1, sp, #12
+ 1412 0084 2568     		ldr	r5, [r4]
+ 1413 0086 FFF7FEFF 		bl	prvReadBytesFromBuffer
+ 1414 008a 039B     		ldr	r3, [sp, #12]
+ 1415 008c 9945     		cmp	r9, r3
+ 1416 008e 32D2     		bcs	.L275
+ 1417 0090 2560     		str	r5, [r4]
+ 1418              	.L249:
+ 1419 0092 0025     		movs	r5, #0
+ 1420 0094 D1E7     		b	.L238
+ 1421              	.L273:
+ 1422 0096 2E00     		movs	r6, r5
+ 1423 0098 E9E7     		b	.L251
+ 1424              	.L254:
+ 1425 009a A369     		ldr	r3, [r4, #24]
+ 1426 009c 3200     		movs	r2, r6
+ 1427 009e 5046     		mov	r0, r10
+ 1428 00a0 D919     		adds	r1, r3, r7
+ 1429 00a2 FFF7FEFF 		bl	memcpy
+ 1430 00a6 B542     		cmp	r5, r6
+ 1431 00a8 09D9     		bls	.L256
+ 1432 00aa 4D45     		cmp	r5, r9
+ 1433 00ac 01D9     		bls	.L257
+ 1434              		.syntax divided
+ 1435              	@ 1093 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1436 00ae 72B6     		 cpsid i 
+ 1437              	@ 0 "" 2
+ 1438              		.thumb
+ 1439              		.syntax unified
+ 1440              	.L258:
+ 1441 00b0 FEE7     		b	.L258
+ 1442              	.L257:
+ 1443 00b2 5346     		mov	r3, r10
+ 1444 00b4 A169     		ldr	r1, [r4, #24]
+ 1445 00b6 9819     		adds	r0, r3, r6
+ 1446 00b8 AA1B     		subs	r2, r5, r6
+ 1447 00ba FFF7FEFF 		bl	memcpy
+ 1448              	.L256:
+ARM GAS  /tmp/ccpAyQXh.s 			page 26
+
+
+ 1449 00be A368     		ldr	r3, [r4, #8]
+ 1450 00c0 EF19     		adds	r7, r5, r7
+ 1451 00c2 9F42     		cmp	r7, r3
+ 1452 00c4 00D3     		bcc	.L259
+ 1453 00c6 FF1A     		subs	r7, r7, r3
+ 1454              	.L259:
+ 1455 00c8 2760     		str	r7, [r4]
+ 1456 00ca FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 1457 00ce 6369     		ldr	r3, [r4, #20]
+ 1458 00d0 0600     		movs	r6, r0
+ 1459 00d2 002B     		cmp	r3, #0
+ 1460 00d4 09D0     		beq	.L260
+ 1461 00d6 4346     		mov	r3, r8
+ 1462 00d8 0022     		movs	r2, #0
+ 1463 00da 0093     		str	r3, [sp]
+ 1464 00dc 0021     		movs	r1, #0
+ 1465 00de 0023     		movs	r3, #0
+ 1466 00e0 6069     		ldr	r0, [r4, #20]
+ 1467 00e2 FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1468 00e6 0023     		movs	r3, #0
+ 1469 00e8 6361     		str	r3, [r4, #20]
+ 1470              	.L260:
+ 1471 00ea 3000     		movs	r0, r6
+ 1472 00ec FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 1473 00f0 A3E7     		b	.L238
+ 1474              	.L274:
+ 1475              		.syntax divided
+ 1476              	@ 1084 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1477 00f2 72B6     		 cpsid i 
+ 1478              	@ 0 "" 2
+ 1479              		.thumb
+ 1480              		.syntax unified
+ 1481              	.L253:
+ 1482 00f4 FEE7     		b	.L253
+ 1483              	.L275:
+ 1484 00f6 9946     		mov	r9, r3
+ 1485 00f8 F61B     		subs	r6, r6, r7
+ 1486 00fa ADE7     		b	.L248
+ 1488              		.section	.text.xStreamBufferIsEmpty,"ax",%progbits
+ 1489              		.align	1
+ 1490              		.p2align 2,,3
+ 1491              		.global	xStreamBufferIsEmpty
+ 1492              		.syntax unified
+ 1493              		.code	16
+ 1494              		.thumb_func
+ 1495              		.fpu softvfp
+ 1497              	xStreamBufferIsEmpty:
+ 1498              		@ args = 0, pretend = 0, frame = 0
+ 1499              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1500              		@ link register save eliminated.
+ 1501 0000 0028     		cmp	r0, #0
+ 1502 0002 05D0     		beq	.L279
+ 1503 0004 0268     		ldr	r2, [r0]
+ 1504 0006 4068     		ldr	r0, [r0, #4]
+ 1505              		@ sp needed
+ 1506 0008 801A     		subs	r0, r0, r2
+ 1507 000a 4342     		rsbs	r3, r0, #0
+ARM GAS  /tmp/ccpAyQXh.s 			page 27
+
+
+ 1508 000c 5841     		adcs	r0, r0, r3
+ 1509 000e 7047     		bx	lr
+ 1510              	.L279:
+ 1511              		.syntax divided
+ 1512              	@ 908 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1513 0010 72B6     		 cpsid i 
+ 1514              	@ 0 "" 2
+ 1515              		.thumb
+ 1516              		.syntax unified
+ 1517              	.L278:
+ 1518 0012 FEE7     		b	.L278
+ 1520              		.section	.text.xStreamBufferIsFull,"ax",%progbits
+ 1521              		.align	1
+ 1522              		.p2align 2,,3
+ 1523              		.global	xStreamBufferIsFull
+ 1524              		.syntax unified
+ 1525              		.code	16
+ 1526              		.thumb_func
+ 1527              		.fpu softvfp
+ 1529              	xStreamBufferIsFull:
+ 1530              		@ args = 0, pretend = 0, frame = 0
+ 1531              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1532              		@ link register save eliminated.
+ 1533 0000 0028     		cmp	r0, #0
+ 1534 0002 10D0     		beq	.L286
+ 1535 0004 0122     		movs	r2, #1
+ 1536 0006 037F     		ldrb	r3, [r0, #28]
+ 1537 0008 8168     		ldr	r1, [r0, #8]
+ 1538 000a 1A40     		ands	r2, r3
+ 1539 000c 0368     		ldr	r3, [r0]
+ 1540 000e 4068     		ldr	r0, [r0, #4]
+ 1541 0010 CB18     		adds	r3, r1, r3
+ 1542 0012 013B     		subs	r3, r3, #1
+ 1543 0014 9200     		lsls	r2, r2, #2
+ 1544 0016 1B1A     		subs	r3, r3, r0
+ 1545 0018 9942     		cmp	r1, r3
+ 1546 001a 00D8     		bhi	.L284
+ 1547 001c 5B1A     		subs	r3, r3, r1
+ 1548              	.L284:
+ 1549 001e 0020     		movs	r0, #0
+ 1550              		@ sp needed
+ 1551 0020 9A42     		cmp	r2, r3
+ 1552 0022 4041     		adcs	r0, r0, r0
+ 1553 0024 7047     		bx	lr
+ 1554              	.L286:
+ 1555              		.syntax divided
+ 1556              	@ 931 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1557 0026 72B6     		 cpsid i 
+ 1558              	@ 0 "" 2
+ 1559              		.thumb
+ 1560              		.syntax unified
+ 1561              	.L282:
+ 1562 0028 FEE7     		b	.L282
+ 1564              		.section	.text.xStreamBufferSendCompletedFromISR,"ax",%progbits
+ 1565              		.align	1
+ 1566              		.p2align 2,,3
+ 1567              		.global	xStreamBufferSendCompletedFromISR
+ARM GAS  /tmp/ccpAyQXh.s 			page 28
+
+
+ 1568              		.syntax unified
+ 1569              		.code	16
+ 1570              		.thumb_func
+ 1571              		.fpu softvfp
+ 1573              	xStreamBufferSendCompletedFromISR:
+ 1574              		@ args = 0, pretend = 0, frame = 0
+ 1575              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1576 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1577 0002 0400     		movs	r4, r0
+ 1578 0004 0F00     		movs	r7, r1
+ 1579 0006 83B0     		sub	sp, sp, #12
+ 1580 0008 0028     		cmp	r0, #0
+ 1581 000a 15D0     		beq	.L293
+ 1582 000c FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 1583 0010 2369     		ldr	r3, [r4, #16]
+ 1584 0012 0600     		movs	r6, r0
+ 1585 0014 0025     		movs	r5, #0
+ 1586 0016 002B     		cmp	r3, #0
+ 1587 0018 08D0     		beq	.L290
+ 1588 001a 0023     		movs	r3, #0
+ 1589 001c 0022     		movs	r2, #0
+ 1590 001e 0021     		movs	r1, #0
+ 1591 0020 2069     		ldr	r0, [r4, #16]
+ 1592 0022 0097     		str	r7, [sp]
+ 1593 0024 FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1594 0028 2561     		str	r5, [r4, #16]
+ 1595 002a 0135     		adds	r5, r5, #1
+ 1596              	.L290:
+ 1597 002c 3000     		movs	r0, r6
+ 1598 002e FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 1599 0032 2800     		movs	r0, r5
+ 1600 0034 03B0     		add	sp, sp, #12
+ 1601              		@ sp needed
+ 1602 0036 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1603              	.L293:
+ 1604              		.syntax divided
+ 1605              	@ 966 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1606 0038 72B6     		 cpsid i 
+ 1607              	@ 0 "" 2
+ 1608              		.thumb
+ 1609              		.syntax unified
+ 1610              	.L289:
+ 1611 003a FEE7     		b	.L289
+ 1613              		.section	.text.xStreamBufferReceiveCompletedFromISR,"ax",%progbits
+ 1614              		.align	1
+ 1615              		.p2align 2,,3
+ 1616              		.global	xStreamBufferReceiveCompletedFromISR
+ 1617              		.syntax unified
+ 1618              		.code	16
+ 1619              		.thumb_func
+ 1620              		.fpu softvfp
+ 1622              	xStreamBufferReceiveCompletedFromISR:
+ 1623              		@ args = 0, pretend = 0, frame = 0
+ 1624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1625 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1626 0002 0400     		movs	r4, r0
+ 1627 0004 0F00     		movs	r7, r1
+ARM GAS  /tmp/ccpAyQXh.s 			page 29
+
+
+ 1628 0006 83B0     		sub	sp, sp, #12
+ 1629 0008 0028     		cmp	r0, #0
+ 1630 000a 15D0     		beq	.L300
+ 1631 000c FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 1632 0010 6369     		ldr	r3, [r4, #20]
+ 1633 0012 0600     		movs	r6, r0
+ 1634 0014 0025     		movs	r5, #0
+ 1635 0016 002B     		cmp	r3, #0
+ 1636 0018 08D0     		beq	.L297
+ 1637 001a 0023     		movs	r3, #0
+ 1638 001c 0022     		movs	r2, #0
+ 1639 001e 0021     		movs	r1, #0
+ 1640 0020 6069     		ldr	r0, [r4, #20]
+ 1641 0022 0097     		str	r7, [sp]
+ 1642 0024 FFF7FEFF 		bl	xTaskGenericNotifyFromISR
+ 1643 0028 6561     		str	r5, [r4, #20]
+ 1644 002a 0135     		adds	r5, r5, #1
+ 1645              	.L297:
+ 1646 002c 3000     		movs	r0, r6
+ 1647 002e FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 1648 0032 2800     		movs	r0, r5
+ 1649 0034 03B0     		add	sp, sp, #12
+ 1650              		@ sp needed
+ 1651 0036 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1652              	.L300:
+ 1653              		.syntax divided
+ 1654              	@ 996 "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" 1
+ 1655 0038 72B6     		 cpsid i 
+ 1656              	@ 0 "" 2
+ 1657              		.thumb
+ 1658              		.syntax unified
+ 1659              	.L296:
+ 1660 003a FEE7     		b	.L296
+ 1662              		.section	.text.uxStreamBufferGetStreamBufferNumber,"ax",%progbits
+ 1663              		.align	1
+ 1664              		.p2align 2,,3
+ 1665              		.global	uxStreamBufferGetStreamBufferNumber
+ 1666              		.syntax unified
+ 1667              		.code	16
+ 1668              		.thumb_func
+ 1669              		.fpu softvfp
+ 1671              	uxStreamBufferGetStreamBufferNumber:
+ 1672              		@ args = 0, pretend = 0, frame = 0
+ 1673              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1674              		@ link register save eliminated.
+ 1675 0000 006A     		ldr	r0, [r0, #32]
+ 1676              		@ sp needed
+ 1677 0002 7047     		bx	lr
+ 1679              		.section	.text.vStreamBufferSetStreamBufferNumber,"ax",%progbits
+ 1680              		.align	1
+ 1681              		.p2align 2,,3
+ 1682              		.global	vStreamBufferSetStreamBufferNumber
+ 1683              		.syntax unified
+ 1684              		.code	16
+ 1685              		.thumb_func
+ 1686              		.fpu softvfp
+ 1688              	vStreamBufferSetStreamBufferNumber:
+ARM GAS  /tmp/ccpAyQXh.s 			page 30
+
+
+ 1689              		@ args = 0, pretend = 0, frame = 0
+ 1690              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1691              		@ link register save eliminated.
+ 1692              		@ sp needed
+ 1693 0000 0162     		str	r1, [r0, #32]
+ 1694 0002 7047     		bx	lr
+ 1696              		.section	.text.ucStreamBufferGetStreamBufferType,"ax",%progbits
+ 1697              		.align	1
+ 1698              		.p2align 2,,3
+ 1699              		.global	ucStreamBufferGetStreamBufferType
+ 1700              		.syntax unified
+ 1701              		.code	16
+ 1702              		.thumb_func
+ 1703              		.fpu softvfp
+ 1705              	ucStreamBufferGetStreamBufferType:
+ 1706              		@ args = 0, pretend = 0, frame = 0
+ 1707              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1708              		@ link register save eliminated.
+ 1709 0000 0123     		movs	r3, #1
+ 1710 0002 007F     		ldrb	r0, [r0, #28]
+ 1711              		@ sp needed
+ 1712 0004 1843     		orrs	r0, r3
+ 1713 0006 7047     		bx	lr
+ 1715              		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccpAyQXh.s 			page 31
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stream_buffer.c
+     /tmp/ccpAyQXh.s:14     .text.prvReadBytesFromBuffer:0000000000000000 $t
+     /tmp/ccpAyQXh.s:22     .text.prvReadBytesFromBuffer:0000000000000000 prvReadBytesFromBuffer
+     /tmp/ccpAyQXh.s:113    .text.xStreamBufferGenericCreate:0000000000000000 $t
+     /tmp/ccpAyQXh.s:121    .text.xStreamBufferGenericCreate:0000000000000000 xStreamBufferGenericCreate
+     /tmp/ccpAyQXh.s:198    .text.xStreamBufferGenericCreateStatic:0000000000000000 $t
+     /tmp/ccpAyQXh.s:206    .text.xStreamBufferGenericCreateStatic:0000000000000000 xStreamBufferGenericCreateStatic
+     /tmp/ccpAyQXh.s:314    .text.vStreamBufferDelete:0000000000000000 $t
+     /tmp/ccpAyQXh.s:322    .text.vStreamBufferDelete:0000000000000000 vStreamBufferDelete
+     /tmp/ccpAyQXh.s:351    .text.xStreamBufferReset:0000000000000000 $t
+     /tmp/ccpAyQXh.s:359    .text.xStreamBufferReset:0000000000000000 xStreamBufferReset
+     /tmp/ccpAyQXh.s:434    .text.xStreamBufferSetTriggerLevel:0000000000000000 $t
+     /tmp/ccpAyQXh.s:442    .text.xStreamBufferSetTriggerLevel:0000000000000000 xStreamBufferSetTriggerLevel
+     /tmp/ccpAyQXh.s:480    .text.xStreamBufferSpacesAvailable:0000000000000000 $t
+     /tmp/ccpAyQXh.s:488    .text.xStreamBufferSpacesAvailable:0000000000000000 xStreamBufferSpacesAvailable
+     /tmp/ccpAyQXh.s:517    .text.xStreamBufferBytesAvailable:0000000000000000 $t
+     /tmp/ccpAyQXh.s:525    .text.xStreamBufferBytesAvailable:0000000000000000 xStreamBufferBytesAvailable
+     /tmp/ccpAyQXh.s:553    .text.xStreamBufferSend:0000000000000000 $t
+     /tmp/ccpAyQXh.s:561    .text.xStreamBufferSend:0000000000000000 xStreamBufferSend
+     /tmp/ccpAyQXh.s:844    .text.xStreamBufferSendFromISR:0000000000000000 $t
+     /tmp/ccpAyQXh.s:852    .text.xStreamBufferSendFromISR:0000000000000000 xStreamBufferSendFromISR
+     /tmp/ccpAyQXh.s:1086   .text.xStreamBufferReceive:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1094   .text.xStreamBufferReceive:0000000000000000 xStreamBufferReceive
+     /tmp/ccpAyQXh.s:1307   .text.xStreamBufferReceiveFromISR:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1315   .text.xStreamBufferReceiveFromISR:0000000000000000 xStreamBufferReceiveFromISR
+     /tmp/ccpAyQXh.s:1489   .text.xStreamBufferIsEmpty:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1497   .text.xStreamBufferIsEmpty:0000000000000000 xStreamBufferIsEmpty
+     /tmp/ccpAyQXh.s:1521   .text.xStreamBufferIsFull:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1529   .text.xStreamBufferIsFull:0000000000000000 xStreamBufferIsFull
+     /tmp/ccpAyQXh.s:1565   .text.xStreamBufferSendCompletedFromISR:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1573   .text.xStreamBufferSendCompletedFromISR:0000000000000000 xStreamBufferSendCompletedFromISR
+     /tmp/ccpAyQXh.s:1614   .text.xStreamBufferReceiveCompletedFromISR:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1622   .text.xStreamBufferReceiveCompletedFromISR:0000000000000000 xStreamBufferReceiveCompletedFromISR
+     /tmp/ccpAyQXh.s:1663   .text.uxStreamBufferGetStreamBufferNumber:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1671   .text.uxStreamBufferGetStreamBufferNumber:0000000000000000 uxStreamBufferGetStreamBufferNumber
+     /tmp/ccpAyQXh.s:1680   .text.vStreamBufferSetStreamBufferNumber:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1688   .text.vStreamBufferSetStreamBufferNumber:0000000000000000 vStreamBufferSetStreamBufferNumber
+     /tmp/ccpAyQXh.s:1697   .text.ucStreamBufferGetStreamBufferType:0000000000000000 $t
+     /tmp/ccpAyQXh.s:1705   .text.ucStreamBufferGetStreamBufferType:0000000000000000 ucStreamBufferGetStreamBufferType
+
+UNDEFINED SYMBOLS
+memcpy
+pvPortMalloc
+memset
+vPortFree
+vTaskSetTimeOutState
+xTaskNotifyStateClear
+xTaskGetCurrentTaskHandle
+vPortExitCritical
+xTaskNotifyWait
+xTaskCheckForTimeOut
+vPortEnterCritical
+vTaskSuspendAll
+xTaskGenericNotify
+xTaskResumeAll
+ulSetInterruptMaskFromISR
+ARM GAS  /tmp/ccpAyQXh.s 			page 32
+
+
+xTaskGenericNotifyFromISR
+vClearInterruptMaskFromISR

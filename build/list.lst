@@ -1,0 +1,175 @@
+ARM GAS  /tmp/ccs6djcH.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"list.c"
+  12              		.text
+  13              		.section	.text.vListInitialise,"ax",%progbits
+  14              		.align	1
+  15              		.p2align 2,,3
+  16              		.global	vListInitialise
+  17              		.arch armv6s-m
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	vListInitialise:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27 0000 0300     		movs	r3, r0
+  28 0002 0122     		movs	r2, #1
+  29 0004 0833     		adds	r3, r3, #8
+  30 0006 4360     		str	r3, [r0, #4]
+  31 0008 C360     		str	r3, [r0, #12]
+  32 000a 0361     		str	r3, [r0, #16]
+  33 000c 0023     		movs	r3, #0
+  34 000e 5242     		rsbs	r2, r2, #0
+  35              		@ sp needed
+  36 0010 8260     		str	r2, [r0, #8]
+  37 0012 0360     		str	r3, [r0]
+  38 0014 7047     		bx	lr
+  40 0016 C046     		.section	.text.vListInitialiseItem,"ax",%progbits
+  41              		.align	1
+  42              		.p2align 2,,3
+  43              		.global	vListInitialiseItem
+  44              		.syntax unified
+  45              		.code	16
+  46              		.thumb_func
+  47              		.fpu softvfp
+  49              	vListInitialiseItem:
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53 0000 0023     		movs	r3, #0
+  54              		@ sp needed
+  55 0002 0361     		str	r3, [r0, #16]
+  56 0004 7047     		bx	lr
+  58 0006 C046     		.section	.text.vListInsertEnd,"ax",%progbits
+  59              		.align	1
+  60              		.p2align 2,,3
+  61              		.global	vListInsertEnd
+ARM GAS  /tmp/ccs6djcH.s 			page 2
+
+
+  62              		.syntax unified
+  63              		.code	16
+  64              		.thumb_func
+  65              		.fpu softvfp
+  67              	vListInsertEnd:
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  71 0000 4368     		ldr	r3, [r0, #4]
+  72              		@ sp needed
+  73 0002 9A68     		ldr	r2, [r3, #8]
+  74 0004 4B60     		str	r3, [r1, #4]
+  75 0006 8A60     		str	r2, [r1, #8]
+  76 0008 9A68     		ldr	r2, [r3, #8]
+  77 000a 5160     		str	r1, [r2, #4]
+  78 000c 9960     		str	r1, [r3, #8]
+  79 000e 0368     		ldr	r3, [r0]
+  80 0010 0861     		str	r0, [r1, #16]
+  81 0012 0133     		adds	r3, r3, #1
+  82 0014 0360     		str	r3, [r0]
+  83 0016 7047     		bx	lr
+  85              		.section	.text.vListInsert,"ax",%progbits
+  86              		.align	1
+  87              		.p2align 2,,3
+  88              		.global	vListInsert
+  89              		.syntax unified
+  90              		.code	16
+  91              		.thumb_func
+  92              		.fpu softvfp
+  94              	vListInsert:
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 0300     		movs	r3, r0
+  98 0002 30B5     		push	{r4, r5, lr}
+  99 0004 0C68     		ldr	r4, [r1]
+ 100 0006 0833     		adds	r3, r3, #8
+ 101 0008 621C     		adds	r2, r4, #1
+ 102 000a 0DD0     		beq	.L11
+ 103              	.L8:
+ 104 000c 1A00     		movs	r2, r3
+ 105 000e 5B68     		ldr	r3, [r3, #4]
+ 106 0010 1D68     		ldr	r5, [r3]
+ 107 0012 A542     		cmp	r5, r4
+ 108 0014 FAD9     		bls	.L8
+ 109              	.L7:
+ 110 0016 4B60     		str	r3, [r1, #4]
+ 111 0018 9960     		str	r1, [r3, #8]
+ 112 001a 0368     		ldr	r3, [r0]
+ 113 001c 8A60     		str	r2, [r1, #8]
+ 114 001e 0133     		adds	r3, r3, #1
+ 115 0020 5160     		str	r1, [r2, #4]
+ 116              		@ sp needed
+ 117 0022 0861     		str	r0, [r1, #16]
+ 118 0024 0360     		str	r3, [r0]
+ 119 0026 30BD     		pop	{r4, r5, pc}
+ 120              	.L11:
+ 121 0028 0269     		ldr	r2, [r0, #16]
+ARM GAS  /tmp/ccs6djcH.s 			page 3
+
+
+ 122 002a 5368     		ldr	r3, [r2, #4]
+ 123 002c F3E7     		b	.L7
+ 125 002e C046     		.section	.text.uxListRemove,"ax",%progbits
+ 126              		.align	1
+ 127              		.p2align 2,,3
+ 128              		.global	uxListRemove
+ 129              		.syntax unified
+ 130              		.code	16
+ 131              		.thumb_func
+ 132              		.fpu softvfp
+ 134              	uxListRemove:
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137              		@ link register save eliminated.
+ 138 0000 0369     		ldr	r3, [r0, #16]
+ 139 0002 4168     		ldr	r1, [r0, #4]
+ 140 0004 8268     		ldr	r2, [r0, #8]
+ 141 0006 8A60     		str	r2, [r1, #8]
+ 142 0008 5160     		str	r1, [r2, #4]
+ 143 000a 5968     		ldr	r1, [r3, #4]
+ 144 000c 8142     		cmp	r1, r0
+ 145 000e 06D0     		beq	.L14
+ 146              	.L13:
+ 147 0010 0022     		movs	r2, #0
+ 148 0012 0261     		str	r2, [r0, #16]
+ 149 0014 1A68     		ldr	r2, [r3]
+ 150              		@ sp needed
+ 151 0016 013A     		subs	r2, r2, #1
+ 152 0018 1A60     		str	r2, [r3]
+ 153 001a 1868     		ldr	r0, [r3]
+ 154 001c 7047     		bx	lr
+ 155              	.L14:
+ 156 001e 5A60     		str	r2, [r3, #4]
+ 157 0020 F6E7     		b	.L13
+ 159 0022 C046     		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccs6djcH.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 list.c
+     /tmp/ccs6djcH.s:14     .text.vListInitialise:0000000000000000 $t
+     /tmp/ccs6djcH.s:23     .text.vListInitialise:0000000000000000 vListInitialise
+     /tmp/ccs6djcH.s:41     .text.vListInitialiseItem:0000000000000000 $t
+     /tmp/ccs6djcH.s:49     .text.vListInitialiseItem:0000000000000000 vListInitialiseItem
+     /tmp/ccs6djcH.s:59     .text.vListInsertEnd:0000000000000000 $t
+     /tmp/ccs6djcH.s:67     .text.vListInsertEnd:0000000000000000 vListInsertEnd
+     /tmp/ccs6djcH.s:86     .text.vListInsert:0000000000000000 $t
+     /tmp/ccs6djcH.s:94     .text.vListInsert:0000000000000000 vListInsert
+     /tmp/ccs6djcH.s:126    .text.uxListRemove:0000000000000000 $t
+     /tmp/ccs6djcH.s:134    .text.uxListRemove:0000000000000000 uxListRemove
+
+NO UNDEFINED SYMBOLS

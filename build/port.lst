@@ -1,0 +1,571 @@
+ARM GAS  /tmp/ccZZP7aL.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"port.c"
+  12              		.text
+  13              		.section	.text.prvTaskExitError,"ax",%progbits
+  14              		.align	1
+  15              		.p2align 2,,3
+  16              		.arch armv6s-m
+  17              		.syntax unified
+  18              		.code	16
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	prvTaskExitError:
+  23              		@ args = 0, pretend = 0, frame = 8
+  24              		@ frame_needed = 0, uses_anonymous_args = 0
+  25              		@ link register save eliminated.
+  26 0000 0023     		movs	r3, #0
+  27 0002 82B0     		sub	sp, sp, #8
+  28 0004 0193     		str	r3, [sp, #4]
+  29 0006 064B     		ldr	r3, .L8
+  30 0008 1B68     		ldr	r3, [r3]
+  31 000a 0133     		adds	r3, r3, #1
+  32 000c 01D0     		beq	.L2
+  33              		.syntax divided
+  34              	@ 161 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+  35 000e 72B6     		 cpsid i 
+  36              	@ 0 "" 2
+  37              		.thumb
+  38              		.syntax unified
+  39              	.L3:
+  40 0010 FEE7     		b	.L3
+  41              	.L2:
+  42              		.syntax divided
+  43              	@ 162 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+  44 0012 72B6     		 cpsid i 
+  45              	@ 0 "" 2
+  46              		.thumb
+  47              		.syntax unified
+  48              	.L4:
+  49 0014 019B     		ldr	r3, [sp, #4]
+  50 0016 002B     		cmp	r3, #0
+  51 0018 FCD0     		beq	.L4
+  52 001a 02B0     		add	sp, sp, #8
+  53              		@ sp needed
+  54 001c 7047     		bx	lr
+  55              	.L9:
+  56 001e C046     		.align	2
+  57              	.L8:
+  58 0020 00000000 		.word	.LANCHOR0
+ARM GAS  /tmp/ccZZP7aL.s 			page 2
+
+
+  60              		.section	.text.vPortStartFirstTask,"ax",%progbits
+  61              		.align	1
+  62              		.p2align 2,,3
+  63              		.syntax unified
+  64              		.code	16
+  65              		.thumb_func
+  66              		.fpu softvfp
+  68              	vPortStartFirstTask:
+  69              		@ Naked Function: prologue and epilogue provided by programmer.
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		.syntax divided
+  73              	@ 188 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+  74              			.syntax unified				
+  75 0000 0B4A     		ldr  r2, pxCurrentTCBConst2	
+  76 0002 1368     		ldr  r3, [r2]				
+  77 0004 1868     		ldr  r0, [r3]				
+  78 0006 2030     		adds r0, #32					
+  79 0008 80F30988 		msr  psp, r0					
+  80 000c 0220     		movs r0, #2					
+  81 000e 80F31488 		msr  CONTROL, r0				
+  82 0012 BFF36F8F 		isb							
+  83 0016 3FBC     		pop  {r0-r5}					
+  84 0018 AE46     		mov  lr, r5					
+  85 001a 08BC     		pop  {r3}					
+  86 001c 04BC     		pop  {r2}					
+  87 001e 62B6     		cpsie i						
+  88 0020 1847     		bx   r3						
+  89              									
+  90 0022 C046C046 		.align 4					
+  90      C046C046 
+  90      C046C046 
+  90      C046
+  91 0030 00000000 	pxCurrentTCBConst2: .word pxCurrentTCB	  
+  92              	@ 0 "" 2
+  93              		.thumb
+  94              		.syntax unified
+  96              		.section	.text.pxPortInitialiseStack,"ax",%progbits
+  97              		.align	1
+  98              		.p2align 2,,3
+  99              		.global	pxPortInitialiseStack
+ 100              		.syntax unified
+ 101              		.code	16
+ 102              		.thumb_func
+ 103              		.fpu softvfp
+ 105              	pxPortInitialiseStack:
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108 0000 10B5     		push	{r4, lr}
+ 109 0002 8024     		movs	r4, #128
+ 110 0004 031F     		subs	r3, r0, #4
+ 111 0006 6404     		lsls	r4, r4, #17
+ 112 0008 1C60     		str	r4, [r3]
+ 113 000a 043B     		subs	r3, r3, #4
+ 114 000c 1960     		str	r1, [r3]
+ 115 000e 0349     		ldr	r1, .L12
+ 116 0010 043B     		subs	r3, r3, #4
+ARM GAS  /tmp/ccZZP7aL.s 			page 3
+
+
+ 117 0012 1960     		str	r1, [r3]
+ 118 0014 143B     		subs	r3, r3, #20
+ 119 0016 4038     		subs	r0, r0, #64
+ 120              		@ sp needed
+ 121 0018 1A60     		str	r2, [r3]
+ 122 001a 10BD     		pop	{r4, pc}
+ 123              	.L13:
+ 124              		.align	2
+ 125              	.L12:
+ 126 001c 00000000 		.word	prvTaskExitError
+ 128              		.section	.text.SVC_Handler,"ax",%progbits
+ 129              		.align	1
+ 130              		.p2align 2,,3
+ 131              		.global	SVC_Handler
+ 132              		.syntax unified
+ 133              		.code	16
+ 134              		.thumb_func
+ 135              		.fpu softvfp
+ 137              	SVC_Handler:
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+ 141              		@ sp needed
+ 142 0000 7047     		bx	lr
+ 144              		.global	__aeabi_uidiv
+ 145 0002 C046     		.section	.text.xPortStartScheduler,"ax",%progbits
+ 146              		.align	1
+ 147              		.p2align 2,,3
+ 148              		.global	xPortStartScheduler
+ 149              		.syntax unified
+ 150              		.code	16
+ 151              		.thumb_func
+ 152              		.fpu softvfp
+ 154              	xPortStartScheduler:
+ 155              		@ args = 0, pretend = 0, frame = 8
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 FF22     		movs	r2, #255
+ 158 0002 174B     		ldr	r3, .L21
+ 159 0004 1204     		lsls	r2, r2, #16
+ 160 0006 1968     		ldr	r1, [r3]
+ 161 0008 30B5     		push	{r4, r5, lr}
+ 162 000a 0A43     		orrs	r2, r1
+ 163 000c 1A60     		str	r2, [r3]
+ 164 000e FF22     		movs	r2, #255
+ 165 0010 1968     		ldr	r1, [r3]
+ 166 0012 0024     		movs	r4, #0
+ 167 0014 1206     		lsls	r2, r2, #24
+ 168 0016 0A43     		orrs	r2, r1
+ 169 0018 FA21     		movs	r1, #250
+ 170 001a 1A60     		str	r2, [r3]
+ 171 001c 114D     		ldr	r5, .L21+4
+ 172 001e 124B     		ldr	r3, .L21+8
+ 173 0020 2C60     		str	r4, [r5]
+ 174 0022 1C60     		str	r4, [r3]
+ 175 0024 114B     		ldr	r3, .L21+12
+ 176 0026 83B0     		sub	sp, sp, #12
+ 177 0028 1868     		ldr	r0, [r3]
+ARM GAS  /tmp/ccZZP7aL.s 			page 4
+
+
+ 178 002a 8900     		lsls	r1, r1, #2
+ 179 002c FFF7FEFF 		bl	__aeabi_uidiv
+ 180 0030 0F4B     		ldr	r3, .L21+16
+ 181 0032 0138     		subs	r0, r0, #1
+ 182 0034 1860     		str	r0, [r3]
+ 183 0036 0723     		movs	r3, #7
+ 184 0038 2B60     		str	r3, [r5]
+ 185 003a 0E4D     		ldr	r5, .L21+20
+ 186 003c 2C60     		str	r4, [r5]
+ 187 003e FFF7FEFF 		bl	vPortStartFirstTask
+ 188 0042 FFF7FEFF 		bl	vTaskSwitchContext
+ 189 0046 2B68     		ldr	r3, [r5]
+ 190 0048 0194     		str	r4, [sp, #4]
+ 191 004a 0133     		adds	r3, r3, #1
+ 192 004c 01D0     		beq	.L16
+ 193              		.syntax divided
+ 194              	@ 161 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 195 004e 72B6     		 cpsid i 
+ 196              	@ 0 "" 2
+ 197              		.thumb
+ 198              		.syntax unified
+ 199              	.L17:
+ 200 0050 FEE7     		b	.L17
+ 201              	.L16:
+ 202              		.syntax divided
+ 203              	@ 162 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 204 0052 72B6     		 cpsid i 
+ 205              	@ 0 "" 2
+ 206              		.thumb
+ 207              		.syntax unified
+ 208              	.L18:
+ 209 0054 019B     		ldr	r3, [sp, #4]
+ 210 0056 002B     		cmp	r3, #0
+ 211 0058 FCD0     		beq	.L18
+ 212 005a 0020     		movs	r0, #0
+ 213 005c 03B0     		add	sp, sp, #12
+ 214              		@ sp needed
+ 215 005e 30BD     		pop	{r4, r5, pc}
+ 216              	.L22:
+ 217              		.align	2
+ 218              	.L21:
+ 219 0060 20ED00E0 		.word	-536810208
+ 220 0064 10E000E0 		.word	-536813552
+ 221 0068 18E000E0 		.word	-536813544
+ 222 006c 00000000 		.word	SystemCoreClock
+ 223 0070 14E000E0 		.word	-536813548
+ 224 0074 00000000 		.word	.LANCHOR0
+ 226              		.section	.text.vPortEndScheduler,"ax",%progbits
+ 227              		.align	1
+ 228              		.p2align 2,,3
+ 229              		.global	vPortEndScheduler
+ 230              		.syntax unified
+ 231              		.code	16
+ 232              		.thumb_func
+ 233              		.fpu softvfp
+ 235              	vPortEndScheduler:
+ 236              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccZZP7aL.s 			page 5
+
+
+ 237              		@ frame_needed = 0, uses_anonymous_args = 0
+ 238              		@ link register save eliminated.
+ 239 0000 FA23     		movs	r3, #250
+ 240 0002 044A     		ldr	r2, .L26
+ 241 0004 9B00     		lsls	r3, r3, #2
+ 242 0006 1268     		ldr	r2, [r2]
+ 243 0008 9A42     		cmp	r2, r3
+ 244 000a 01D0     		beq	.L23
+ 245              		.syntax divided
+ 246              	@ 248 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 247 000c 72B6     		 cpsid i 
+ 248              	@ 0 "" 2
+ 249              		.thumb
+ 250              		.syntax unified
+ 251              	.L25:
+ 252 000e FEE7     		b	.L25
+ 253              	.L23:
+ 254              		@ sp needed
+ 255 0010 7047     		bx	lr
+ 256              	.L27:
+ 257 0012 C046     		.align	2
+ 258              	.L26:
+ 259 0014 00000000 		.word	.LANCHOR0
+ 261              		.section	.text.vPortYield,"ax",%progbits
+ 262              		.align	1
+ 263              		.p2align 2,,3
+ 264              		.global	vPortYield
+ 265              		.syntax unified
+ 266              		.code	16
+ 267              		.thumb_func
+ 268              		.fpu softvfp
+ 270              	vPortYield:
+ 271              		@ args = 0, pretend = 0, frame = 0
+ 272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273              		@ link register save eliminated.
+ 274 0000 8022     		movs	r2, #128
+ 275 0002 044B     		ldr	r3, .L29
+ 276 0004 5205     		lsls	r2, r2, #21
+ 277 0006 1A60     		str	r2, [r3]
+ 278              		.syntax divided
+ 279              	@ 259 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 280 0008 BFF34F8F 		dsb
+ 281              	@ 0 "" 2
+ 282              	@ 260 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 283 000c BFF36F8F 		isb
+ 284              	@ 0 "" 2
+ 285              		.thumb
+ 286              		.syntax unified
+ 287              		@ sp needed
+ 288 0010 7047     		bx	lr
+ 289              	.L30:
+ 290 0012 C046     		.align	2
+ 291              	.L29:
+ 292 0014 04ED00E0 		.word	-536810236
+ 294              		.section	.text.vPortEnterCritical,"ax",%progbits
+ 295              		.align	1
+ 296              		.p2align 2,,3
+ARM GAS  /tmp/ccZZP7aL.s 			page 6
+
+
+ 297              		.global	vPortEnterCritical
+ 298              		.syntax unified
+ 299              		.code	16
+ 300              		.thumb_func
+ 301              		.fpu softvfp
+ 303              	vPortEnterCritical:
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 307              		.syntax divided
+ 308              	@ 266 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 309 0000 72B6     		 cpsid i 
+ 310              	@ 0 "" 2
+ 311              		.thumb
+ 312              		.syntax unified
+ 313 0002 044A     		ldr	r2, .L32
+ 314 0004 1368     		ldr	r3, [r2]
+ 315 0006 0133     		adds	r3, r3, #1
+ 316 0008 1360     		str	r3, [r2]
+ 317              		.syntax divided
+ 318              	@ 268 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 319 000a BFF34F8F 		dsb
+ 320              	@ 0 "" 2
+ 321              	@ 269 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 322 000e BFF36F8F 		isb
+ 323              	@ 0 "" 2
+ 324              		.thumb
+ 325              		.syntax unified
+ 326              		@ sp needed
+ 327 0012 7047     		bx	lr
+ 328              	.L33:
+ 329              		.align	2
+ 330              	.L32:
+ 331 0014 00000000 		.word	.LANCHOR0
+ 333              		.section	.text.vPortExitCritical,"ax",%progbits
+ 334              		.align	1
+ 335              		.p2align 2,,3
+ 336              		.global	vPortExitCritical
+ 337              		.syntax unified
+ 338              		.code	16
+ 339              		.thumb_func
+ 340              		.fpu softvfp
+ 342              	vPortExitCritical:
+ 343              		@ args = 0, pretend = 0, frame = 0
+ 344              		@ frame_needed = 0, uses_anonymous_args = 0
+ 345              		@ link register save eliminated.
+ 346 0000 054A     		ldr	r2, .L38
+ 347 0002 1368     		ldr	r3, [r2]
+ 348 0004 002B     		cmp	r3, #0
+ 349 0006 01D1     		bne	.L35
+ 350              		.syntax divided
+ 351              	@ 275 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 352 0008 72B6     		 cpsid i 
+ 353              	@ 0 "" 2
+ 354              		.thumb
+ 355              		.syntax unified
+ 356              	.L36:
+ARM GAS  /tmp/ccZZP7aL.s 			page 7
+
+
+ 357 000a FEE7     		b	.L36
+ 358              	.L35:
+ 359 000c 013B     		subs	r3, r3, #1
+ 360 000e 1360     		str	r3, [r2]
+ 361 0010 002B     		cmp	r3, #0
+ 362 0012 00D1     		bne	.L34
+ 363              		.syntax divided
+ 364              	@ 279 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 365 0014 62B6     		 cpsie i 
+ 366              	@ 0 "" 2
+ 367              		.thumb
+ 368              		.syntax unified
+ 369              	.L34:
+ 370              		@ sp needed
+ 371 0016 7047     		bx	lr
+ 372              	.L39:
+ 373              		.align	2
+ 374              	.L38:
+ 375 0018 00000000 		.word	.LANCHOR0
+ 377              		.section	.text.ulSetInterruptMaskFromISR,"ax",%progbits
+ 378              		.align	1
+ 379              		.p2align 2,,3
+ 380              		.global	ulSetInterruptMaskFromISR
+ 381              		.syntax unified
+ 382              		.code	16
+ 383              		.thumb_func
+ 384              		.fpu softvfp
+ 386              	ulSetInterruptMaskFromISR:
+ 387              		@ Naked Function: prologue and epilogue provided by programmer.
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390              		.syntax divided
+ 391              	@ 286 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 392 0000 EFF31080 		 mrs r0, PRIMASK	
+ 393 0004 72B6     	 cpsid i			
+ 394 0006 7047     	 bx lr				  
+ 395              	@ 0 "" 2
+ 396              		.thumb
+ 397              		.syntax unified
+ 399              		.section	.text.vClearInterruptMaskFromISR,"ax",%progbits
+ 400              		.align	1
+ 401              		.p2align 2,,3
+ 402              		.global	vClearInterruptMaskFromISR
+ 403              		.syntax unified
+ 404              		.code	16
+ 405              		.thumb_func
+ 406              		.fpu softvfp
+ 408              	vClearInterruptMaskFromISR:
+ 409              		@ Naked Function: prologue and epilogue provided by programmer.
+ 410              		@ args = 0, pretend = 0, frame = 0
+ 411              		@ frame_needed = 0, uses_anonymous_args = 0
+ 412              		.syntax divided
+ 413              	@ 304 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 414 0000 80F31088 		 msr PRIMASK, r0	
+ 415 0004 7047     	 bx lr				  
+ 416              	@ 0 "" 2
+ 417              		.thumb
+ARM GAS  /tmp/ccZZP7aL.s 			page 8
+
+
+ 418              		.syntax unified
+ 420 0006 C046     		.section	.text.PendSV_Handler,"ax",%progbits
+ 421              		.align	1
+ 422              		.p2align 2,,3
+ 423              		.global	PendSV_Handler
+ 424              		.syntax unified
+ 425              		.code	16
+ 426              		.thumb_func
+ 427              		.fpu softvfp
+ 429              	PendSV_Handler:
+ 430              		@ Naked Function: prologue and epilogue provided by programmer.
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433              		.syntax divided
+ 434              	@ 323 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/port.c" 1
+ 435              			.syntax unified						
+ 436 0000 EFF30980 		mrs r0, psp							
+ 437              											
+ 438 0004 0E4B     		ldr	r3, pxCurrentTCBConst			
+ 439 0006 1A68     		ldr	r2, [r3]						
+ 440              											
+ 441 0008 2038     		subs r0, r0, #32					
+ 442 000a 1060     		str r0, [r2]						
+ 443 000c F0C0     		stmia r0!, {r4-r7}					
+ 444 000e 4446     	 	mov r4, r8							
+ 445 0010 4D46     	 	mov r5, r9							
+ 446 0012 5646     	 	mov r6, r10							
+ 447 0014 5F46     	 	mov r7, r11							
+ 448 0016 F0C0     	 	stmia r0!, {r4-r7}					
+ 449              											
+ 450 0018 08B5     		push {r3, r14}						
+ 451 001a 72B6     		cpsid i								
+ 452 001c FFF7FEFF 		bl vTaskSwitchContext				
+ 453 0020 62B6     		cpsie i								
+ 454 0022 0CBC     		pop {r2, r3}						
+ 455              											
+ 456 0024 1168     		ldr r1, [r2]						
+ 457 0026 0868     		ldr r0, [r1]						
+ 458 0028 1030     		adds r0, r0, #16					
+ 459 002a F0C8     		ldmia r0!, {r4-r7}					
+ 460 002c A046     	 	mov r8, r4							
+ 461 002e A946     	 	mov r9, r5							
+ 462 0030 B246     	 	mov r10, r6							
+ 463 0032 BB46     	 	mov r11, r7							
+ 464              											
+ 465 0034 80F30988 		msr psp, r0							
+ 466              											
+ 467 0038 2038     		subs r0, r0, #32					
+ 468 003a F0C8     	 	ldmia r0!, {r4-r7}					
+ 469              											
+ 470 003c 1847     		bx r3								
+ 471              											
+ 472 003e C046     		.align 4							
+ 473 0040 00000000 	pxCurrentTCBConst: .word pxCurrentTCB	  
+ 474              	@ 0 "" 2
+ 475              		.thumb
+ 476              		.syntax unified
+ARM GAS  /tmp/ccZZP7aL.s 			page 9
+
+
+ 478              		.section	.text.SysTick_Handler,"ax",%progbits
+ 479              		.align	1
+ 480              		.p2align 2,,3
+ 481              		.global	SysTick_Handler
+ 482              		.syntax unified
+ 483              		.code	16
+ 484              		.thumb_func
+ 485              		.fpu softvfp
+ 487              	SysTick_Handler:
+ 488              		@ args = 0, pretend = 0, frame = 0
+ 489              		@ frame_needed = 0, uses_anonymous_args = 0
+ 490 0000 10B5     		push	{r4, lr}
+ 491 0002 FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 492 0006 0400     		movs	r4, r0
+ 493 0008 FFF7FEFF 		bl	xTaskIncrementTick
+ 494 000c 0028     		cmp	r0, #0
+ 495 000e 03D0     		beq	.L44
+ 496 0010 8022     		movs	r2, #128
+ 497 0012 034B     		ldr	r3, .L48
+ 498 0014 5205     		lsls	r2, r2, #21
+ 499 0016 1A60     		str	r2, [r3]
+ 500              	.L44:
+ 501 0018 2000     		movs	r0, r4
+ 502 001a FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 503              		@ sp needed
+ 504 001e 10BD     		pop	{r4, pc}
+ 505              	.L49:
+ 506              		.align	2
+ 507              	.L48:
+ 508 0020 04ED00E0 		.word	-536810236
+ 510              		.section	.data.uxCriticalNesting,"aw"
+ 511              		.align	2
+ 512              		.set	.LANCHOR0,. + 0
+ 515              	uxCriticalNesting:
+ 516 0000 AAAAAAAA 		.word	-1431655766
+ 517              		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccZZP7aL.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 port.c
+     /tmp/ccZZP7aL.s:14     .text.prvTaskExitError:0000000000000000 $t
+     /tmp/ccZZP7aL.s:22     .text.prvTaskExitError:0000000000000000 prvTaskExitError
+     /tmp/ccZZP7aL.s:58     .text.prvTaskExitError:0000000000000020 $d
+     /tmp/ccZZP7aL.s:61     .text.vPortStartFirstTask:0000000000000000 $t
+     /tmp/ccZZP7aL.s:68     .text.vPortStartFirstTask:0000000000000000 vPortStartFirstTask
+     /tmp/ccZZP7aL.s:91     .text.vPortStartFirstTask:0000000000000030 pxCurrentTCBConst2
+     /tmp/ccZZP7aL.s:91     .text.vPortStartFirstTask:0000000000000030 $d
+     /tmp/ccZZP7aL.s:97     .text.pxPortInitialiseStack:0000000000000000 $t
+     /tmp/ccZZP7aL.s:105    .text.pxPortInitialiseStack:0000000000000000 pxPortInitialiseStack
+     /tmp/ccZZP7aL.s:126    .text.pxPortInitialiseStack:000000000000001c $d
+     /tmp/ccZZP7aL.s:129    .text.SVC_Handler:0000000000000000 $t
+     /tmp/ccZZP7aL.s:137    .text.SVC_Handler:0000000000000000 SVC_Handler
+     /tmp/ccZZP7aL.s:146    .text.xPortStartScheduler:0000000000000000 $t
+     /tmp/ccZZP7aL.s:154    .text.xPortStartScheduler:0000000000000000 xPortStartScheduler
+     /tmp/ccZZP7aL.s:219    .text.xPortStartScheduler:0000000000000060 $d
+     /tmp/ccZZP7aL.s:227    .text.vPortEndScheduler:0000000000000000 $t
+     /tmp/ccZZP7aL.s:235    .text.vPortEndScheduler:0000000000000000 vPortEndScheduler
+     /tmp/ccZZP7aL.s:259    .text.vPortEndScheduler:0000000000000014 $d
+     /tmp/ccZZP7aL.s:262    .text.vPortYield:0000000000000000 $t
+     /tmp/ccZZP7aL.s:270    .text.vPortYield:0000000000000000 vPortYield
+     /tmp/ccZZP7aL.s:292    .text.vPortYield:0000000000000014 $d
+     /tmp/ccZZP7aL.s:295    .text.vPortEnterCritical:0000000000000000 $t
+     /tmp/ccZZP7aL.s:303    .text.vPortEnterCritical:0000000000000000 vPortEnterCritical
+     /tmp/ccZZP7aL.s:331    .text.vPortEnterCritical:0000000000000014 $d
+     /tmp/ccZZP7aL.s:334    .text.vPortExitCritical:0000000000000000 $t
+     /tmp/ccZZP7aL.s:342    .text.vPortExitCritical:0000000000000000 vPortExitCritical
+     /tmp/ccZZP7aL.s:375    .text.vPortExitCritical:0000000000000018 $d
+     /tmp/ccZZP7aL.s:378    .text.ulSetInterruptMaskFromISR:0000000000000000 $t
+     /tmp/ccZZP7aL.s:386    .text.ulSetInterruptMaskFromISR:0000000000000000 ulSetInterruptMaskFromISR
+     /tmp/ccZZP7aL.s:400    .text.vClearInterruptMaskFromISR:0000000000000000 $t
+     /tmp/ccZZP7aL.s:408    .text.vClearInterruptMaskFromISR:0000000000000000 vClearInterruptMaskFromISR
+     /tmp/ccZZP7aL.s:421    .text.PendSV_Handler:0000000000000000 $t
+     /tmp/ccZZP7aL.s:429    .text.PendSV_Handler:0000000000000000 PendSV_Handler
+     /tmp/ccZZP7aL.s:473    .text.PendSV_Handler:0000000000000040 pxCurrentTCBConst
+     /tmp/ccZZP7aL.s:473    .text.PendSV_Handler:0000000000000040 $d
+     /tmp/ccZZP7aL.s:479    .text.SysTick_Handler:0000000000000000 $t
+     /tmp/ccZZP7aL.s:487    .text.SysTick_Handler:0000000000000000 SysTick_Handler
+     /tmp/ccZZP7aL.s:508    .text.SysTick_Handler:0000000000000020 $d
+     /tmp/ccZZP7aL.s:511    .data.uxCriticalNesting:0000000000000000 $d
+     /tmp/ccZZP7aL.s:515    .data.uxCriticalNesting:0000000000000000 uxCriticalNesting
+
+UNDEFINED SYMBOLS
+pxCurrentTCB
+__aeabi_uidiv
+vTaskSwitchContext
+SystemCoreClock
+xTaskIncrementTick
