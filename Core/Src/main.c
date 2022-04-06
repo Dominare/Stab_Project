@@ -20,13 +20,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ringbuffer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +47,25 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint16_t adc[3];
+typedef enum{
+  NOP,
+  INIT=1,
+  GET_ADC_1 = 2,
+  GET_ADC_2 = 3
+} commands;
+
+typedef struct
+{
+  uint8_t cmd;
+  uint16_t arg;
+} __attribute__((packed, aligned(1))) cmd_t;
+
+uint8_t flag = 0;
+uint8_t adc_flag = 0;
+volatile uint8_t uart_rx_byte;
+
+ring_buffer_t uart_ring_buffer;
 
 /* USER CODE END PV */
 
@@ -88,6 +108,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
@@ -97,13 +118,61 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t data[3]={0,0,0};
+  cmd_t rx,tx;
+  HAL_UART_Receive_IT(&huart1,&uart_rx_byte,1);
+  // HAL_ADC_Start_IT(&hadc);
+  HAL_StatusTypeDef status = HAL_ADC_Start_DMA(&hadc,adc,3);
+  // HAL_ADC_Start_IT(&hadc);
+  HAL_Delay(100);
+  // HAL_ADC_Start_IT(&hadc);
+  
   while (1)
   {
+    // HAL_Delay(100);
     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-    HAL_UART_Receive(&huart1,data,3,1000);
-    HAL_UART_Transmit(&huart1, data,3,100);
-    HAL_Delay(100);
+    if(ring_buffer_num_items(&uart_ring_buffer)>=3){
+      ring_buffer_dequeue_arr(&uart_ring_buffer,&rx,3);
+      switch (rx.cmd)
+      {
+      case INIT:
+        tx.cmd = INIT;
+        tx.arg = 111;
+        HAL_UART_Transmit(&huart1, &tx,3,100);
+        break;
+      case GET_ADC_1:
+        tx.cmd = GET_ADC_1;
+        tx.arg = adc[0];
+        HAL_UART_Transmit(&huart1, &tx,3,100);
+        break;
+      case GET_ADC_2:
+        tx.cmd = GET_ADC_2;
+        tx.arg = adc[1];
+        HAL_UART_Transmit(&huart1, &tx,3,100);
+        break;
+      
+      default:
+        HAL_UART_Transmit(&huart1, &rx,3,100);
+        break;
+      }
+      HAL_UART_Receive_IT(&huart1,&rx,3);
+    };
+    if(adc_flag){
+      adc_flag--;
+      // HAL_ADC_Stop_IT(&hadc);
+      // HAL_ADC_Start_IT(&hadc);
+      HAL_ADC_Start_DMA(&hadc,adc,3);
+    }
+  // HAL_Delay(1000);
+    // HAL_ADC_Start(&hadc);
+    // HAL_ADC_Start(&hadc);
+    // HAL_ADC_PollForConversion(&hadc,100);
+    // adc[0]=HAL_ADC_GetValue(&hadc);
+    //     HAL_ADC_PollForConversion(&hadc,100);
+    // adc[1]=HAL_ADC_GetValue(&hadc);
+    //     HAL_ADC_PollForConversion(&hadc,100);
+    // adc[2]=HAL_ADC_GetValue(&hadc);
+    
+    // HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -129,10 +198,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.HSI14CalibrationValue = 16;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL8;
-  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -141,11 +207,11 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
@@ -158,6 +224,21 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+  ring_buffer_queue(&uart_ring_buffer, uart_rx_byte);
+  HAL_UART_Receive_IT(&huart1,&uart_rx_byte,1);
+  
+}
+uint8_t i = 0;
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+  adc_flag++;
+  // adc[i++] = HAL_ADC_GetValue(hadc);
+  // if(__HAL_ADC_GET_FLAG(hadc,ADC_FLAG_EOC)) { }
+  // if(__HAL_ADC_GET_FLAG(hadc,ADC_FLAG_EOS)) {i = 0; adc_flag++; }
+  // HAL_ADC_Stop_DMA(hadc); 
+// HAL_ADC_Start_DMA(&hadc,(uint32_t*)&adc,2);
+}
+
 
 /* USER CODE END 4 */
 

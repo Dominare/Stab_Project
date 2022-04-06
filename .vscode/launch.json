@@ -22,7 +22,7 @@
                     "name": "Cortex Debug",
                     "cwd": "${workspaceRoot}",
                     "executable": "build/test.elf",
-                    "svdFile": "STM32F405.svd",
+                    "svdFile": "stm32f030.svd",
                     "request": "launch",
                     "type": "cortex-debug",
                     "preRestartCommands": [
