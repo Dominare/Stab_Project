@@ -47,7 +47,8 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
+void  USART1_RX_Callback(void);
+void  ADC_Callback(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -56,10 +57,6 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_adc;
-extern ADC_HandleTypeDef hadc;
-extern UART_HandleTypeDef huart1;
-extern TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN EV */
 
@@ -151,11 +148,45 @@ void SysTick_Handler(void)
 void DMA1_Channel1_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-
+  ADC_Callback();
+	  /* Check whether DMA transfer complete caused the DMA interruption */
+	  if(LL_DMA_IsActiveFlag_TC1(DMA1) == 1)
+	  {
+	    /* Clear flag DMA transfer complete */
+	    LL_DMA_ClearFlag_TC1(DMA1);
+ 
+	    /* Call interruption treatment function */
+	  }
+ 
+	  /* Check whether DMA half transfer caused the DMA interruption */
+	  if(LL_DMA_IsActiveFlag_HT1(DMA1) == 1)
+	  {
+	    /* Clear flag DMA half transfer */
+	    LL_DMA_ClearFlag_HT1(DMA1);
+ 
+	    /* Call interruption treatment function */
+	  }
+ 
+	  /* Note: If DMA half transfer is not used, possibility to replace        */
+	  /*       management of DMA half transfer and transfer complete flags by  */
+	  /*       DMA global interrupt flag:                                      */
+	  /* Clear flag DMA global interrupt */
+	  /* (global interrupt flag: half transfer and transfer complete flags) */
+	  // LL_DMA_ClearFlag_GI1(DMA1);
+ 
+	  /* Check whether DMA transfer error caused the DMA interruption */
+	  if(LL_DMA_IsActiveFlag_TE1(DMA1) == 1)
+	  {
+	    /* Clear flag DMA transfer error */
+	    LL_DMA_ClearFlag_TE1(DMA1);
+ 
+	    /* Call interruption treatment function */
+	  }
+ 
   /* USER CODE END DMA1_Channel1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc);
-  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
 
+  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
+ 
   /* USER CODE END DMA1_Channel1_IRQn 1 */
 }
 
@@ -167,24 +198,9 @@ void ADC1_IRQHandler(void)
   /* USER CODE BEGIN ADC1_IRQn 0 */
 
   /* USER CODE END ADC1_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc);
   /* USER CODE BEGIN ADC1_IRQn 1 */
 
   /* USER CODE END ADC1_IRQn 1 */
-}
-
-/**
-  * @brief This function handles TIM1 break, update, trigger and commutation interrupts.
-  */
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
-{
-  /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 0 */
-
-  /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
-  /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 1 */
-
-  /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 1 */
 }
 
 /**
@@ -193,9 +209,11 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
+if(LL_USART_IsActiveFlag_RXNE(USART1) && LL_USART_IsEnabledIT_RXNE(USART1))
+  {
+    USART1_RX_Callback();
+  }
   /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
