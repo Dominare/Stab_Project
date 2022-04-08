@@ -49,6 +49,7 @@
 /* USER CODE BEGIN PFP */
 void  USART1_RX_Callback(void);
 void  ADC_Callback(void);
+void  TIM14_Callback(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -148,12 +149,12 @@ void SysTick_Handler(void)
 void DMA1_Channel1_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-  ADC_Callback();
 	  /* Check whether DMA transfer complete caused the DMA interruption */
 	  if(LL_DMA_IsActiveFlag_TC1(DMA1) == 1)
 	  {
 	    /* Clear flag DMA transfer complete */
 	    LL_DMA_ClearFlag_TC1(DMA1);
+      ADC_Callback();
  
 	    /* Call interruption treatment function */
 	  }
@@ -201,6 +202,23 @@ void ADC1_IRQHandler(void)
   /* USER CODE BEGIN ADC1_IRQn 1 */
 
   /* USER CODE END ADC1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM14 global interrupt.
+  */
+void TIM14_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM14_IRQn 0 */
+
+  /* USER CODE END TIM14_IRQn 0 */
+  /* USER CODE BEGIN TIM14_IRQn 1 */
+  if(LL_TIM_IsActiveFlag_UPDATE(TIM14))
+  {
+    LL_TIM_ClearFlag_UPDATE(TIM14);
+  TIM14_Callback();
+  }
+  /* USER CODE END TIM14_IRQn 1 */
 }
 
 /**

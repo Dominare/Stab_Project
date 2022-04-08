@@ -120,10 +120,13 @@ int main(void)
   MX_ADC_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
   // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   LL_TIM_CC_EnableChannel(TIM3, LL_TIM_CHANNEL_CH1);
    LL_TIM_EnableCounter(TIM3);
+   LL_TIM_EnableIT_UPDATE(TIM14);
+   LL_TIM_EnableCounter(TIM14);
   LL_USART_EnableIT_RXNE(USART1);
   LL_DMA_ConfigAddresses(DMA1,
                          LL_DMA_CHANNEL_1,
@@ -150,7 +153,7 @@ int main(void)
   // LL_ADC_StartCalibration(ADC1);
 
   LL_ADC_Enable(ADC1);
-  LL_ADC_REG_StartConversion(ADC1);
+  // LL_ADC_REG_StartConversion(ADC1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -179,7 +182,7 @@ int main(void)
         tx.arg = 111;
         
         break;
-      case GET_ADC_1:
+      case GET_ADC_1:0
         tx.cmd = GET_ADC_1;
         tx.arg = filtred[0];
         break;
@@ -207,14 +210,14 @@ int main(void)
       adc_flag=0;
       // HAL_ADC_Stop_IT(&hadc);
       // HAL_ADC_Start_IT(&hadc);
-      adc[0] = __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc[0],LL_ADC_RESOLUTION_12B);
+      adc[0] = 3300*adc[0]/4095;
       adc[1] = __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc[1],LL_ADC_RESOLUTION_12B);
       filtred[0] = adc[0];//(7*filtred[0]+adc[0])>>3;
       filtred[1] = (7*filtred[1]+adc[1])>>3;
       // float U_1 = 33000.0/4096 * filtred[0];
       current = (5000-2*filtred[0])/10;
-        LL_ADC_REG_StartConversion(ADC1);
-      // HAL_ADC_Start_DMA(&hadc,adc,3);
+       
+
     }
 
     /* USER CODE END WHILE */
@@ -282,6 +285,11 @@ void USART1_RX_Callback(){
 
 void ADC_Callback(){
   adc_flag=1;
+}
+
+void TIM14_Callback(){
+  LL_ADC_REG_StartConversion(ADC1);
+  LL_GPIO_TogglePin(GPIOB, LL_GPIO_PIN_1);
 }
 
 
