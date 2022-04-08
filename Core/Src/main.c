@@ -182,7 +182,7 @@ int main(void)
         tx.arg = 111;
         
         break;
-      case GET_ADC_1:0
+      case GET_ADC_1:
         tx.cmd = GET_ADC_1;
         tx.arg = filtred[0];
         break;
@@ -212,10 +212,10 @@ int main(void)
       // HAL_ADC_Start_IT(&hadc);
       adc[0] = 3300*adc[0]/4095;
       adc[1] = __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc[1],LL_ADC_RESOLUTION_12B);
-      filtred[0] = adc[0];//(7*filtred[0]+adc[0])>>3;
+      filtred[0] = (7*filtred[0]+adc[0])>>3;//(7*filtred[0]+adc[0])>>3;
       filtred[1] = (7*filtred[1]+adc[1])>>3;
       // float U_1 = 33000.0/4096 * filtred[0];
-      current = (5000-2*filtred[0])/10;
+      current = (4700-2*filtred[0])/10;
        
 
     }
