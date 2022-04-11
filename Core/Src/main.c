@@ -32,7 +32,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define VIN 4700
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -54,7 +54,8 @@ typedef enum{
   GET_ADC_1 = 2,
   GET_ADC_2 = 3,
   PWM_C = 4 ,
-  GET_CURRENT = 5
+  GET_CURRENT = 5,
+  SET_CURRENT = 6
 } commands;
 
 typedef struct
@@ -168,7 +169,7 @@ int main(void)
   // HAL_ADC_Start_IT(&hadc);
   uint16_t current;
   uint16_t filtred[2];
-
+  uint16_t output;
   while (1)
   {
     // HAL_Delay(100);
@@ -193,11 +194,18 @@ int main(void)
       case PWM_C:
         tx.cmd = PWM_C;
         tx.arg = rx.arg;
+        output = rx.arg;
         LL_TIM_OC_SetCompareCH1(TIM3,rx.arg);//TIM2->CCR3=131
         break;
       case GET_CURRENT:
         tx.cmd = GET_CURRENT;
         tx.arg = current;
+        break;
+      case SET_CURRENT:
+        tx.cmd = SET_CURRENT;
+        tx.arg = current;
+        output = (VIN-10*rx.arg)/2;
+        LL_TIM_OC_SetCompareCH1(TIM3,output);
         break;
       default:
         // HAL_UART_Transmit(&huart1, &rx,3,100);
@@ -212,10 +220,10 @@ int main(void)
       // HAL_ADC_Start_IT(&hadc);
       adc[0] = 3300*adc[0]/4095;
       adc[1] = __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc[1],LL_ADC_RESOLUTION_12B);
-      filtred[0] = (7*filtred[0]+adc[0])>>3;//(7*filtred[0]+adc[0])>>3;
-      filtred[1] = (7*filtred[1]+adc[1])>>3;
+      filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;
+      filtred[1] = (3*filtred[1]+adc[1])>>2;
       // float U_1 = 33000.0/4096 * filtred[0];
-      current = (4700-2*filtred[0])/10;
+      current = (VIN-2*filtred[0])/10;
        
 
     }

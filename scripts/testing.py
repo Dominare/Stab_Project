@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QLabel
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
 import ui
 import sys
 import serial
@@ -9,8 +11,8 @@ import time
 from PyQt5.QtCore import pyqtSignal, QThread, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtGui import QIntValidator
 from struct import *
-from canva import MplCanvas
 import random
+
 
 ports = [
     p.device
@@ -18,11 +20,13 @@ ports = [
     if 'USB' in p.description
 ]
 
-if not ports:
-    raise IOError("There is no device exist on serial port!")
+# if not ports:
+    # raise IOError("There is no device exist on serial port!")
 
-command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "PWM_C","GET_CURRENT"]
+command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "PWM_C","GET_CURRENT", "SET_CURRENT"]
 
+plots_command = []
+plots_command_names = []
 
 class Worker(QObject):
     finished = pyqtSignal()
@@ -38,7 +42,7 @@ class Worker(QObject):
         while self.working:
             line = self.ser.read(3)
             cmd, arg = unpack("<BH",line)
-            time.sleep(0.1)
+            time.sleep(0.01)
             self.intReady.emit(cmd,arg)
         self.finished.emit()
 
@@ -47,7 +51,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self) 
-        self.port_label.setText(ports[0])
+        self.comboBox_port.addItems(ports)
         self.thread = None
         self.worker = None
         self.comboBox.addItems(command_list)
@@ -57,18 +61,32 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.timeValidator = QIntValidator(0,1000)
         self.lineEdit_2.setValidator (self.timeValidator)
         self.start_btn.clicked.connect(self.start)
-        self.canvas = MplCanvas(self.canva_widget, width=4, height=2, dpi=100)
-
-        self.n_data = 50
-        self.xdata = list(range(self.n_data))
-        self.ydata = [0 for i in range(self.n_data)]
-        # self.update_plot()
+        self.n_data = 100
+        self.xdata = [[]] * 5#list(range(self.n_data))
+        self.ydata = [[]] * 5#[0 for i in range(self.n_data)]
+        self.canva_widget.setBackground('w')
+        self.canva_widget.addLegend()
+        self.pen = pg.mkPen(color=(255, 0, 0))
+        self.plots = []
+        # self.plot = self.canva_widget.plot(self.xdata,self.ydata, pen = self.pen)
+        # self.plot = self.canva_widget.plot(self.xdata,self.ydata, pen = pg.mkPen(color=(255, 255, 0)))
 
         self.show()
 
-
+    def addplot(self):
+        plots_command.append(self.comboBox_2.currentIndex())
+        index = len(plots_command)-1
+        plots_command_names.append(command_list[self.comboBox_2.currentIndex()])
+        self.xdata[index]=(list(range(self.n_data)))
+        self.ydata[index]=([0 for i in range(self.n_data)])
+        self.plots.append(self.canva_widget.plot(self.xdata[index],self.ydata[index], pen=(index,5), name = command_list[self.comboBox_2.currentIndex()]))
+        self.comboBox_plot.addItem(command_list[self.comboBox_2.currentIndex()])
+        
+    def removeplot(self):
+        print("remove")
 
     def Conect_clicked(self):
+        port = ports[self.comboBox_port.currentIndex()]
         self.ser = serial.Serial(ports[0],self.baudrate_edit.text())            
         self.worker = Worker(self.ser)  
         self.thread = QThread()  
@@ -77,54 +95,71 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.thread.started.connect(self.worker.work) 
 
         self.worker.intReady.connect(self.onIntReady)
-        self.start_btn.clicked.connect(self.start)
-        # self.pushButton_2.clicked.connect(self.stop_loop)      
+        self.start_btn.clicked.connect(self.start)  
         self.worker.finished.connect(self.loop_finished)       
         self.worker.finished.connect(self.thread.quit)         
         self.worker.finished.connect(self.worker.deleteLater)  
         self.thread.finished.connect(self.thread.deleteLater)  
-
         self.thread.start()
         print("conected");
+
     def onIntReady(self, cmd,arg):
+        for commands in plots_command:
+            if(cmd == commands):
+                self.update_plot(arg,cmd)
+                return
         if(cmd<=self.comboBox.count()):
             self.textEdit.append(">>" + command_list[cmd] + " " + str(arg) )
         else:
             self.textEdit.append(">> malformed " + str(cmd) + " " +str(arg) )
-        if(cmd == self.comboBox_2.currentIndex()):
-            self.update_plot(arg)
         print(cmd,arg)
+    
     def loop_finished(self):
         print('Loop Finished')
+
     def stop_loop(self):
         self.worker.working = False
+
     def Send(self):
         cmd = self.comboBox.currentIndex()
         arg = int(self.lineEdit.text())
         buf = pack("<BH",cmd,arg)
-        print(arg)
-        self.ser.write(buf)
-        print(buf)
+        try:
+            self.ser.write(buf)
+        except:
+            print("Connect to com port")
+        
         self.textEdit.append("<<" + command_list[cmd] + " " +str(arg))
-    def update_plot(self,arg):
-        print("update")
-        self.ydata = self.ydata[1:] + [arg]
-        self.canvas.axes.cla()  # Clear the canvas.
-        self.canvas.axes.plot(self.xdata, self.ydata, 'ro-')
+    def update_plot(self,arg,cmd):
+        index = plots_command.index(cmd)
+        ydata = self.ydata[index]
+        ydata = ydata[1:] + [arg]
+        self.ydata[index] = ydata
+        self.plots[index].setData(self.xdata[index],self.ydata[index])
 
-        self.canvas.draw()
     def send_to_plot(self):
-        cmd = self.comboBox_2.currentIndex()
-        arg = int(self.lineEdit.text())
+        for comand in plots_command:
+            cmd = comand
+            arg = int(0)
+            buf = pack("<BH",cmd,arg)
+            try:
+                self.ser.write(buf)
+            except:
+                print("Connect to com port")
+                self.timer.stop()
+    def changing(self,arg):
+        cmd = 4
         buf = pack("<BH",cmd,arg)
-        print(arg)
-        self.ser.write(buf)
-        print(buf)
-        self.textEdit.append("<<" + command_list[cmd] + " " +str(arg) )
+        try:
+            self.ser.write(buf)
+        except:
+            print("Connect to com port")
+
+        # self.textEdit.append("<<" + command_list[cmd] + " " +str(arg) )
 
     def start(self):
         print("Start")
-        self.ydata = [0 for i in range(self.n_data)]
+        # self.ydata = [0 for i in range(self.n_data)]
         self.timer = QtCore.QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.send_to_plot)
