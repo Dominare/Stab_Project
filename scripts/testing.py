@@ -83,6 +83,16 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.comboBox_plot.addItem(command_list[self.comboBox_2.currentIndex()])
         
     def removeplot(self):
+        name = self.comboBox_plot.currentText()
+        index = plots_command_names.index(name)
+        plots_command.pop(index)
+        plots_command_names.pop(index)
+        self.xdata[index]=(list(range(self.n_data)))
+        self.ydata[index]=([0 for i in range(self.n_data)])
+        self.plots[index].clear()
+        self.canva_widget.removeItem(self.plots[index])
+        self.plots.pop(index)
+        self.comboBox_plot.removeItem(self.comboBox_plot.currentIndex())
         print("remove")
 
     def Conect_clicked(self):
@@ -147,8 +157,9 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
             except:
                 print("Connect to com port")
                 self.timer.stop()
-    def changing(self,arg):
+    def changing(self):
         cmd = 4
+        arg = int(self.horizontalSlider.value())
         buf = pack("<BH",cmd,arg)
         try:
             self.ser.write(buf)

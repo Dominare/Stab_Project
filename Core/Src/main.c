@@ -32,9 +32,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define VIN 4700
-#define VREFINT_CAL_ADDR                0x1FFFF7BA  /* datasheet p. 19 */
-#define VREFINT_CAL ((uint16_t*) VREFINT_CAL_ADDR)
+#define VIN 4900
+// #define VREFINT_CAL_ADDR                0x1FFFF7BA  /* datasheet p. 19 */
+// #define VREFINT_CAL ((uint16_t*) VREFINT_CAL_ADDR)
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -139,7 +139,7 @@ int main(void)
   /* Set DMA transfer size */
   LL_DMA_SetDataLength(DMA1,
                          LL_DMA_CHANNEL_1,
-                       2);
+                       3);
   /* Enable DMA transfer interruption: transfer complete */
   LL_DMA_EnableIT_TC(DMA1,
                         LL_DMA_CHANNEL_1);
@@ -183,7 +183,6 @@ int main(void)
       case INIT:
         tx.cmd = INIT;
         tx.arg = 111;
-        
         break;
       case GET_ADC_1:
         tx.cmd = GET_ADC_1;
@@ -197,7 +196,7 @@ int main(void)
         tx.cmd = PWM_C;
         tx.arg = rx.arg;
         output = rx.arg;
-        LL_TIM_OC_SetCompareCH1(TIM3,rx.arg);//TIM2->CCR3=131
+        LL_TIM_OC_SetCompareCH1(TIM3,rx.arg/10);//TIM2->CCR3=131
         break;
       case GET_CURRENT:
         tx.cmd = GET_CURRENT;
@@ -206,7 +205,7 @@ int main(void)
       case SET_CURRENT:
         tx.cmd = SET_CURRENT;
         tx.arg = current;
-        output = (VIN-10*rx.arg)/2;
+        output = (VIN*10-96*rx.arg)/200;
         LL_TIM_OC_SetCompareCH1(TIM3,output);
         break;
       default:
@@ -220,6 +219,8 @@ int main(void)
       adc_flag=0;
       // HAL_ADC_Stop_IT(&hadc);
       // HAL_ADC_Start_IT(&hadc);
+      uint16_t VREF_DATA = *VREFINT_CAL_ADDR;
+      uint16_t V_ref = __LL_ADC_CALC_VREFANALOG_VOLTAGE(adc[2],LL_ADC_RESOLUTION_12B);
       adc[0] = 3300*adc[0]/4095;
       adc[1] = __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc[1],LL_ADC_RESOLUTION_12B);
       filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;

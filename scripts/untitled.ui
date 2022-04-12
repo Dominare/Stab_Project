@@ -206,7 +206,7 @@
           <item row="1" column="0">
            <widget class="QSlider" name="horizontalSlider">
             <property name="maximum">
-             <number>999</number>
+             <number>3299</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>926</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -277,7 +277,7 @@
   </connection>
   <connection>
    <sender>horizontalSlider</sender>
-   <signal>sliderMoved(int)</signal>
+   <signal>sliderReleased()</signal>
    <receiver>MainWindow</receiver>
    <slot>changing()</slot>
    <hints>
