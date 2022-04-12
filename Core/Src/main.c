@@ -33,6 +33,8 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 #define VIN 4700
+#define VREFINT_CAL_ADDR                0x1FFFF7BA  /* datasheet p. 19 */
+#define VREFINT_CAL ((uint16_t*) VREFINT_CAL_ADDR)
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
