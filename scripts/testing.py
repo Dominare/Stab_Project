@@ -41,7 +41,7 @@ class Worker(QObject):
     def work(self):
         while self.working:
             line = self.ser.read(3)
-            cmd, arg = unpack("<BH",line)
+            cmd, arg = unpack("<Bh",line)
             time.sleep(0.01)
             self.intReady.emit(cmd,arg)
         self.finished.emit()

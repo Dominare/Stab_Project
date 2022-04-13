@@ -56,7 +56,8 @@ void MX_ADC_Init(void)
   LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* ADC DMA Init */
-
+    LL_ADC_StartCalibration(ADC1);
+while(!LL_ADC_IsCalibrationOnGoing(ADC1)){};
   /* ADC Init */
   LL_DMA_SetDataTransferDirection(DMA1, LL_DMA_CHANNEL_1, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);
 
@@ -107,7 +108,7 @@ void MX_ADC_Init(void)
   LL_ADC_REG_SetSequencerScanDirection(ADC1, LL_ADC_REG_SEQ_SCAN_DIR_FORWARD);
   LL_ADC_SetSamplingTimeCommonChannels(ADC1, LL_ADC_SAMPLINGTIME_239CYCLES_5);
   /* USER CODE BEGIN ADC_Init 2 */
-  
+
   /* USER CODE END ADC_Init 2 */
 
 }
