@@ -191,7 +191,7 @@ int main(void)
         break;
       case GET_ADC_2:
         tx.cmd = GET_ADC_2;
-        tx.arg = V_ref;
+        tx.arg = filtred[1];
         break;
       case PWM_C:
         tx.cmd = PWM_C;
@@ -223,7 +223,7 @@ int main(void)
       uint16_t VREF_DATA = *VREFINT_CAL_ADDR;
       V_ref = VREFINT_CAL_VREF*VREF_DATA/adc[2];
       adc[0] = 3300*adc[0]/4095;
-      adc[1] = __LL_ADC_CALC_DATA_TO_VOLTAGE(V_ref,adc[1],LL_ADC_RESOLUTION_12B);
+      adc[1] =  3300*adc[1]/4095;
       filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;
       filtred[1] = (3*filtred[1]+adc[1])>>2;
       // float U_1 = 33000.0/4096 * filtred[0];
