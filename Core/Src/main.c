@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ringbuffer.h"
+#include "PID.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,9 @@ typedef enum{
   GET_ADC_2 = 3,
   PWM_C = 4 ,
   GET_CURRENT = 5,
-  SET_CURRENT = 6
+  SET_CURRENT = 6,
+  SET_LOOP_BACK = 7, 
+  GET_LOOP_BACK = 8
 } commands;
 
 typedef struct
@@ -173,6 +176,15 @@ int main(void)
   uint16_t filtred[2];
   uint16_t output;
   uint16_t V_ref;
+  uint16_t loop_back;
+  float control;
+  PIDController pid = { PID_KP, PID_KI, PID_KD,
+                          PID_TAU,
+                          PID_LIM_MIN, PID_LIM_MAX,
+	                      PID_LIM_MIN_INT, PID_LIM_MAX_INT,
+                          SAMPLE_TIME_S };
+
+    PIDController_Init(&pid);
   while (1)
   {
     // HAL_Delay(100);
@@ -195,9 +207,9 @@ int main(void)
         break;
       case PWM_C:
         tx.cmd = PWM_C;
-        tx.arg = rx.arg;
-        output = rx.arg;
-        LL_TIM_OC_SetCompareCH1(TIM3,rx.arg/10);//TIM2->CCR3=131
+        tx.arg =round(control);
+        // output = rx.arg;
+        // LL_TIM_OC_SetCompareCH1(TIM3,rx.arg/10);//TIM2->CCR3=131
         break;
       case GET_CURRENT:
         tx.cmd = GET_CURRENT;
@@ -208,6 +220,15 @@ int main(void)
         tx.arg = current;
         output = (VIN*10-96*rx.arg)/200;
         LL_TIM_OC_SetCompareCH1(TIM3,output);
+        break;
+      case SET_LOOP_BACK:
+        tx.cmd = SET_LOOP_BACK;
+        loop_back = rx.arg;
+        tx.arg = loop_back;
+        break;
+      case GET_LOOP_BACK:
+        tx.cmd = SET_LOOP_BACK;
+        tx.arg = loop_back;
         break;
       default:
         // HAL_UART_Transmit(&huart1, &rx,3,100);
@@ -227,6 +248,9 @@ int main(void)
       filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;
       filtred[1] = (3*filtred[1]+adc[1])>>2;
       // float U_1 = 33000.0/4096 * filtred[0];
+      float loop = (float) loop_back;
+      control =  PIDController_Update(&pid, loop_back, filtred[1]);
+      LL_TIM_OC_SetCompareCH1(TIM3,round(329-control));
       current = (VIN-2*filtred[0])/10;
        
 

@@ -53,7 +53,8 @@ Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_tim.c \
 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_usart.c \
 Core/Src/system_stm32f0xx.c \
 Core/Src/ringbuffer.c \
-Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_pwr.c
+Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_pwr.c \
+PID/PID.c\
 
 # ASM sources
 ASM_SOURCES =  \
@@ -123,7 +124,8 @@ C_INCLUDES =  \
 -ICore/Inc \
 -IDrivers/STM32F0xx_HAL_Driver/Inc \
 -IDrivers/CMSIS/Device/ST/STM32F0xx/Include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
+-IPID
 
 
 # compile gcc flags
