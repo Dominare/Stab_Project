@@ -57,11 +57,18 @@ typedef enum{
   INIT=1,
   GET_ADC_1 = 2,
   GET_ADC_2 = 3,
-  PWM_C = 4 ,
+  GET_PWM_C = 4 ,
   GET_CURRENT = 5,
   SET_CURRENT = 6,
-  SET_LOOP_BACK = 7, 
-  GET_LOOP_BACK = 8
+  
+  SET_PID_POINT = 7,
+  GET_PID_POINT = 8,
+  GET_PID_ERROR = 9,
+  GET_PID_OUTPUT = 10,
+  SET_PID_KP = 11,
+  SET_PID_KD = 12,
+  SET_PID_KI = 13
+
 } commands;
 
 typedef struct
@@ -171,6 +178,7 @@ int main(void)
   uint16_t V_ref = 0;
   uint16_t loop_back = 0;
   fix16_t control = 0;
+  fix16_t temp = 0;
   PIDController pid = { PID_KP, PID_KI, PID_KD,
                           PID_TAU,
                           PID_LIM_MIN, PID_LIM_MAX,
@@ -178,10 +186,11 @@ int main(void)
                           SAMPLE_TIME_S };
 
     PIDController_Init(&pid);
+  //for debugging
+  float control_f = 0;
+  float input_f = 0;
   while (1)
   {
-    // HAL_Delay(100);
-    // HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
     if(ring_buffer_num_items(&uart_ring_buffer)>=3){
       ring_buffer_dequeue_arr(&uart_ring_buffer,(char *)&rx,3);
       switch (rx.cmd)
@@ -198,11 +207,9 @@ int main(void)
         tx.cmd = GET_ADC_2;
         tx.arg = filtred[1];
         break;
-      case PWM_C:
-        tx.cmd = PWM_C;
+      case GET_PWM_C:
+        tx.cmd = GET_PWM_C;
         tx.arg =(int16_t)fix16_to_int(control);
-        // output = rx.arg;
-        // LL_TIM_OC_SetCompareCH1(TIM3,rx.arg/10);//TIM2->CCR3=131
         break;
       case GET_CURRENT:
         tx.cmd = GET_CURRENT;
@@ -214,37 +221,62 @@ int main(void)
         output = (VIN*10-96*rx.arg)/200;
         LL_TIM_OC_SetCompareCH1(TIM3,output);
         break;
-      case SET_LOOP_BACK:
-        tx.cmd = SET_LOOP_BACK;
+      case SET_PID_POINT:
+        tx.cmd = SET_PID_POINT;
         loop_back = rx.arg;
         tx.arg = loop_back;
         break;
-      case GET_LOOP_BACK:
-        tx.cmd = SET_LOOP_BACK;
+      case GET_PID_POINT:
+        tx.cmd = GET_PID_POINT;
         tx.arg = loop_back;
         break;
+      case SET_PID_KD:
+        tx.cmd = SET_PID_KD;
+        tx.arg = fix16_to_int(pid.Kd);
+        temp = fix16_from_int(rx.arg);
+        pid.Kd = fix16_div(temp,fix16_from_int(100));
+        break;
+      case SET_PID_KI:
+        tx.cmd = SET_PID_KI;
+        tx.arg = fix16_to_int(pid.Ki);
+        temp = fix16_from_int(rx.arg);
+        pid.Ki = fix16_div(temp,fix16_from_int(100));
+        break;
+      case SET_PID_KP:
+        tx.cmd = SET_PID_KP;
+        tx.arg = fix16_to_int(pid.Kp);
+        temp = fix16_from_int(rx.arg);
+        pid.Kp = fix16_div(temp,fix16_from_int(100));
+        break;
+      case GET_PID_OUTPUT:
+        tx.cmd = GET_PID_OUTPUT;
+        tx.arg = fix16_to_int(control);
+        break;
+      case GET_PID_ERROR:
+        tx.cmd = GET_PID_ERROR;
+        tx.arg = fix16_to_int(pid.error);
+        break;
+      
+      
       default:
-        // HAL_UART_Transmit(&huart1, &rx,3,100);
         break;
       }
-      // HAL_UART_Receive_IT(&huart1,&rx,3);
       USART_TX((uint8_t*)&tx,3);
     };
+
     if(adc_flag){
       adc_flag=0;
-      // HAL_ADC_Stop_IT(&hadc);
-      // HAL_ADC_Start_IT(&hadc);
+
       uint16_t VREF_DATA = *VREFINT_CAL_ADDR;
       V_ref = VREFINT_CAL_VREF*VREF_DATA/adc[2];
       adc[0] = 3300*adc[0]/4095;
       adc[1] =  3300*adc[1]/4095;
-      filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;
+      filtred[0] = (3*filtred[0]+adc[0])>>2;
       filtred[1] = (3*filtred[1]+adc[1])>>2;
-      // float U_1 = 33000.0/4096 * filtred[0];
-
       control =  PIDController_Update(&pid, fix16_from_int(loop_back), fix16_from_int(filtred[1]),SAMPLE_TIME_S);
-
-      LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(control));
+      control_f = fix16_to_float(control);
+      input_f = fix16_to_float(fix16_from_int(filtred[1]));
+      // LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(fix16_floor(control)));
       current = (VIN-2*filtred[0])/10;
        
 

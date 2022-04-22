@@ -23,7 +23,7 @@ ports = [
 # if not ports:
     # raise IOError("There is no device exist on serial port!")
 
-command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "PWM_C","GET_CURRENT", "SET_CURRENT", "LOOP_BACK"]
+command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "GET_PWM_C","GET_CURRENT", "SET_CURRENT", "SET_PID_POINT", "GET_PID_POINT", "GET_PID_ERROR", "GET_PID_OUTPUT", "SET_PID_KP", "SET_PID_KD", "SET_PID_KI"]
 
 plots_command = []
 plots_command_names = []
@@ -56,7 +56,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.worker = None
         self.comboBox.addItems(command_list)
         self.comboBox_2.addItems(command_list)
-        self.intValidator = QIntValidator(0,255)
+        self.intValidator = QIntValidator(-1000,1000)
         self.lineEdit.setValidator (self.intValidator)
         self.timeValidator = QIntValidator(0,1000)
         self.lineEdit_2.setValidator (self.timeValidator)
@@ -133,7 +133,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
     def Send(self):
         cmd = self.comboBox.currentIndex()
         arg = int(self.lineEdit.text())
-        buf = pack("<BH",cmd,arg)
+        buf = pack("<Bh",cmd,arg)
         try:
             self.ser.write(buf)
         except:

@@ -8,12 +8,13 @@
                 "${workspaceRoot}/Drivers/CMSIS/Include",
                 "${workspaceFolder}/Drivers/CMSIS/Include",
                 "${workspaceFolder}/Drivers/STM32F0xx_HAL_Driver/Inc",
-                "${workspaceFolder}/Drivers/STM32F0xx_HAL_Driver/Src"
+                "${workspaceFolder}/Drivers/STM32F0xx_HAL_Driver/Src",
+                "${workspaceFolder}/fix16pid/src"
 
                 
             ],
             "defines": [
-                "STM32F405xx"
+                "STM32F030x6"
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",
