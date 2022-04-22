@@ -28,7 +28,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ringbuffer.h"
-#include "PID.h"
+#include "fix16.h"
+#include "fix16pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,7 +67,7 @@ typedef enum{
 typedef struct
 {
   uint8_t cmd;
-  uint16_t arg;
+  int16_t arg;
 } __attribute__((packed, aligned(1))) cmd_t;
 
 uint8_t flag = 0;
@@ -156,28 +157,20 @@ int main(void)
   /* Enable the DMA transfer */
   LL_DMA_EnableChannel(DMA1,
                        LL_DMA_CHANNEL_1);
-  // LL_ADC_EnableIT_EOS(ADC1);
 
   LL_ADC_Enable(ADC1);
-  // LL_ADC_REG_StartConversion(ADC1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   cmd_t rx,tx;
-  // HAL_UART_Receive_IT(&huart1,&uart_rx_byte,1);
 
-  // HAL_ADCEx_Calibration_Start(&hadc);
-  // HAL_StatusTypeDef status = HAL_ADC_Start_DMA(&hadc,adc,3);
-  // HAL_ADC_Start_IT(&hadc);
-  // HAL_Delay(100);
-  // HAL_ADC_Start_IT(&hadc);
-  volatile int16_t current = 0;;
+  volatile int16_t current = 0;
   uint16_t filtred[2];
-  uint16_t output;
-  uint16_t V_ref;
-  uint16_t loop_back;
-  float control;
+  uint16_t output = 0;
+  uint16_t V_ref = 0;
+  uint16_t loop_back = 0;
+  fix16_t control = 0;
   PIDController pid = { PID_KP, PID_KI, PID_KD,
                           PID_TAU,
                           PID_LIM_MIN, PID_LIM_MAX,
@@ -190,7 +183,7 @@ int main(void)
     // HAL_Delay(100);
     // HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
     if(ring_buffer_num_items(&uart_ring_buffer)>=3){
-      ring_buffer_dequeue_arr(&uart_ring_buffer,&rx,3);
+      ring_buffer_dequeue_arr(&uart_ring_buffer,(char *)&rx,3);
       switch (rx.cmd)
       {
       case INIT:
@@ -207,7 +200,7 @@ int main(void)
         break;
       case PWM_C:
         tx.cmd = PWM_C;
-        tx.arg =round(control);
+        tx.arg =(int16_t)fix16_to_int(control);
         // output = rx.arg;
         // LL_TIM_OC_SetCompareCH1(TIM3,rx.arg/10);//TIM2->CCR3=131
         break;
@@ -248,9 +241,10 @@ int main(void)
       filtred[0] = (3*filtred[0]+adc[0])>>2;//(7*filtred[0]+adc[0])>>3;
       filtred[1] = (3*filtred[1]+adc[1])>>2;
       // float U_1 = 33000.0/4096 * filtred[0];
-      float loop = (float) loop_back;
-      control =  PIDController_Update(&pid, loop_back, filtred[1]);
-      LL_TIM_OC_SetCompareCH1(TIM3,round(329-control));
+
+      control =  PIDController_Update(&pid, fix16_from_int(loop_back), fix16_from_int(filtred[1]),SAMPLE_TIME_S);
+
+      LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(control));
       current = (VIN-2*filtred[0])/10;
        
 
