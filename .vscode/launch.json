@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
             "version": "0.2.0",
             "configurations": [
-                {   "gdbpath": "/usr/bin/gdb-multiarch",
+                {  // "gdbpath": "/usr/bin/gdb-multiarch",
                     "showDevDebugOutput": true,
                     "name": "Cortex Debug stutil",
                     "cwd": "${workspaceRoot}",

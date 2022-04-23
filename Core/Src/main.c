@@ -30,6 +30,8 @@
 #include "ringbuffer.h"
 #include "fix16.h"
 #include "fix16pid.h"
+#include "moving_average.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,7 +69,8 @@ typedef enum{
   GET_PID_OUTPUT = 10,
   SET_PID_KP = 11,
   SET_PID_KD = 12,
-  SET_PID_KI = 13
+  SET_PID_KI = 13,
+  SET_PID_ENABLED = 14
 
 } commands;
 
@@ -179,6 +182,7 @@ int main(void)
   uint16_t loop_back = 0;
   fix16_t control = 0;
   fix16_t temp = 0;
+  uint8_t pid_enable_flag = 0;
   PIDController pid = { PID_KP, PID_KI, PID_KD,
                           PID_TAU,
                           PID_LIM_MIN, PID_LIM_MAX,
@@ -186,9 +190,17 @@ int main(void)
                           SAMPLE_TIME_S };
 
     PIDController_Init(&pid);
+  FilterTypeDef filterStruct0;
+  FilterTypeDef filterStruct1;
+
+  Moving_Average_Init(&filterStruct0);
+  Moving_Average_Init(&filterStruct1);
+
+
   //for debugging
-  float control_f = 0;
-  float input_f = 0;
+  // float control_f = 0;
+  // float input_f = 0;
+
   while (1)
   {
     if(ring_buffer_num_items(&uart_ring_buffer)>=3){
@@ -256,7 +268,11 @@ int main(void)
         tx.cmd = GET_PID_ERROR;
         tx.arg = fix16_to_int(pid.error);
         break;
-      
+      case SET_PID_ENABLED:
+        tx.cmd = SET_PID_ENABLED;
+        tx.arg = pid_enable_flag;
+        pid_enable_flag = rx.arg;
+        break;      
       
       default:
         break;
@@ -266,17 +282,17 @@ int main(void)
 
     if(adc_flag){
       adc_flag=0;
-
+      //rolling average
       uint16_t VREF_DATA = *VREFINT_CAL_ADDR;
       V_ref = VREFINT_CAL_VREF*VREF_DATA/adc[2];
       adc[0] = 3300*adc[0]/4095;
       adc[1] =  3300*adc[1]/4095;
-      filtred[0] = (3*filtred[0]+adc[0])>>2;
-      filtred[1] = (3*filtred[1]+adc[1])>>2;
+      filtred[0] = Moving_Average_Compute(adc[0], &filterStruct0);//(3*filtred[0]+adc[0])>>2;
+      filtred[1] = Moving_Average_Compute(adc[1], &filterStruct1);//adc[1];(3*filtred[1]+adc[1])>>2;
+      if(pid_enable_flag){
       control =  PIDController_Update(&pid, fix16_from_int(loop_back), fix16_from_int(filtred[1]),SAMPLE_TIME_S);
-      control_f = fix16_to_float(control);
-      input_f = fix16_to_float(fix16_from_int(filtred[1]));
-      // LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(fix16_floor(control)));
+      LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(fix16_floor(control)));
+      }
       current = (VIN-2*filtred[0])/10;
        
 

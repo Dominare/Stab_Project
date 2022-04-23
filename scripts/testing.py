@@ -23,7 +23,9 @@ ports = [
 # if not ports:
     # raise IOError("There is no device exist on serial port!")
 
-command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "GET_PWM_C","GET_CURRENT", "SET_CURRENT", "SET_PID_POINT", "GET_PID_POINT", "GET_PID_ERROR", "GET_PID_OUTPUT", "SET_PID_KP", "SET_PID_KD", "SET_PID_KI"]
+command_list = ["NOP", "INIT", "GET_ADC_1", "GET_ADC_2", "GET_PWM_C","GET_CURRENT", 
+                "SET_CURRENT", "SET_PID_POINT", "GET_PID_POINT", "GET_PID_ERROR", 
+                "GET_PID_OUTPUT", "SET_PID_KP", "SET_PID_KD", "SET_PID_KI","SET_PID_ENABLE"]
 
 plots_command = []
 plots_command_names = []

@@ -56,6 +56,7 @@ Core/Src/ringbuffer.c \
 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_ll_pwr.c \
 fix16pid/src/fix16.c\
 fix16pid/src/fix16pid.c\
+Core/Src/moving_average.c
 
 # ASM sources
 ASM_SOURCES =  \

@@ -1,1 +1,7 @@
 build
+.metadata
+.vscode
+.project
+Stab_Project Default.launch
+.settings
+.cproject
