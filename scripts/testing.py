@@ -63,7 +63,7 @@ class ExampleApp(QtWidgets.QMainWindow, ui.Ui_MainWindow):
         self.timeValidator = QIntValidator(0,1000)
         self.lineEdit_2.setValidator (self.timeValidator)
         self.start_btn.clicked.connect(self.start)
-        self.n_data = 100
+        self.n_data = 300
         self.xdata = [[]] * 5#list(range(self.n_data))
         self.ydata = [[]] * 5#[0 for i in range(self.n_data)]
         self.canva_widget.setBackground('w')

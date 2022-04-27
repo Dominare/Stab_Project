@@ -132,8 +132,8 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
   MX_DMA_Init();
+  MX_GPIO_Init();
   MX_ADC_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
@@ -195,8 +195,9 @@ int main(void)
 
   Moving_Average_Init(&filterStruct0);
   Moving_Average_Init(&filterStruct1);
-
-
+  LL_mDelay(100);
+  
+LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
   //for debugging
   // float control_f = 0;
   // float input_f = 0;
@@ -281,6 +282,7 @@ int main(void)
     };
 
     if(adc_flag){
+      // LL_GPIO_TogglePin(GPIOF, LL_GPIO_PIN_0);
       adc_flag=0;
       //rolling average
       uint16_t VREF_DATA = *VREFINT_CAL_ADDR;
