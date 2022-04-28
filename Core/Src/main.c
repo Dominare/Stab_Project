@@ -197,10 +197,9 @@ int main(void)
   Moving_Average_Init(&filterStruct1);
   LL_mDelay(100);
   
-LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
-  //for debugging
-  // float control_f = 0;
-  // float input_f = 0;
+  LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
+// loop_back = 700;
+// pid_enable_flag = 1;
 
   while (1)
   {
@@ -231,7 +230,7 @@ LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
       case SET_CURRENT:
         tx.cmd = SET_CURRENT;
         tx.arg = current;
-        output = (VIN*10-96*rx.arg)/200;
+        output = (VIN*10-96*rx.arg)/20;
         LL_TIM_OC_SetCompareCH1(TIM3,output);
         break;
       case SET_PID_POINT:
@@ -293,7 +292,7 @@ LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
       filtred[1] = Moving_Average_Compute(adc[1], &filterStruct1);//adc[1];(3*filtred[1]+adc[1])>>2;
       if(pid_enable_flag){
       control =  PIDController_Update(&pid, fix16_from_int(loop_back), fix16_from_int(filtred[1]),SAMPLE_TIME_S);
-      LL_TIM_OC_SetCompareCH1(TIM3,329-fix16_to_int(fix16_floor(control)));
+      LL_TIM_OC_SetCompareCH1(TIM3,3299-fix16_to_int((control)));
       }
       current = (VIN-2*filtred[0])/10;
        
