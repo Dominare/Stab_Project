@@ -197,7 +197,7 @@ int main(void)
   Moving_Average_Init(&filterStruct1);
   LL_mDelay(100);
   
-  LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
+  // LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
 // loop_back = 700;
 // pid_enable_flag = 1;
 
@@ -230,8 +230,13 @@ int main(void)
       case SET_CURRENT:
         tx.cmd = SET_CURRENT;
         tx.arg = current;
-        output = (VIN*10-96*rx.arg)/20;
+        output = (VIN*1-(10*(rx.arg+4)))/2;
+        if(rx.arg>1){
+        LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
         LL_TIM_OC_SetCompareCH1(TIM3,output);
+        } else {
+          LL_GPIO_SetOutputPin(GPIOF, LL_GPIO_PIN_0);
+        }
         break;
       case SET_PID_POINT:
         tx.cmd = SET_PID_POINT;
@@ -272,6 +277,11 @@ int main(void)
         tx.cmd = SET_PID_ENABLED;
         tx.arg = pid_enable_flag;
         pid_enable_flag = rx.arg;
+        if(pid_enable_flag){
+        LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_0);
+        } else {
+          LL_GPIO_SetOutputPin(GPIOF, LL_GPIO_PIN_0);
+        }
         break;      
       
       default:
@@ -294,7 +304,8 @@ int main(void)
       control =  PIDController_Update(&pid, fix16_from_int(loop_back), fix16_from_int(filtred[1]),SAMPLE_TIME_S);
       LL_TIM_OC_SetCompareCH1(TIM3,3299-fix16_to_int((control)));
       }
-      current = (VIN-2*filtred[0])/10;
+      current = (VIN-2*filtred[0])/1-40;
+
        
 
     }
